@@ -8,7 +8,11 @@ dynamic = ["version"]
 description = "Mesoscopic Traffic Assignment and Simulation Model"
 readme = "README.md"
 requires-python = ">=3.10"
-authors = [ { name = "Andrea Gemma", email = "andrea.gemma@uniroma3.it" } ]
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [ 
+	{ name = "Andrea Gemma", email = "andrea.gemma@uniroma3.it" } 
+]
 keywords = ["Mesoscopic", "Traffic", "Assignment", "Simulation"]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -27,9 +31,6 @@ dependencies = []
 
 [project.scripts]
 amisim = "amisim.__main__:main"
-
-[tool.setuptools.packages.find]
-where = ["src"]
 
 [project.optional-dependencies]
 test = [
@@ -102,9 +103,5 @@ disable_error_code = ["import-untyped"]
 
 [[tool.mypy.overrides]]
 module = [
-  "gataframe.engine",
-  "gataframe.files",
-  "gataframe.gata_frame"
 ]
 ignore_errors = true
-
