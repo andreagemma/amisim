@@ -10,7 +10,19 @@ readme = "README.md"
 requires-python = ">=3.10"
 authors = [ { name = "Andrea Gemma", email = "andrea.gemma@uniroma3.it" } ]
 keywords = ["Mesoscopic", "Traffic", "Assignment", "Simulation"]
-
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Database :: Front-Ends",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed"
+]
 dependencies = []
 
 [project.scripts]
@@ -20,22 +32,79 @@ amisim = "amisim.__main__:main"
 where = ["src"]
 
 [project.optional-dependencies]
+test = [
+  "pytest>=8.0",
+  "pytest-cov>=5.0"
+]
 dev = [
-  "pytest>=7.0",
-  "flake8>=6.0",
+  "build>=1.2",
+  "joblib>=1.4",
   "mypy>=1.10",
-  "build",
+  "pytest>=8.0",
+  "pytest-cov>=5.0",
+  "ruff>=0.5",
+  "twine>=5.1"
+]
+parallel = [
+  "joblib>=1.4"
 ]
 
-[tool.pytest.ini_options]
-minversion = "6.0"
-addopts = "-ra -q"
-testpaths = ["tests"]
+[project.urls]
+Documentation = "https://github.com/andreagemma/amisim#readme"
+Issues = "https://github.com/andreagemma/amisim/issues"
+Source = "https://github.com/andreagemma/amisim"
 
-[tool.flake8]
-max-line-length = 88
-extend-ignore = ["E203"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+amisim = ["py.typed"]
+
+[tool.setuptools.dynamic]
+version = {attr = "amisim._version.__version__"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+
+[tool.coverage.run]
+branch = true
+source = ["gataframe"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+exclude = [
+  ".venv",
+  "build",
+  "dist",
+  "src/gataframe.egg-info",
+  "venv",
+  "wheel-smoke-test"
+]
+
+[tool.ruff.lint]
+select = ["E9", "F63", "F7", "F82"]
 
 [tool.mypy]
-python_version = 3.10
-strict = true
+python_version = "3.10"
+files = ["src/gataframe"]
+warn_unused_configs = true
+check_untyped_defs = true
+follow_imports = "skip"
+no_site_packages = true
+ignore_missing_imports = true
+disable_error_code = ["import-untyped"]
+
+[[tool.mypy.overrides]]
+module = [
+  "gataframe.engine",
+  "gataframe.files",
+  "gataframe.gata_frame"
+]
+ignore_errors = true
+
