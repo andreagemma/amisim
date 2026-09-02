@@ -1,4 +1,5 @@
 """Simple CLI for amisim."""
+
 import argparse
 
 
