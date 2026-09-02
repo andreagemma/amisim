@@ -4,11 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "amisim"
-version = "0.1.0"
-description = "amisim CLI and library"
+dynamic = ["version"]
+description = "Mesoscopic Traffic Assignment and Simulation Model"
 readme = "README.md"
 requires-python = ">=3.10"
-authors = [ { name = "Your Name", email = "you@example.com" } ]
+authors = [ { name = "Andrea Gemma", email = "andrea.gemma@uniroma3.it" } ]
+keywords = ["Mesoscopic", "Traffic", "Assignment", "Simulation"]
+
 dependencies = []
 
 [project.scripts]
