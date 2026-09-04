@@ -1,3 +1,12 @@
+## Unreleased
+
+- Added a structured CLI entrypoint with `run`, `server`, and `init_db` commands.
+- Added `run` defaults for `settings.ini` and `parmas.json` auto-discovery in current working directory when explicit paths are omitted.
+- Added support for repeatable `-e/--env KEY=VALUE` runtime environment overrides in `run` mode.
+- Added library-facing `AmisimApplication` class exposing prepared stubs for `init_db`, `load_settings`, `load_params`, and `run`.
+- Added unit tests for CLI parsing and helper behavior.
+- Added dedicated documentation pages for CLI and library usage in `docs/cli.md` and `docs/library.md`.
+
 Model4Italy Proprietary Software License
 
 Copyright (c) 2026 Andrea Gemma. All rights reserved.
