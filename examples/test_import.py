@@ -1,6 +1,7 @@
 import amisim as sim
 import time
 from amisim import get_logger
+
 app = sim.AmisimApplication()
 time.sleep(1)  # wait for the logger to be configured
 app.init_db(db_type="sqlite", name="test.db")
@@ -11,7 +12,7 @@ app.load_settings(
         "LOGGING:LOG_LEVEL=DEBUG",
         "LOGGING:LOG_ON_FILE=True",
         "LOGGING:LOG_DIR=logs",
-    ]
+    ],
 )
 log = app.log
 time.sleep(1)  # wait for the logger to be configured

@@ -15,7 +15,6 @@ from .ini_model import IniModel
 from .utils import parse_age_to_timedelta, parse_section_option_overrides
 
 
-
 class AmisimApplication:
     """Library entrypoint exposing the core AMISim operations.
 
@@ -23,13 +22,14 @@ class AmisimApplication:
     ``load_settings``, ``load_params`` and ``run`` keep their public contracts
     while business logic is being completed.
     """
-    APP_NAME : str = importlib.metadata.metadata(__package__)["Name"].upper()
+
+    APP_NAME: str = importlib.metadata.metadata(__package__)["Name"].upper()
 
     def __init__(self) -> None:
         """Initialize application integration state."""
-        self.settings_reader: ConfigReader = ConfigReader(dictionary={}, 
-                                                          providers=[ConfigSource.DICT, ConfigSource.ENV], 
-                                                          env_default_section=self.APP_NAME)
+        self.settings_reader: ConfigReader = ConfigReader(
+            dictionary={}, providers=[ConfigSource.DICT, ConfigSource.ENV], env_default_section=self.APP_NAME
+        )
         self.ini: IniModel = IniModel.from_config(self.settings_reader)
         self.log = get_logger(section="application")
 
@@ -138,9 +138,11 @@ class AmisimApplication:
             overrides = parse_section_option_overrides(overrides)
         merged_overrides = overrides or {}
         if settings_path is None:
-            self.settings_reader = ConfigReader(dictionary=merged_overrides, 
-                                                providers=[ConfigSource.DICT, ConfigSource.ENV],
-                                                env_default_section=self.APP_NAME)
+            self.settings_reader = ConfigReader(
+                dictionary=merged_overrides,
+                providers=[ConfigSource.DICT, ConfigSource.ENV],
+                env_default_section=self.APP_NAME,
+            )
             self.ini = IniModel.from_config(self.settings_reader)
             configure_logging_from_typed_settings(self.ini.LOGGING)
             self.log.info("Default settings model loaded")
@@ -149,8 +151,8 @@ class AmisimApplication:
         reader = ConfigReader(
             file=settings_path,
             dictionary=merged_overrides,
-            providers=[ConfigSource.DICT, ConfigSource.ENV,ConfigSource.INI],
-            env_default_section=self.APP_NAME
+            providers=[ConfigSource.DICT, ConfigSource.ENV, ConfigSource.INI],
+            env_default_section=self.APP_NAME,
         )
 
         use_db_settings = reader.getboolean("DB_SETTINGS_USE", section="DATABASE_SETTINGS", default=False)
@@ -168,7 +170,7 @@ class AmisimApplication:
                     db_url=db_url,
                     db_query=db_query,
                     providers=[ConfigSource.DICT, ConfigSource.ENV, ConfigSource.DB, ConfigSource.INI],
-                    env_default_section=self.APP_NAME
+                    env_default_section=self.APP_NAME,
                 )
 
         self.settings_reader = reader

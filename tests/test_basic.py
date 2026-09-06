@@ -8,7 +8,13 @@ from sqlalchemy import create_engine, text
 import pytest
 from tictoc import TicToc
 
-from amisim.__main__ import _build_sqlalchemy_url, _handle_clean_db, _parse_env_overrides, _resolve_optional_file, parse_cli_args
+from amisim.__main__ import (
+    _build_sqlalchemy_url,
+    _handle_clean_db,
+    _parse_env_overrides,
+    _resolve_optional_file,
+    parse_cli_args,
+)
 from amisim.app_logger import _normalize_format
 from amisim.application import AmisimApplication
 from amisim.utils import nested_dict_from_key_value_list, parse_age_to_timedelta, parse_section_option_overrides
@@ -109,7 +115,9 @@ def test_handle_clean_db_uses_explicit_db_url(monkeypatch: pytest.MonkeyPatch) -
             cleaned.update(kwargs)
             return {"logs": 0, "tokens": 0, "executions": 0}
 
-    monkeypatch.setattr("amisim.__main__.DB.open_db", lambda url, schema=None: opened.update({"url": url, "schema": schema}))
+    monkeypatch.setattr(
+        "amisim.__main__.DB.open_db", lambda url, schema=None: opened.update({"url": url, "schema": schema})
+    )
     monkeypatch.setattr("amisim.__main__.DB.is_initialized", lambda: False)
 
     args = parse_cli_args(
@@ -135,7 +143,9 @@ def test_handle_clean_db_reads_db_url_from_settings(tmp_path: Path, monkeypatch:
     settings = tmp_path / "settings.ini"
     settings.write_text("[DATABASE]\nDATABASE_URL=sqlite:///from_settings.db\n", encoding="utf-8")
 
-    monkeypatch.setattr("amisim.__main__.DB.open_db", lambda url, schema=None: opened.update({"url": url, "schema": schema}))
+    monkeypatch.setattr(
+        "amisim.__main__.DB.open_db", lambda url, schema=None: opened.update({"url": url, "schema": schema})
+    )
     monkeypatch.setattr("amisim.__main__.DB.is_initialized", lambda: False)
 
     args = parse_cli_args(["clean_db", "--settings", str(settings)])
@@ -237,7 +247,9 @@ def test_parse_age_to_timedelta_rejects_invalid() -> None:
 
 
 def test_normalize_log_format_legacy_style() -> None:
-    legacy = "%(asctime)s | %(levelname)s | %(name)s | %(last_elapsed).2f/%(elapsed).2fs | %(execution_id)s -> %(message)s"
+    legacy = (
+        "%(asctime)s | %(levelname)s | %(name)s | %(last_elapsed).2f/%(elapsed).2fs | %(execution_id)s -> %(message)s"
+    )
     normalized = _normalize_format(legacy)
     assert "{time:" in normalized
     assert "{level:" in normalized

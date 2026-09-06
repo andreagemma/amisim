@@ -67,9 +67,7 @@ def parse_section_option_overrides(values: Iterable[str]) -> dict[str, dict[str,
         section_map: dict[str, str] = {}
         for key, value in maybe_map.items():
             if isinstance(value, dict):
-                raise ValueError(
-                    f"Invalid option path for section {section!r}: only one variable level is supported"
-                )
+                raise ValueError(f"Invalid option path for section {section!r}: only one variable level is supported")
             section_map[str(key)] = str(value)
         normalized[str(section)] = section_map
 

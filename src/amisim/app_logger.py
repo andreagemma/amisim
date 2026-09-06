@@ -111,7 +111,9 @@ def _db_sink(message: Any) -> None:
         level_name=record["level"].name,
         message=record["message"],
         created_by=record["name"],
-        execution_id=int(record["extra"]["execution_id"]) if str(record["extra"].get("execution_id", "")).isdigit() else None,
+        execution_id=int(record["extra"]["execution_id"])
+        if str(record["extra"].get("execution_id", "")).isdigit()
+        else None,
         created_at=created_at,
     )
 
