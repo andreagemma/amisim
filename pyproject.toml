@@ -27,7 +27,12 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Typing :: Typed"
 ]
-dependencies = []
+dependencies = [
+  "ga-configreader",
+  "ga-tictoc>=0.2.0",
+  "SQLAlchemy>=2.0.52",
+  "loguru>=0.7.3"
+]
 
 [project.scripts]
 amisim = "amisim.__main__:main"

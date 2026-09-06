@@ -1,0 +1,8 @@
+2026-09-05 02:25:28.654 | INFO     | amisim.settings | 0.00/0.00s | - -> Settings loaded
+2026-09-05 02:25:28.655 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> This is a test log message.
+2026-09-05 02:26:32.246 | INFO     | amisim.settings | 0.00/0.00s | - -> Settings loaded
+2026-09-05 02:26:32.248 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> This is a test log message.
+2026-09-05 02:26:32.249 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> Version: 0.1.0
+2026-09-05 02:26:45.215 | INFO     | amisim.settings | 0.00/0.00s | - -> Settings loaded
+2026-09-05 02:26:45.217 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> This is a test log message.
+2026-09-05 02:26:45.219 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> Version: 0.1.0 0.001 s

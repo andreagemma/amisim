@@ -20,6 +20,8 @@ Queste istruzioni si applicano all'intero repository.
 - Evita di aggiungere dipendenze pesanti se non necessario.
 - Prediligi l'efficienza quando viene richiesto di sviluppare codice senza fare compromettere troppo la leggibilità.
 - Nello sviluppo verranno usate librerie ga-* (ad esempio `ga-configreader`, `ga-graph`, ecc.) che sono sviluppate da me e presente nei repository andreagemma/configreader, andreagemma/graph, ecc. Se noti criticità o problemi in queste librerie, segnala e contribuisci alle correzioni nei rispettivi repository chiedendolo prima.
+- Le librerie locali `ga-configreader` e `ga-tictoc` sono installate spesso in editable (`-e`) dai percorsi locali. Non modificare questi repository automaticamente: chiedi sempre consenso esplicito prima di intervenire. Evita modifiche cross-repo salvo stretta necessità.
+- Predisponi e usa `src/amisim/utils/` per funzioni di supporto riutilizzabili, evitando duplicazioni nel codice applicativo e nella CLI.
 
 ## Controlli di qualita
 Prima di finalizzare le modifiche, esegui:
@@ -39,7 +41,7 @@ Se rilevante per i file modificati, esegui anche gli script di qualita del proge
 - Per ogni pacchetto, salva i file in `licenses/third_party/packages/<nome_pacchetto>/`.
 - Salva almeno un file `LICENSE` per pacchetto e, se presente a monte, salva anche `COPYING`.
 - Mantieni aggiornato `licenses/third_party/summary.tsv` con almeno queste colonne: package, version, license_file, source_url.
-- Mantieni aggiornato anche `THIRD_PARTY_NOTICE.md` con il riepilogo delle dipendenze terze parti e dei relativi riferimenti di licenza.
+- Mantieni aggiornato anche `THIRD_PARTY_NOTICES.md` con il riepilogo delle dipendenze terze parti e dei relativi riferimenti di licenza.
 - Mantieni aggiornato `MANIFEST.in`
 
 ## Documentazione

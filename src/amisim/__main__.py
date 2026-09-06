@@ -9,7 +9,12 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterable
 
+from .app_logger import configure_logging, get_logger
 from .application import AmisimApplication
+from .utils import parse_section_option_overrides
+
+
+_EXPLICIT_COMMANDS = {"run", "server", "init_db"}
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -30,6 +35,7 @@ def _build_parser() -> argparse.ArgumentParser:
 
     init_db_parser = subparsers.add_parser("init_db")
     init_db_parser.add_argument("-u", "--url", default="", help="Database connection URL")
+    init_db_parser.add_argument("-S", "--schema", default="", help="Database schema name (if supported)")
     init_db_parser.add_argument("-H", "--host", default="", help="Database host")
     init_db_parser.add_argument("-P", "--port", type=int, help="Database port")
     init_db_parser.add_argument("-U", "--user", default="", help="Database user")
@@ -56,10 +62,17 @@ def _add_run_arguments(parser: argparse.ArgumentParser) -> None:
 
     :param parser: Parser to extend with run options.
     """
-    parser.add_argument("-s", "--settings", default="", help="Path to the settings INI file")
-    parser.add_argument("-p", "--params", default="", help="Path to the parameters JSON file with scenario parameters")
+    parser.add_argument("-s", "--settings", default="", help="Path to the base software configuration INI file")
+    parser.add_argument("-p", "--params", default="", help="Path to the algorithm execution parameters JSON file")
     parser.add_argument(
         "-e", "--env", action="append", default=[], help="Environment variable overrides in the form KEY=VALUE"
+    )
+    parser.add_argument(
+        "-O",
+        "--option",
+        action="append",
+        default=[],
+        help="Settings override in SECTION:NAME=VALUE format",
     )
 
 
@@ -69,14 +82,27 @@ def parse_cli_args(argv: list[str] | None = None) -> argparse.Namespace:
     If no explicit subcommand is provided, arguments are interpreted as
     run-mode options and command is forced to ``run``.
 
+    Textual help forms are also supported:
+    - ``amisim help`` for root command help.
+    - ``amisim <command> help`` for subcommand help.
+
     :param argv: Optional argument vector excluding executable name.
     :return: Parsed namespace including resolved command name.
     """
     args_list = list(argv if argv is not None else sys.argv[1:])
 
+    # Support textual help forms in addition to argparse -h/--help flags.
+    if args_list and args_list[0] == "help":
+        return _build_parser().parse_args(["-h"])
+
+    if args_list and args_list[0] in {"-h", "--help"}:
+        return _build_parser().parse_args(args_list)
+
     # If an explicit subcommand is provided, parse the full subcommand tree.
-    if args_list and args_list[0] in {"run", "server", "init_db"}:
+    if args_list and args_list[0] in _EXPLICIT_COMMANDS:
         parser = _build_parser()
+        if len(args_list) > 1 and args_list[1] == "help":
+            return parser.parse_args([args_list[0], "-h"])
         return parser.parse_args(args_list)
 
     # No subcommand means backward-compatible "run" mode with run arguments.
@@ -181,6 +207,9 @@ def _build_sqlalchemy_url(args: argparse.Namespace) -> str:
 def _handle_run(args: argparse.Namespace, app: AmisimApplication) -> int:
     """Execute run-mode orchestration.
 
+    ``settings`` contains base software configuration values, while ``params``
+    contains execution parameters for the simulation algorithm.
+
     :param args: Parsed run namespace.
     :param app: Application facade used for library-level calls.
     :return: Process exit code.
@@ -191,10 +220,11 @@ def _handle_run(args: argparse.Namespace, app: AmisimApplication) -> int:
     settings_path = _resolve_optional_file(args.settings, "settings.ini")
     params_path = _resolve_optional_file(args.params, "parmas.json")
     env_overrides = _parse_env_overrides(args.env)
+    settings_overrides = parse_section_option_overrides(args.option)
 
     with _temporary_env(env_overrides):
         if settings_path is not None:
-            app.load_settings(settings_path)
+            app.load_settings(settings_path, overrides=settings_overrides)
         if params_path is not None:
             app.load_params(params_path)
         app.run()
@@ -213,6 +243,9 @@ def _handle_server(_: argparse.Namespace) -> int:
 def _handle_init_db(args: argparse.Namespace, app: AmisimApplication) -> int:
     """Execute init_db-mode orchestration.
 
+    This command is intended to create and initialize the internal AMISim
+    database used by the software.
+
     :param args: Parsed init_db namespace.
     :param app: Application facade used for library-level calls.
     :return: Process exit code.
@@ -221,6 +254,7 @@ def _handle_init_db(args: argparse.Namespace, app: AmisimApplication) -> int:
     url = args.url.strip() or _build_sqlalchemy_url(args)
     app.init_db(
         url=url or None,
+        schema=args.schema.strip() or None,
         host=args.host.strip() or None,
         port=args.port,
         user=args.user.strip() or None,
@@ -239,6 +273,9 @@ def main(argv: list[str] | None = None, app: AmisimApplication | None = None) ->
     :param app: Optional application instance for dependency injection.
     :return: Exit code according to command outcome.
     """
+    configure_logging()
+    log = get_logger()
+
     args = parse_cli_args(argv)
     application = app if app is not None else AmisimApplication()
 
@@ -251,9 +288,11 @@ def main(argv: list[str] | None = None, app: AmisimApplication | None = None) ->
         if args.command == "init_db":
             return _handle_init_db(args, application)
     except ValueError as exc:
+        log.error("CLI validation error: %s", exc)
         print(str(exc), file=sys.stderr)
         return 2
     except NotImplementedError as exc:
+        log.error("Command not implemented: %s", exc)
         print(str(exc), file=sys.stderr)
         return 1
 
