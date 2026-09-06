@@ -23,6 +23,13 @@
 - Implemented `load_settings` using `ga-configreader`, including dynamic `DATABASE_SETTINGS` DB-backed reconfiguration when enabled.
 - Added LOGGING-driven `loguru` configuration with colorized format conversion, `execution_id` context, and elapsed/last_elapsed runtime fields.
 - Added `AmisimLogger` inheriting from `ga-tictoc` `TicToc`, bridged to `loguru` sinks for console/file/DB output.
+- Updated `AmisimApplication` to use a single shared application logger instance for all class log messages, preserving a continuous timer across logs.
+- Added `AmisimApplication.clean_db` with selective cleanup for `logs`, `tokens`, `executions`, optional retention time parsing (`2d`, `12h`, `1w2d`), and safety flags for pending executions and active tokens.
+- Added `amisim clean_db` CLI command with DB source selection (`--url` or structured DB fields, or `--settings` via `DATABASE.DATABASE_URL`) and cleanup options `--what`, `--time`, `--include-pending-executions`, and `--include-active-tokens`.
+- Added optional SQLite maintenance flags to cleanup (`--checkpoint-truncate`, `--vacuum`) and equivalent `AmisimApplication.clean_db` parameters to reduce residual WAL/SHM files and compact database storage.
+- Set SQLite maintenance cleanup defaults to enabled (`checkpoint_truncate=True`, `vacuum=True`), with CLI opt-out switches `--no-checkpoint-truncate` and `--no-vacuum`.
+- Added typed runtime settings model in `src/amisim/ini_model.py` and exposed it as `AmisimApplication.ini` with source reader `AmisimApplication.settings_reader`; section/field names are uppercase and values are resolved on-demand at runtime.
+- Refactored runtime settings architecture to `IniBase` + nested `IniModel` section classes, with dynamic runtime section/field discovery from merged provider metadata (`ConfigReader.sections()` and `ConfigReader.variables()`).
 
 Model4Italy Proprietary Software License
 

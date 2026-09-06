@@ -7,14 +7,22 @@ The amisim command can be used in explicit subcommand mode or in implicit run mo
 - amisim run [-s SETTINGS] [-p PARAMS] [-e KEY=VALUE ...] [-O SECTION:NAME=VALUE ...]
 - amisim server [-H HOST] [-P PORT] [-D]
 - amisim init_db [-u URL] [-S SCHEMA] [-H HOST] [-P PORT] [-U USER] [-W PASSWORD] [-N NAME] [-t TYPE] [-D DRIVER]
+- amisim clean_db [-s SETTINGS | -u URL | -t TYPE -H HOST -P PORT -U USER -W PASSWORD -N NAME [-D DRIVER]] [-S SCHEMA] [-w {all,logs,tokens,executions}] [-T TIME] [--include-pending-executions] [--include-active-tokens] [--[no-]checkpoint-truncate] [--[no-]vacuum]
 
 If no subcommand is provided, arguments are interpreted as run arguments.
+
+Main help includes a short command description for:
+- run: execute workflow.
+- server: reserved server command.
+- init_db: initialize internal database.
+- clean_db: clean internal database records.
 
 Help aliases:
 - `amisim help` shows full CLI help.
 - `amisim run help` shows help for the run command.
 - `amisim server help` shows help for the server command.
 - `amisim init_db help` shows help for the init_db command.
+- `amisim clean_db help` shows help for the clean_db command.
 
 ## run
 
@@ -93,6 +101,49 @@ Schema behavior:
 
 Current status:
 - The command creates and initializes the internal AMISim database schema.
+
+## clean_db
+
+Purpose:
+- Clean internal database tables with target and retention filters.
+
+Arguments:
+- -s, --settings: optional settings INI used to resolve `DATABASE.DATABASE_URL`.
+- -u, --url: SQLAlchemy URL for the internal DB.
+- -S, --schema: target schema where tables are resolved, if supported by the backend.
+- -H, --host: database host.
+- -P, --port: database port.
+- -U, --user: database user.
+- -W, --password: database password.
+- -N, --name: database name.
+- -t, --type: database type (for example postgresql, mysql, sqlite).
+- -D, --driver: SQLAlchemy driver suffix.
+- -w, --what: cleanup target (`all`, `logs`, `tokens`, `executions`).
+- -T, --time: optional retention age (for example `2d`, `12h`, `1w2d`).
+- --include-pending-executions: include pending executions in deletion.
+- --include-active-tokens: include non-expired tokens in deletion.
+- --checkpoint-truncate / --no-checkpoint-truncate: enable/disable SQLite WAL checkpoint in TRUNCATE mode after cleanup (default enabled).
+- --vacuum / --no-vacuum: enable/disable SQLite VACUUM after cleanup (default enabled).
+
+Behavior details:
+- DB selection precedence is: explicit `--url`, then structured DB options (`--type` and related fields), then `--settings` via `DATABASE.DATABASE_URL`.
+- If `--time` is empty, cleanup has no cutoff filter.
+- Logs are filtered by `created_at` when `--time` is provided.
+- Executions are filtered by `end_time` for non-pending rows.
+- Pending executions are excluded by default and included only with `--include-pending-executions`.
+- Tokens remove only expired rows by default and remove all tokens when `--include-active-tokens` is set.
+- `--checkpoint-truncate` and `--vacuum` are enabled by default as SQLite-oriented maintenance steps to reduce residual `-wal`/`-shm` artifacts and compact storage.
+
+Examples:
+
+```bash
+amisim clean_db
+amisim clean_db -w logs -T 2d
+amisim clean_db -w executions
+amisim clean_db -w all --include-pending-executions --include-active-tokens
+amisim clean_db -w all --checkpoint-truncate --vacuum
+amisim clean_db -w all --no-vacuum
+```
 
 ## Exit Codes
 

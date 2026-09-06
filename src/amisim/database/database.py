@@ -14,7 +14,7 @@ import uuid
 from typing import Any
 
 from sqlalchemy import BigInteger, DateTime, Engine, Float, Index, Integer, String, create_engine, event
-from sqlalchemy import insert, select, update
+from sqlalchemy import and_, delete, insert, or_, select, update
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, scoped_session, sessionmaker
 
@@ -440,3 +440,97 @@ class DB:
                 )
         except Exception as exc:
             logging.getLogger("amisim.database.DB").debug("Failed to write log row to DB: %s", exc)
+
+    @staticmethod
+    def clean_db(
+        *,
+        what: str = "all",
+        cutoff: datetime.datetime | None = None,
+        include_pending_executions: bool = False,
+        include_active_tokens: bool = False,
+        checkpoint_truncate: bool = True,
+        vacuum: bool = True,
+    ) -> dict[str, int]:
+        """Delete records from internal tables according to cleanup criteria.
+
+        :param what: Cleanup target: all, logs, tokens, executions.
+        :param cutoff: Optional cutoff instant used for time-based pruning.
+        :param include_pending_executions: If True, also remove pending executions.
+        :param include_active_tokens: If True, also remove tokens that are not expired.
+        :param checkpoint_truncate: If True, run SQLite ``wal_checkpoint(TRUNCATE)``.
+        :param vacuum: If True, run SQLite ``VACUUM``.
+        :return: Deleted rows count per target table.
+        :raises ValueError: If ``what`` has an unsupported value.
+        """
+        normalized_what = what.strip().lower()
+        targets_map = {
+            "all": {"logs", "tokens", "executions"},
+            "logs": {"logs"},
+            "tokens": {"tokens"},
+            "executions": {"executions"},
+        }
+        if normalized_what not in targets_map:
+            raise ValueError(f"Unsupported clean target: {what!r}")
+
+        deleted = {"logs": 0, "tokens": 0, "executions": 0}
+        targets = targets_map[normalized_what]
+        now = _utcnow()
+        engine = DB.get_engine()
+
+        with engine.begin() as conn:
+            if "logs" in targets:
+                logs_stmt = delete(Log.__table__)
+                if cutoff is not None:
+                    logs_stmt = logs_stmt.where(Log.created_at <= cutoff)
+                result = conn.execute(logs_stmt)
+                deleted["logs"] = int(result.rowcount or 0)
+
+            if "tokens" in targets:
+                if include_active_tokens:
+                    tokens_stmt = delete(Token.__table__)
+                else:
+                    tokens_stmt = delete(Token.__table__).where(
+                        and_(Token.expires_at.is_not(None), Token.expires_at <= now)
+                    )
+                result = conn.execute(tokens_stmt)
+                deleted["tokens"] = int(result.rowcount or 0)
+
+            if "executions" in targets:
+                non_pending = Execution.status != Status.SIM_PENDING
+                pending = Execution.status == Status.SIM_PENDING
+
+                execution_stmt = delete(Execution.__table__)
+                if cutoff is None:
+                    if not include_pending_executions:
+                        execution_stmt = execution_stmt.where(non_pending)
+                else:
+                    non_pending_filter = and_(
+                        non_pending,
+                        Execution.end_time.is_not(None),
+                        Execution.end_time <= cutoff,
+                    )
+                    if include_pending_executions:
+                        pending_filter = and_(pending, Execution.start_time <= cutoff)
+                        execution_stmt = execution_stmt.where(or_(non_pending_filter, pending_filter))
+                    else:
+                        execution_stmt = execution_stmt.where(non_pending_filter)
+
+                result = conn.execute(execution_stmt)
+                deleted["executions"] = int(result.rowcount or 0)
+
+        if checkpoint_truncate or vacuum:
+            if engine.dialect.name != "sqlite":
+                DB.log.warning(
+                    "SQLite maintenance requested on non-SQLite backend: checkpoint_truncate=%s vacuum=%s",
+                    checkpoint_truncate,
+                    vacuum,
+                )
+                return deleted
+
+            with engine.connect().execution_options(isolation_level="AUTOCOMMIT") as conn:
+                if checkpoint_truncate:
+                    conn.exec_driver_sql("PRAGMA wal_checkpoint(TRUNCATE)")
+                if vacuum:
+                    conn.exec_driver_sql("VACUUM")
+
+        return deleted

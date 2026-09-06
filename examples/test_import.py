@@ -1,11 +1,11 @@
 import amisim as sim
 import time
 from amisim import get_logger
-sim_app = sim.AmisimApplication()
+app = sim.AmisimApplication()
 time.sleep(1)  # wait for the logger to be configured
-sim_app.init_db(db_type="sqlite", name="test.db")
+app.init_db(db_type="sqlite", name="test.db")
 time.sleep(1)  # wait for the logger to be configured
-sim_app.load_settings(
+app.load_settings(
     settings_path="settings.ini",
     overrides=[
         "LOGGING:LOG_LEVEL=DEBUG",
@@ -13,9 +13,11 @@ sim_app.load_settings(
         "LOGGING:LOG_DIR=logs",
     ]
 )
-log = get_logger("amisim", 1)
-
+log = app.log
+time.sleep(1)  # wait for the logger to be configured
 log.info("This is a test log message.")
+time.sleep(1)  # wait for the logger to be configured
 log.info("Version: %s", sim.__version__)
-
-#TODO: Error nella stampa del log, non viene visualizzato correttamente il tempo trascorso e l'intertempo
+log.info("Debug via settings_reader: %s", app.settings_reader.get("DEBUG", section="GENERAL"))
+log.info("Debug via ini runtime access: %s", app.ini.get("GENERAL", "DEBUG", default=False))
+log.info("Debug via ini runtime access: %s", app.ini.GENERAL.DEBUG)

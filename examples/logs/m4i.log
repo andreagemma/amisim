@@ -6,3 +6,88 @@
 2026-09-05 02:26:45.215 | INFO     | amisim.settings | 0.00/0.00s | - -> Settings loaded
 2026-09-05 02:26:45.217 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> This is a test log message.
 2026-09-05 02:26:45.219 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> Version: 0.1.0 0.001 s
+2026-09-06 01:19:30.795 | INFO     | amisim.settings | 0.00/0.00s | - -> Settings loaded
+2026-09-06 01:19:30.797 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> This is a test log message.
+2026-09-06 01:19:30.799 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> Version: 0.1.0
+2026-09-06 01:29:01.575 | INFO     | amisim.settings | 0.00/0.00s | - -> Settings loaded
+2026-09-06 01:29:01.577 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> This is a test log message.
+2026-09-06 01:29:01.578 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> Version: 0.1.0
+2026-09-06 01:33:00.815 | INFO     | amisim.settings | 0.00/0.00s | - -> Settings loaded
+2026-09-06 01:33:00.817 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> This is a test log message.
+2026-09-06 01:33:00.819 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> Version: 0.1.0
+2026-09-06 01:35:39.067 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 01:35:39.068 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> This is a test log message.
+2026-09-06 01:35:39.070 | INFO     | amisim.amisim | 0.00/0.00s | 1 -> Version: 0.1.0
+2026-09-06 01:36:35.423 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 01:36:35.425 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 01:36:35.427 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 01:36:47.786 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 01:36:47.788 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 01:36:48.790 | INFO     | amisim.application | 1.00/1.00s | - -> Version: 0.1.0
+2026-09-06 01:37:22.235 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 01:37:23.237 | INFO     | amisim.application | 1.00/1.00s | - -> This is a test log message.
+2026-09-06 01:37:24.241 | INFO     | amisim.application | 1.00/2.01s | - -> Version: 0.1.0
+2026-09-06 03:19:29.367 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 03:19:30.369 | INFO     | amisim.application | 1.00/1.00s | - -> This is a test log message.
+2026-09-06 03:19:31.372 | INFO     | amisim.application | 1.00/2.01s | - -> Version: 0.1.0
+2026-09-06 03:19:31.376 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: False
+2026-09-06 03:19:31.379 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
+2026-09-06 03:19:44.511 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 03:19:45.513 | INFO     | amisim.application | 1.00/1.00s | - -> This is a test log message.
+2026-09-06 03:19:46.517 | INFO     | amisim.application | 1.00/2.01s | - -> Version: 0.1.0
+2026-09-06 03:19:46.521 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: False
+2026-09-06 03:19:46.524 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
+2026-09-06 03:20:01.499 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 03:20:02.501 | INFO     | amisim.application | 1.00/1.00s | - -> This is a test log message.
+2026-09-06 03:20:03.505 | INFO     | amisim.application | 1.00/2.01s | - -> Version: 0.1.0
+2026-09-06 03:20:03.508 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: False
+2026-09-06 03:20:03.512 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
+2026-09-06 03:20:03.515 | INFO     | amisim.application | 0.00/2.02s | - -> Debug via ini runtime access: False
+2026-09-06 03:55:57.244 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 03:55:58.246 | INFO     | amisim.application | 1.00/1.00s | - -> This is a test log message.
+2026-09-06 03:55:59.250 | INFO     | amisim.application | 1.00/2.01s | - -> Version: 0.1.0
+2026-09-06 03:55:59.254 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: False
+2026-09-06 03:55:59.257 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
+2026-09-06 03:55:59.260 | INFO     | amisim.application | 0.00/2.02s | - -> Debug via ini runtime access: False
+2026-09-06 04:11:50.718 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 04:11:51.721 | INFO     | amisim.application | 1.00/1.00s | - -> This is a test log message.
+2026-09-06 04:11:52.725 | INFO     | amisim.application | 1.00/2.01s | - -> Version: 0.1.0
+2026-09-06 04:11:52.729 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: None
+2026-09-06 04:11:52.732 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
+2026-09-06 04:11:52.734 | INFO     | amisim.application | 0.00/2.02s | - -> Debug via ini runtime access: False
+2026-09-06 04:13:10.114 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 04:13:11.116 | INFO     | amisim.application | 1.00/1.00s | - -> This is a test log message.
+2026-09-06 04:13:12.120 | INFO     | amisim.application | 1.00/2.01s | - -> Version: 0.1.0
+2026-09-06 04:13:12.124 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: None
+2026-09-06 04:13:12.128 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
+2026-09-06 04:13:12.130 | INFO     | amisim.application | 0.00/2.02s | - -> Debug via ini runtime access: False
+2026-09-06 04:24:27.656 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 04:24:28.658 | INFO     | amisim.application | 1.00/1.00s | - -> This is a test log message.
+2026-09-06 04:24:29.662 | INFO     | amisim.application | 1.00/2.01s | - -> Version: 0.1.0
+2026-09-06 04:24:29.666 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: False
+2026-09-06 04:24:29.669 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
+2026-09-06 04:24:29.671 | INFO     | amisim.application | 0.00/2.02s | - -> Debug via ini runtime access: False
+2026-09-06 04:26:36.317 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 04:26:37.320 | INFO     | amisim.application | 1.00/1.00s | - -> This is a test log message.
+2026-09-06 04:26:38.324 | INFO     | amisim.application | 1.00/2.01s | - -> Version: 0.1.0
+2026-09-06 04:26:38.328 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: False
+2026-09-06 04:26:38.332 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
+2026-09-06 04:26:38.335 | INFO     | amisim.application | 0.00/2.02s | - -> Debug via ini runtime access: False
+2026-09-06 04:26:48.828 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 04:26:49.830 | INFO     | amisim.application | 1.00/1.00s | - -> This is a test log message.
+2026-09-06 04:26:50.834 | INFO     | amisim.application | 1.00/2.01s | - -> Version: 0.1.0
+2026-09-06 04:26:50.838 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: False
+2026-09-06 04:26:50.842 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
+2026-09-06 04:26:50.844 | INFO     | amisim.application | 0.00/2.02s | - -> Debug via ini runtime access: False
+2026-09-06 04:29:25.460 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 04:29:26.463 | INFO     | amisim.application | 1.00/1.00s | - -> This is a test log message.
+2026-09-06 04:29:27.467 | INFO     | amisim.application | 1.00/2.01s | - -> Version: 0.1.0
+2026-09-06 04:29:27.470 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: False
+2026-09-06 04:29:27.473 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
+2026-09-06 04:29:27.476 | INFO     | amisim.application | 0.00/2.02s | - -> Debug via ini runtime access: False
+2026-09-06 04:32:19.684 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 04:32:20.686 | INFO     | amisim.application | 1.00/1.00s | - -> This is a test log message.
+2026-09-06 04:32:21.690 | INFO     | amisim.application | 1.00/2.01s | - -> Version: 0.1.0
+2026-09-06 04:32:21.694 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: False
+2026-09-06 04:32:21.698 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
+2026-09-06 04:32:21.701 | INFO     | amisim.application | 0.00/2.02s | - -> Debug via ini runtime access: False

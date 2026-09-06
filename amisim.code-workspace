@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../../_Codice/WS Altri Linguaggi/Python/ModuliPython/configreader"
+		},
+		{
+			"path": "../../../../_Codice/WS Altri Linguaggi/Python/ModuliPython/tictoc"
+		}
+	],
+	"settings": {
+		"python-envs.defaultEnvManager": "ms-python.python:conda",
+		"python-envs.defaultPackageManager": "ms-python.python:conda",
+		"python.terminal.executeInFileDir": true
+	}
+}

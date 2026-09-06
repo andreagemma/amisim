@@ -201,6 +201,24 @@ def configure_logging_from_settings(settings: Any) -> None:
     )
 
 
+def configure_logging_from_typed_settings(settings: Any) -> None:
+    """Configure logger from typed ``LoggingSettings`` values."""
+    if not bool(getattr(settings, "LOG_USE", True)):
+        configure_logging(log_on_console=False, log_on_db=False, log_on_file=False, force=True)
+        return
+
+    configure_logging(
+        level=str(getattr(settings, "LOG_LEVEL", "INFO") or "INFO"),
+        log_format=str(getattr(settings, "LOG_FORMAT", _DEFAULT_FORMAT) or _DEFAULT_FORMAT),
+        log_on_console=bool(getattr(settings, "LOG_ON_CONSOLE", True)),
+        log_on_db=bool(getattr(settings, "LOG_ON_DATABASE", True)),
+        log_on_file=bool(getattr(settings, "LOG_ON_FILE", False)),
+        log_name=str(getattr(settings, "LOG_NAME", "amisim") or "amisim"),
+        log_dir=str(getattr(settings, "LOG_DIR", "log") or "log"),
+        force=True,
+    )
+
+
 def get_logger(section: str | None = None, execution_id: int | str | None = None) -> AmisimLogger:
     """Return a TicToc-based application logger.
 

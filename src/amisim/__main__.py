@@ -8,13 +8,16 @@ import sys
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterable
+from configreader import ConfigReader, ConfigSource
 
 from .app_logger import configure_logging, get_logger
 from .application import AmisimApplication
+from .database import DB
+from .ini_model import IniModel
 from .utils import parse_section_option_overrides
 
 
-_EXPLICIT_COMMANDS = {"run", "server", "init_db"}
+_EXPLICIT_COMMANDS = {"run", "server", "init_db", "clean_db"}
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -22,18 +25,36 @@ def _build_parser() -> argparse.ArgumentParser:
 
     :return: Configured parser for run, server, and init_db commands.
     """
-    parser = argparse.ArgumentParser(prog="amisim")
+    parser = argparse.ArgumentParser(
+        prog="amisim",
+        description=(
+            "AMISim CLI. Commands: run (execute workflow), server (reserved), "
+            "init_db (initialize internal DB), clean_db (remove internal DB records)."
+        ),
+    )
     subparsers = parser.add_subparsers(dest="command")
 
-    run_parser = subparsers.add_parser("run")
+    run_parser = subparsers.add_parser(
+        "run",
+        help="Execute simulation workflow from settings/params inputs",
+        description="Execute simulation workflow from settings/params inputs.",
+    )
     _add_run_arguments(run_parser)
 
-    server_parser = subparsers.add_parser("server")
+    server_parser = subparsers.add_parser(
+        "server",
+        help="Reserved server mode command",
+        description="Reserved server mode command (not implemented yet).",
+    )
     server_parser.add_argument("-P", "--port", type=int, default=0, help="Port to run the server on")
     server_parser.add_argument("-H", "--host", default="127.0.0.1", help="Host to run the server on")
     server_parser.add_argument("-D", "--debug", action="store_true", help="Enable debug mode for the server")
 
-    init_db_parser = subparsers.add_parser("init_db")
+    init_db_parser = subparsers.add_parser(
+        "init_db",
+        help="Create and initialize the internal AMISim database",
+        description="Create and initialize the internal AMISim database.",
+    )
     init_db_parser.add_argument("-u", "--url", default="", help="Database connection URL")
     init_db_parser.add_argument("-S", "--schema", default="", help="Database schema name (if supported)")
     init_db_parser.add_argument("-H", "--host", default="", help="Database host")
@@ -43,6 +64,62 @@ def _build_parser() -> argparse.ArgumentParser:
     init_db_parser.add_argument("-N", "--name", default="", help="Database name")
     init_db_parser.add_argument("-t", "--type", default="", help="Database type (e.g., postgresql, mysql)")
     init_db_parser.add_argument("-D", "--driver", default="", help="Database driver (e.g., psycopg)")
+
+    clean_db_parser = subparsers.add_parser(
+        "clean_db",
+        help="Clean internal DB records with optional retention filters",
+        description="Clean internal DB records with optional retention filters.",
+    )
+    clean_db_parser.add_argument(
+        "-s",
+        "--settings",
+        default="",
+        help="INI settings file used to read DATABASE.DATABASE_URL when DB options are not provided",
+    )
+    clean_db_parser.add_argument("-u", "--url", default="", help="Database connection URL")
+    clean_db_parser.add_argument("-S", "--schema", default="", help="Database schema name (if supported)")
+    clean_db_parser.add_argument("-H", "--host", default="", help="Database host")
+    clean_db_parser.add_argument("-P", "--port", type=int, help="Database port")
+    clean_db_parser.add_argument("-U", "--user", default="", help="Database user")
+    clean_db_parser.add_argument("-W", "--password", default="", help="Database password")
+    clean_db_parser.add_argument("-N", "--name", default="", help="Database name")
+    clean_db_parser.add_argument("-t", "--type", default="", help="Database type (e.g., postgresql, mysql)")
+    clean_db_parser.add_argument("-D", "--driver", default="", help="Database driver (e.g., psycopg)")
+    clean_db_parser.add_argument(
+        "-w",
+        "--what",
+        default="all",
+        choices=["all", "logs", "tokens", "executions"],
+        help="What to clean from DB",
+    )
+    clean_db_parser.add_argument(
+        "-T",
+        "--time",
+        default="",
+        help="Retention time (e.g. 2d, 12h, 1w2d). Empty means full cleanup for selected target",
+    )
+    clean_db_parser.add_argument(
+        "--include-pending-executions",
+        action="store_true",
+        help="Also clean pending executions",
+    )
+    clean_db_parser.add_argument(
+        "--include-active-tokens",
+        action="store_true",
+        help="Also clean tokens that are not expired",
+    )
+    clean_db_parser.add_argument(
+        "--checkpoint-truncate",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Run SQLite WAL checkpoint with TRUNCATE after cleanup (default: enabled)",
+    )
+    clean_db_parser.add_argument(
+        "--vacuum",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Run SQLite VACUUM after cleanup (default: enabled)",
+    )
 
     return parser
 
@@ -266,6 +343,47 @@ def _handle_init_db(args: argparse.Namespace, app: AmisimApplication) -> int:
     return 0
 
 
+def _handle_clean_db(args: argparse.Namespace, app: AmisimApplication) -> int:
+    """Execute clean_db-mode orchestration.
+
+    :param args: Parsed clean_db namespace.
+    :param app: Application facade used for library-level calls.
+    :return: Process exit code.
+    """
+    raw_settings = args.settings.strip()
+    settings_path = _resolve_optional_file(raw_settings, "settings.ini")
+    if raw_settings and settings_path is not None and not settings_path.exists():
+        raise ValueError(f"Settings file not found: {settings_path}")
+    url = args.url.strip() or _build_sqlalchemy_url(args)
+    schema = args.schema.strip() or None
+
+    if not url and settings_path is not None:
+        settings_reader = ConfigReader(file=settings_path, providers=[ConfigSource.INI, ConfigSource.ENV])
+        ini = IniModel.from_config(settings_reader)
+        url = str(ini.DATABASE.DATABASE_URL).strip()
+        if schema is None:
+            schema = ini.DATABASE.DATABASE_SCHEMA
+
+    if url:
+        DB.open_db(url, schema=schema)
+    elif not DB.is_initialized():
+        raise ValueError(
+            "Database is not configured. Provide --url or structured DB options, "
+            "or pass --settings with DATABASE.DATABASE_URL"
+        )
+
+    time_value = args.time.strip() or None
+    app.clean_db(
+        time=time_value,
+        what=args.what,
+        include_pending_executions=args.include_pending_executions,
+        include_active_tokens=args.include_active_tokens,
+        checkpoint_truncate=args.checkpoint_truncate,
+        vacuum=args.vacuum,
+    )
+    return 0
+
+
 def main(argv: list[str] | None = None, app: AmisimApplication | None = None) -> int:
     """Run the CLI entrypoint.
 
@@ -287,6 +405,8 @@ def main(argv: list[str] | None = None, app: AmisimApplication | None = None) ->
             return _handle_server(args)
         if args.command == "init_db":
             return _handle_init_db(args, application)
+        if args.command == "clean_db":
+            return _handle_clean_db(args, application)
     except ValueError as exc:
         log.error("CLI validation error: %s", exc)
         print(str(exc), file=sys.stderr)

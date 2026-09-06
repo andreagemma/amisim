@@ -8,6 +8,7 @@ The console command is `amisim` and supports these command modes:
 - `amisim run [-s SETTINGS] [-p PARAMS] [-e KEY=VALUE ...] [-O SECTION:NAME=VALUE ...]`
 - `amisim server [-H HOST] [-P PORT] [-D]`
 - `amisim init_db [-u URL] [-S SCHEMA] [-H HOST] [-P PORT] [-U USER] [-W PASSWORD] [-N NAME] [-t TYPE] [-D DRIVER]`
+- `amisim clean_db [-s SETTINGS | -u URL | -t TYPE -H HOST -P PORT -U USER -W PASSWORD -N NAME [-D DRIVER]] [-S SCHEMA] [-w {all,logs,tokens,executions}] [-T TIME] [--include-pending-executions] [--include-active-tokens] [--[no-]checkpoint-truncate] [--[no-]vacuum]`
 
 Help aliases:
 
@@ -38,7 +39,26 @@ app.init_db()
 ```
 
 The method `init_db` is implemented and initializes the internal AMISim database.
-The methods `load_settings`, `load_params`, and `run` are currently stubs and intentionally raise `NotImplementedError` until the core simulation logic is implemented.
+The methods `load_params` and `run` are currently stubs and intentionally raise `NotImplementedError` until the core simulation logic is implemented.
+
+`AmisimApplication` now exposes:
+- `settings_reader`: the underlying `ConfigReader` instance.
+- `ini`: a typed runtime model defined in `src/amisim/ini_model.py`.
+
+The `ini` model is built on `IniBase` and uses uppercase section and field names (for example `ini.GENERAL.DEBUG`) while reading values from `settings_reader` on-demand at runtime.
+It also supports generic access like `ini.get("GENERAL", "DEBUG", default=False)`.
+Unknown sections and fields discovered from active configuration providers are exposed dynamically at runtime and read as strings.
+
+`clean_db` is implemented and supports selective cleanup with optional retention time:
+
+- `time=None`: no retention filter (full cleanup for selected targets).
+- `time='2d'` (tmpreaper-like), `datetime.timedelta`, or `datetime.datetime`: cleanup using a cutoff instant.
+- CLI `clean_db` can resolve the internal DB from direct DB options (`--url` or structured DB fields) or from `--settings` (`DATABASE.DATABASE_URL`).
+- `what='all'`: includes logs, tokens, executions.
+- Tokens cleanup removes only expired tokens by default; pass `include_active_tokens=True` to remove non-expired tokens as well.
+- Executions cleanup removes only non-pending executions by default; pass `include_pending_executions=True` to include pending rows too.
+- For SQLite, maintenance is enabled by default after cleanup: `checkpoint_truncate=True` (`PRAGMA wal_checkpoint(TRUNCATE)`) and `vacuum=True` (`VACUUM`).
+- In CLI, disable defaults with `--no-checkpoint-truncate` and/or `--no-vacuum`.
 
 Logging is configured through `loguru`; logs are emitted to stderr and persisted in the internal DB log table once `init_db` has initialized the database.
 

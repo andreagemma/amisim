@@ -15,11 +15,21 @@ This class is prepared for integration and keeps method signatures stable while 
 Available methods:
 - init_db
 - load_settings
+- clean_db
 - load_params
 - run
 
 `init_db` is implemented and creates the internal AMISim database schema.
-`load_settings`, `load_params`, and `run` currently raise NotImplementedError by design.
+`load_settings` and `clean_db` are implemented.
+`load_params` and `run` currently raise NotImplementedError by design.
+
+Typed settings model:
+- `AmisimApplication.settings_reader` is the active `ConfigReader` instance.
+- `AmisimApplication.ini` provides typed access to configuration sections through `IniBase`/`IniModel`.
+- The model is defined in `src/amisim/ini_model.py` with uppercase section and field names.
+- Values are read on-demand at runtime from `settings_reader` (for example `ini.GENERAL.DEBUG` or `ini.get("GENERAL", "DEBUG", default=False)`).
+- Unknown sections and fields discovered from active providers are created dynamically at runtime and are exposed as string fields.
+- If `load_settings(None)` is called, a default `ConfigReader` is created and the typed default structure remains available.
 
 ## Method Reference
 
@@ -68,6 +78,7 @@ Behavior details:
 - `overrides` expects a nested dictionary in the shape `section -> key -> value`.
 - If section `DATABASE_SETTINGS` has `DB_SETTINGS_USE=True`, AMISim reads `DB_SETTINGS_URL` and `DB_SETTINGS_QUERY` (or `DB_SETTINGS_TABLE_NAME`) and reconfigures the reader to source settings from DB as well.
 - Provider precedence is: CLI overrides, DB settings (if enabled), INI values, environment values.
+- The method updates `settings_reader` and keeps `ini` synchronized for autocomplete-friendly, runtime-backed access.
 
 ### load_params
 
@@ -78,6 +89,34 @@ load_params(params_path: Path | None = None) -> None
 ```
 
 Use this method to load runtime parameters from a JSON file.
+
+### clean_db
+
+Signature:
+
+```python
+clean_db(
+    *,
+    time: str | datetime.timedelta | datetime.datetime | None = None,
+    what: str = "all",
+    include_pending_executions: bool = False,
+    include_active_tokens: bool = False,
+    checkpoint_truncate: bool = True,
+    vacuum: bool = True,
+) -> dict[str, int]
+```
+
+Use this method to prune internal DB data with optional retention criteria.
+
+Behavior details:
+- `time=None` means no cutoff filter.
+- `time` can be a tmpreaper-like age string (`2d`, `12h`, `1w2d`), a `datetime.timedelta`, or a `datetime.datetime` cutoff.
+- `what` accepts `all`, `logs`, `tokens`, `executions`.
+- Logs cleanup uses `created_at`.
+- Executions cleanup uses `end_time` for non-pending rows.
+- Pending executions are preserved by default and included only when `include_pending_executions=True`.
+- Tokens cleanup removes only expired rows by default; use `include_active_tokens=True` to remove non-expired rows too.
+- On SQLite backends, `checkpoint_truncate=True` and `vacuum=True` are enabled by default and run `PRAGMA wal_checkpoint(TRUNCATE)` and `VACUUM` after cleanup.
 
 ### run
 
