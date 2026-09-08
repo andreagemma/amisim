@@ -29,6 +29,8 @@ classifiers = [
 ]
 dependencies = [
   "ga-configreader",
+  "ga-dictparser>=0.1.0",
+  "ga-gataframe>=0.1.0",
   "ga-tictoc>=0.2.0",
   "SQLAlchemy>=2.0.52",
   "loguru>=0.7.3"

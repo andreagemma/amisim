@@ -8,10 +8,14 @@
 - Added unit tests for CLI parsing and helper behavior.
 - Added dedicated documentation pages for CLI and library usage in `docs/cli.md` and `docs/library.md`.
 - Added runtime dependency on `ga-configreader`.
+- Added runtime dependency on `ga-dictparser`.
+- Added runtime dependency on `ga-gataframe`.
 - Added runtime dependency on `SQLAlchemy`.
 - Added runtime dependency on `loguru`.
 - Added runtime dependency on `ga-tictoc`.
 - Added third-party licensing records for `ga-configreader` in `licenses/third_party/summary.tsv`, package license archive, and notice files.
+- Added third-party licensing records for `ga-dictparser` in `licenses/third_party/summary.tsv`, package license archive, and notice files.
+- Added third-party licensing records for `ga-gataframe` in `licenses/third_party/summary.tsv`, package license archive, and notice files.
 - Added third-party licensing records for `SQLAlchemy` in `licenses/third_party/summary.tsv`, package license archive, and notice files.
 - Added third-party licensing records for `loguru` in `licenses/third_party/summary.tsv`, package license archive, and notice files.
 - Added third-party licensing records for `ga-tictoc` in `licenses/third_party/summary.tsv`, package license archive, and notice files.

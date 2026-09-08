@@ -5,6 +5,7 @@ include THIRD_PARTY_NOTICES.md
 include CHANGELOG.md
 include README.md
 recursive-include licenses/third_party *.txt
+recursive-include licenses/third_party *.tsv
 recursive-include licenses/third_party *.md
 recursive-include licenses/third_party *NOTICE*
 recursive-include licenses/third_party *LICENSE*

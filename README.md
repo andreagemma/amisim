@@ -76,6 +76,8 @@ Detailed library API documentation is available in `docs/library.md`.
 The project declares these primary runtime dependencies:
 
 - `ga-configreader`
+- `ga-dictparser`
+- `ga-gataframe`
 - `ga-tictoc`
 - `SQLAlchemy`
 - `loguru`

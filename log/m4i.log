@@ -2425,3 +2425,15 @@
 2026-09-06 03:01:20.668 | WARNING  | amisim.ini_model | 0.00/0.11s | - -> Unknown settings field detected: XDG.SESSION_CLASS. Registering dynamic runtime field as string.
 2026-09-06 03:01:20.668 | WARNING  | amisim.ini_model | 0.00/0.11s | - -> Unknown settings field detected: XDG.SESSION_ID. Registering dynamic runtime field as string.
 2026-09-06 03:01:20.668 | WARNING  | amisim.ini_model | 0.00/0.11s | - -> Unknown settings field detected: XDG.SESSION_TYPE. Registering dynamic runtime field as string.
+2026-09-06 12:37:37.282 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 12:37:37.308 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 12:37:37.327 | INFO     | amisim.application | 0.00/0.00s | - -> Default settings model loaded
+2026-09-06 12:37:37.360 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-08 10:17:27.727 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-08 10:17:27.752 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-08 10:17:27.771 | INFO     | amisim.application | 0.00/0.00s | - -> Default settings model loaded
+2026-09-08 10:17:27.805 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-08 10:22:28.857 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-08 10:22:28.883 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-08 10:22:28.902 | INFO     | amisim.application | 0.00/0.00s | - -> Default settings model loaded
+2026-09-08 10:22:28.936 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded

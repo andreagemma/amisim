@@ -1,0 +1,16 @@
+{
+    "simulation_id": 1,
+    "scenario": "eur",
+    "start": "07:00",
+    "end": "07:30",  
+    "op": "assignment",
+    "settings": {
+        "MSA_MAX_ITE": 1,
+        "MSA_K": 2,
+        "MSA_SPP_NUMCPUS": 24,
+        "MSA_K_BALANCING": 2,
+        "USE_OBSERVED_PATHS": false,
+        "SAVE_PATHS": false
+    },
+    "data_file": "params_data_{scenario}.json"
+}

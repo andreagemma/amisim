@@ -23,7 +23,7 @@ class AmisimApplication:
     while business logic is being completed.
     """
 
-    APP_NAME: str = importlib.metadata.metadata(__package__)["Name"].upper()
+    APP_NAME: str = importlib.metadata.metadata(__package__ if __package__ else "")["Name"].upper()
 
     def __init__(self) -> None:
         """Initialize application integration state."""
@@ -125,7 +125,7 @@ class AmisimApplication:
 
     def load_settings(
         self,
-        settings_path: Path | None = None,
+        settings_path: Path | str | None = None,
         overrides: dict[str, dict[str, str]] | Iterable[str] | None = None,
     ) -> None:
         """Load base software configuration.
@@ -134,6 +134,8 @@ class AmisimApplication:
         :param overrides: Optional section/key overrides from runtime options.
         If ``settings_path`` is ``None``, default typed settings are created.
         """
+        if isinstance(settings_path, str):
+            settings_path = Path(settings_path)
         if isinstance(overrides, Iterable) and not isinstance(overrides, dict):
             overrides = parse_section_option_overrides(overrides)
         merged_overrides = overrides or {}

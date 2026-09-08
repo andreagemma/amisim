@@ -8,6 +8,21 @@
 		},
 		{
 			"path": "../../../../_Codice/WS Altri Linguaggi/Python/ModuliPython/tictoc"
+		},
+		{
+			"path": "../../../../_Codice/WS Altri Linguaggi/Python/ModuliPython/gataframe"
+		},
+		{
+			"path": "../../../../_Codice/WS Altri Linguaggi/Python/ModuliPython/dictparser"
+		},
+		{
+			"path": "../../../../_Codice/WS Altri Linguaggi/Python/ModuliPython/graph"
+		},
+		{
+			"path": "../../../../_Codice/WS Altri Linguaggi/Python/ModuliPython/matrix"
+		},
+		{
+			"path": "../../../../_Codice/WS Altri Linguaggi/Python/ModuliPython/serializer"
 		}
 	],
 	"settings": {

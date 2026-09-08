@@ -91,3 +91,713 @@
 2026-09-06 04:32:21.694 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: False
 2026-09-06 04:32:21.698 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
 2026-09-06 04:32:21.701 | INFO     | amisim.application | 0.00/2.02s | - -> Debug via ini runtime access: False
+2026-09-06 22:46:15.125 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 22:46:16.127 | INFO     | amisim.application | 1.00/1.00s | - -> This is a test log message.
+2026-09-06 22:46:17.131 | INFO     | amisim.application | 1.00/2.01s | - -> Version: 0.1.0
+2026-09-06 22:46:17.135 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: False
+2026-09-06 22:46:17.139 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
+2026-09-06 22:46:17.141 | INFO     | amisim.application | 0.00/2.02s | - -> Debug via ini runtime access: False
+2026-09-06 22:46:48.697 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 22:46:49.700 | INFO     | amisim.application | 1.00/1.00s | - -> This is a test log message.
+2026-09-06 22:46:50.704 | INFO     | amisim.application | 1.00/2.01s | - -> Version: 0.1.0
+2026-09-06 22:46:50.708 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: False
+2026-09-06 22:46:50.711 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
+2026-09-06 22:46:50.713 | INFO     | amisim.application | 0.00/2.02s | - -> Debug via ini runtime access: False
+2026-09-06 22:48:59.389 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 22:48:59.390 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 22:48:59.391 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 22:48:59.392 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-06 22:48:59.394 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-06 22:48:59.394 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 22:49:26.953 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 22:49:26.955 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 22:49:26.956 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 22:49:26.957 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-06 22:49:26.958 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-06 22:49:26.960 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 22:49:27.448 | INFO     | amisim.application | 0.49/0.49s | - -> DataFrame loaded:
+           fid       id        o        d      value  timestamp day_type mode
+0       155595  1673875  1001216        4   0.025195          0  weekday    c
+1       155596  1673881    60232       12   0.021479        555  weekday    c
+2       155597  1673882       15  1001211  50.419136       1005  weekday    c
+3       155598  1673884       12        8   0.130188        225  weekday    c
+4       155599  1673890  1001244        1   1.464751        900  weekday    c
+...        ...      ...      ...      ...        ...        ...      ...  ...
+211195  155590  1673824  1001218    46751   0.007839        210  weekday    c
+211196  155591  1673837  1001240  1001242   0.000879       1290  weekday    c
+211197  155592  1673841       13  1001211   4.220131        510  weekday    c
+211198  155593  1673843  1001206  1001254   1.835472        945  weekday    c
+211199  155594  1673852  1001240  1001214   0.000499       1410  weekday    c
+
+[211200 rows x 8 columns]
+2026-09-06 22:50:04.037 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 22:50:04.039 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 22:50:04.040 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 22:50:04.041 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-06 22:50:04.043 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 22:50:04.044 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 22:50:04.522 | INFO     | amisim.application | 0.48/0.48s | - -> DataFrame loaded:
+         fid       id  o         d       value  timestamp day_type mode
+0     155660  1674596  1         8    0.642646        330  weekday    c
+1     155740  1675419  1        10   32.612003        450  weekday    c
+2     155810  1676099  1   1001266   57.924988        825  weekday    c
+3     155838  1676410  1   1001262   11.501601       1185  weekday    c
+4     155889  1676887  1   1001253   33.946754        765  weekday    c
+...      ...      ... ..       ...         ...        ...      ...  ...
+3739  155316  1671011  1   1001253    7.562426       1275  weekday    c
+3740  155332  1671216  1   1001261    1.534018        255  weekday    c
+3741  155363  1671489  1   1001213    0.404021        210  weekday    c
+3742  155450  1672337  1  10061628    0.132858        780  weekday    c
+3743  155566  1673564  1         3  401.517800       1095  weekday    c
+
+[3744 rows x 8 columns]
+2026-09-06 22:50:33.775 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 22:50:33.777 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 22:50:33.778 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 22:50:33.779 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-06 22:50:33.780 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 22:50:33.782 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 22:50:34.281 | INFO     | amisim.application | 0.50/0.51s | - -> DataFrame loaded:
+         fid       id  o         d       value  timestamp day_type mode
+0     155660  1674596  1         8    0.642646        330  weekday    c
+1     155740  1675419  1        10   32.612003        450  weekday    c
+2     155810  1676099  1   1001266   57.924988        825  weekday    c
+3     155838  1676410  1   1001262   11.501601       1185  weekday    c
+4     155889  1676887  1   1001253   33.946754        765  weekday    c
+...      ...      ... ..       ...         ...        ...      ...  ...
+3739  155316  1671011  1   1001253    7.562426       1275  weekday    c
+3740  155332  1671216  1   1001261    1.534018        255  weekday    c
+3741  155363  1671489  1   1001213    0.404021        210  weekday    c
+3742  155450  1672337  1  10061628    0.132858        780  weekday    c
+3743  155566  1673564  1         3  401.517800       1095  weekday    c
+
+[3744 rows x 8 columns]
+2026-09-06 22:50:34.287 | INFO     | amisim.application | 0.01/0.51s | - -> DataFrame info:
+None
+2026-09-06 22:51:41.676 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 22:51:41.677 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 22:51:41.678 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 22:51:41.680 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-06 22:51:41.681 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-06 22:51:41.682 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 22:52:43.692 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 22:52:43.694 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 22:52:43.695 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 22:52:43.696 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-06 22:52:43.697 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-06 22:52:43.698 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 22:52:44.221 | INFO     | amisim.application | 0.52/0.53s | - -> DataFrame loaded:
+         fid       id  o         d       value  timestamp day_type mode
+0     155660  1674596  1         8    0.642646        330  weekday    c
+1     155740  1675419  1        10   32.612003        450  weekday    c
+2     155810  1676099  1   1001266   57.924988        825  weekday    c
+3     155838  1676410  1   1001262   11.501601       1185  weekday    c
+4     155889  1676887  1   1001253   33.946754        765  weekday    c
+...      ...      ... ..       ...         ...        ...      ...  ...
+3739  155316  1671011  1   1001253    7.562426       1275  weekday    c
+3740  155332  1671216  1   1001261    1.534018        255  weekday    c
+3741  155363  1671489  1   1001213    0.404021        210  weekday    c
+3742  155450  1672337  1  10061628    0.132858        780  weekday    c
+3743  155566  1673564  1         3  401.517800       1095  weekday    c
+
+[3744 rows x 8 columns]
+2026-09-06 22:52:44.227 | INFO     | amisim.application | 0.01/0.53s | - -> DataFrame info:
+None
+2026-09-06 22:53:46.674 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 22:53:46.676 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 22:53:46.677 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 22:53:46.678 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-06 22:53:46.679 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-06 22:53:46.681 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 22:53:47.213 | INFO     | amisim.application | 0.53/0.54s | - -> DataFrame loaded:
+         fid       id  o         d       value  timestamp day_type mode
+0     155660  1674596  1         8    0.642646        330  weekday    c
+1     155740  1675419  1        10   32.612003        450  weekday    c
+2     155810  1676099  1   1001266   57.924988        825  weekday    c
+3     155838  1676410  1   1001262   11.501601       1185  weekday    c
+4     155889  1676887  1   1001253   33.946754        765  weekday    c
+...      ...      ... ..       ...         ...        ...      ...  ...
+3739  155316  1671011  1   1001253    7.562426       1275  weekday    c
+3740  155332  1671216  1   1001261    1.534018        255  weekday    c
+3741  155363  1671489  1   1001213    0.404021        210  weekday    c
+3742  155450  1672337  1  10061628    0.132858        780  weekday    c
+3743  155566  1673564  1         3  401.517800       1095  weekday    c
+
+[3744 rows x 8 columns]
+2026-09-06 22:53:47.220 | INFO     | amisim.application | 0.01/0.55s | - -> DataFrame info:
+None
+2026-09-06 22:59:37.426 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 22:59:37.427 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 22:59:37.428 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 22:59:37.430 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-06 22:59:37.431 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 22:59:37.432 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 23:04:10.972 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 23:04:10.974 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 23:04:10.975 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 23:04:10.977 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-06 23:04:10.978 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 23:04:10.979 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 23:05:01.508 | INFO     | amisim.application | 50.53/50.54s | - -> DataFrame loaded:
+         fid       id  or         d        col1  timestamp day_type mode
+0     155660  1674596   1         8    0.642646        330  weekday    c
+1     155740  1675419   1        10   32.612003        450  weekday    c
+2     155810  1676099   1   1001266   57.924988        825  weekday    c
+3     155838  1676410   1   1001262   11.501601       1185  weekday    c
+4     155889  1676887   1   1001253   33.946754        765  weekday    c
+...      ...      ...  ..       ...         ...        ...      ...  ...
+3739  155316  1671011   1   1001253    7.562426       1275  weekday    c
+3740  155332  1671216   1   1001261    1.534018        255  weekday    c
+3741  155363  1671489   1   1001213    0.404021        210  weekday    c
+3742  155450  1672337   1  10061628    0.132858        780  weekday    c
+3743  155566  1673564   1         3  401.517800       1095  weekday    c
+
+[3744 rows x 8 columns]
+2026-09-06 23:05:01.523 | INFO     | amisim.application | 0.01/50.55s | - -> DataFrame info:
+None
+2026-09-06 23:05:46.763 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 23:05:46.764 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 23:05:46.765 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 23:05:46.767 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-06 23:05:46.768 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-06 23:05:46.769 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 23:05:47.326 | INFO     | amisim.application | 0.56/0.56s | - -> DataFrame loaded:
+         fid       id  or         d        col1  timestamp day_type mode        col2
+0     155660  1674596   1         8    0.642646        330  weekday    c    0.642646
+1     155740  1675419   1        10   32.612003        450  weekday    c   32.612003
+2     155810  1676099   1   1001266   57.924988        825  weekday    c   57.924988
+3     155838  1676410   1   1001262   11.501601       1185  weekday    c   11.501601
+4     155889  1676887   1   1001253   33.946754        765  weekday    c   33.946754
+...      ...      ...  ..       ...         ...        ...      ...  ...         ...
+3739  155316  1671011   1   1001253    7.562426       1275  weekday    c    7.562426
+3740  155332  1671216   1   1001261    1.534018        255  weekday    c    1.534018
+3741  155363  1671489   1   1001213    0.404021        210  weekday    c    0.404021
+3742  155450  1672337   1  10061628    0.132858        780  weekday    c    0.132858
+3743  155566  1673564   1         3  401.517800       1095  weekday    c  401.517800
+
+[3744 rows x 9 columns]
+2026-09-06 23:05:47.332 | INFO     | amisim.application | 0.01/0.57s | - -> DataFrame info:
+None
+2026-09-06 23:55:48.153 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 23:55:48.154 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 23:55:48.155 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 23:55:48.156 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-06 23:55:48.158 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 23:55:48.159 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 23:56:14.497 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 23:56:14.498 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 23:56:14.500 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 23:56:14.501 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-06 23:56:14.502 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 23:56:14.503 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 23:57:46.812 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 23:57:46.813 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 23:57:46.814 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 23:57:46.816 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-06 23:57:46.817 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 23:57:46.818 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-06 23:59:13.940 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-06 23:59:13.942 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-06 23:59:13.943 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-06 23:59:13.944 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-06 23:59:13.945 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-06 23:59:13.946 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:02:00.679 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 00:02:00.681 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 00:02:00.682 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 00:02:00.683 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 00:02:00.684 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 00:02:00.685 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:02:29.406 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 00:02:29.407 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 00:02:29.409 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 00:02:29.410 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 00:02:29.411 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:02:29.413 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:02:33.607 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 00:02:33.609 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 00:02:33.610 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 00:02:33.611 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 00:02:33.612 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 00:02:33.613 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:03:04.192 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 00:03:04.193 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 00:03:04.194 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 00:03:04.196 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 00:03:04.197 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 00:03:04.198 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:04:04.349 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 00:04:04.350 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 00:04:04.352 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 00:04:04.353 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 00:04:04.354 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 00:04:04.355 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:07:09.579 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 00:07:09.580 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 00:07:09.581 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 00:07:09.582 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 00:07:09.584 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:07:09.585 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:08:05.534 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 00:08:05.535 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 00:08:05.536 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 00:08:05.537 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 00:08:05.538 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 00:08:05.539 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:08:31.497 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 00:08:31.498 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 00:08:31.499 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 00:08:31.500 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 00:08:31.501 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 00:08:31.502 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:08:31.876 | INFO     | amisim.application | 0.37/0.38s | - -> DataFrame loaded:
+         o        d     value         z    n  timestamp
+0  1000101  1000101  0.000000  0.000000  0.0          0
+1  1000101  1000102  0.075826  0.075826  0.0          0
+2  1000101  1000103  0.517242  0.517242  0.0          0
+3  1000101  1000104  0.420458  0.420458  0.0          0
+4  1000101  1000105  0.082048  0.082048  0.0          0
+5  1000101  1000106  0.181483  0.181483  0.0          0
+6  1000101  1000107  0.077878  0.077878  0.0          0
+7  1000101  1000108  0.239237  0.239237  0.0          0
+8  1000101  1000109  0.219336  0.219336  0.0          0
+9  1000101  1000110  0.413627  0.413627  0.0          0
+2026-09-07 00:08:31.883 | INFO     | amisim.application | 0.01/0.39s | - -> DataFrame info:
+None
+2026-09-07 00:09:31.601 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 00:09:31.603 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 00:09:31.604 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 00:09:31.605 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 00:09:31.606 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 00:09:31.607 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:10:05.778 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 00:10:05.779 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 00:10:05.780 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 00:10:05.781 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 00:10:05.783 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 00:10:05.784 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:10:06.212 | INFO     | amisim.application | 0.43/0.43s | - -> DataFrame loaded:
+               o        d     value         z         n  timestamp
+0        1000254  1000610  0.009059  0.000485  0.008574        480
+1        1000254  1000611  0.025264  0.001205  0.024059        480
+2        1000254  1000612  0.016027  0.001873  0.014154        480
+3        1000254  1000613  0.014575  0.000228  0.014347        480
+4        1000254  1000614  0.012050  0.000950  0.011100        480
+...          ...      ...       ...       ...       ...        ...
+1792916  1058127  1058066  0.013934  0.002877  0.011057        480
+1792917  1058127  1058067  0.016246  0.003330  0.012916        480
+1792918  1058127  1058068  0.024451  0.004261  0.020190        480
+1792919  1058127  1058069  0.015210  0.003109  0.012101        480
+1792920  1058127  1058070  0.107483  0.007561  0.099922        480
+
+[1792921 rows x 6 columns]
+2026-09-07 00:10:06.217 | INFO     | amisim.application | 0.00/0.44s | - -> DataFrame info:
+None
+2026-09-07 00:10:25.449 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 00:10:25.451 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 00:10:25.453 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 00:10:25.457 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via settings_reader: False
+2026-09-07 00:10:25.460 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:10:25.463 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 00:10:25.975 | INFO     | amisim.application | 0.51/0.53s | - -> DataFrame loaded:
+               o        d     value         z         n  timestamp
+0        1000456  1001305  0.003495  0.000062  0.003433        480
+1        1000456  1001306  0.001138  0.000023  0.001115        480
+2        1000456  1001307  0.000098  0.000001  0.000097        480
+3        1000456  1001308  0.000830  0.000010  0.000820        480
+4        1000456  1001309  0.000572  0.000002  0.000570        480
+...          ...      ...       ...       ...       ...        ...
+1792916  1058100  1001047  0.017454  0.000888  0.016566        480
+1792917  1058100  1001048  0.043335  0.001638  0.041697        480
+1792918  1058100  1001049  0.170266  0.005305  0.164961        480
+1792919  1058100  1001050  0.032759  0.000891  0.031868        480
+1792920  1058100  1001051  0.067599  0.001691  0.065908        480
+
+[1792921 rows x 6 columns]
+2026-09-07 00:10:25.981 | INFO     | amisim.application | 0.01/0.53s | - -> DataFrame info:
+None
+2026-09-07 18:41:12.613 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 18:41:12.614 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 18:41:12.615 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 18:41:12.616 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 18:41:12.618 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 18:41:12.619 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 18:41:13.080 | INFO     | amisim.application | 0.46/0.47s | - -> DataFrame loaded:
+               o        d     value         z         n  timestamp
+0        1000481  1000155  0.038664  0.038664  0.000000        480
+1        1000481  1000156  0.013617  0.013617  0.000000        480
+2        1000481  1000157  0.061858  0.061858  0.000000        480
+3        1000481  1000158  0.036326  0.036326  0.000000        480
+4        1000481  1000159  0.026215  0.026215  0.000000        480
+...          ...      ...       ...       ...       ...        ...
+1792916  1058127  1058066  0.013934  0.002877  0.011057        480
+1792917  1058127  1058067  0.016246  0.003330  0.012916        480
+1792918  1058127  1058068  0.024451  0.004261  0.020190        480
+1792919  1058127  1058069  0.015210  0.003109  0.012101        480
+1792920  1058127  1058070  0.107483  0.007561  0.099922        480
+
+[1792921 rows x 6 columns]
+2026-09-07 18:41:13.085 | INFO     | amisim.application | 0.01/0.47s | - -> DataFrame info:
+None
+2026-09-07 18:42:28.601 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 18:42:28.602 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 18:42:28.603 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 18:42:28.604 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 18:42:28.605 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 18:42:28.607 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 18:42:29.084 | INFO     | amisim.application | 0.48/0.48s | - -> DataFrame loaded:
+              od     value         z         o  timestamp         d
+0        1000557  0.002944  0.000024  0.002920        480  0.002920
+1        1000557  0.026962  0.001530  0.025432        480  0.025432
+2        1000557  0.008450  0.000144  0.008306        480  0.008306
+3        1000557  0.022745  0.001302  0.021443        480  0.021443
+4        1000557  0.000787  0.000028  0.000759        480  0.000759
+...          ...       ...       ...       ...        ...       ...
+1792916  1001924  0.004926  0.000109  0.004817        480  0.004817
+1792917  1001924  0.007172  0.000531  0.006641        480  0.006641
+1792918  1001924  0.022061  0.001186  0.020875        480  0.020875
+1792919  1001924  0.019985  0.000589  0.019396        480  0.019396
+1792920  1001924  0.052478  0.000796  0.051682        480  0.051682
+
+[1792921 rows x 6 columns]
+2026-09-07 18:42:29.089 | INFO     | amisim.application | 0.01/0.49s | - -> DataFrame info:
+None
+2026-09-07 19:03:34.721 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:03:34.722 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:03:34.724 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:03:34.725 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:03:34.726 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 19:03:34.727 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:03:35.194 | INFO     | amisim.application | 0.47/0.47s | - -> DataFrame loaded:
+              od     value         z         o  timestamp         d
+0        1000508  0.088247  0.007367  0.080880        480  0.080880
+1        1000508  0.077920  0.002965  0.074955        480  0.074955
+2        1000508  0.116823  0.044089  0.072734        480  0.072734
+3        1000508  0.241927  0.043696  0.198231        480  0.198231
+4        1000508  1.227909  0.029327  1.198582        480  1.198582
+...          ...       ...       ...       ...        ...       ...
+1792916  1058100  0.017454  0.000888  0.016566        480  0.016566
+1792917  1058100  0.043335  0.001638  0.041697        480  0.041697
+1792918  1058100  0.170266  0.005305  0.164961        480  0.164961
+1792919  1058100  0.032759  0.000891  0.031868        480  0.031868
+1792920  1058100  0.067599  0.001691  0.065908        480  0.065908
+
+[1792921 rows x 6 columns]
+2026-09-07 19:03:35.199 | INFO     | amisim.application | 0.01/0.48s | - -> DataFrame info:
+None
+2026-09-07 19:24:27.203 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:24:27.205 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:24:27.206 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:24:27.207 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:24:27.208 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 19:24:27.209 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:27:27.292 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:27:27.293 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:27:27.295 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:27:27.296 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:27:27.297 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 19:27:27.298 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:28:24.334 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:28:24.335 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:28:24.336 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:28:24.337 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:28:24.338 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 19:28:24.339 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:28:42.065 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:28:42.067 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:28:42.068 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:28:42.069 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:28:42.070 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:28:42.072 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:29:08.893 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:29:08.895 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:29:08.896 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:29:08.897 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:29:08.899 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:29:08.900 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:31:09.012 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:31:09.014 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:31:09.015 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:31:09.016 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:31:09.018 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:31:09.019 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:31:54.109 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:31:54.111 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:31:54.112 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:31:54.113 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:31:54.114 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 19:31:54.115 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:35:26.109 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:35:26.111 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:35:26.112 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:35:26.113 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:35:26.114 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 19:35:26.115 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:41:22.765 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:41:22.767 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:41:22.768 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:41:22.769 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:41:22.770 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 19:41:22.771 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:42:15.041 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:42:15.042 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:42:15.043 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:42:15.045 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:42:15.046 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:42:15.047 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:42:29.389 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:42:31.938 | INFO     | amisim.application | 2.55/2.55s | - -> This is a test log message.
+2026-09-07 19:42:32.825 | INFO     | amisim.application | 0.89/3.44s | - -> Version: 0.1.0
+2026-09-07 19:42:32.830 | INFO     | amisim.application | 0.00/3.44s | - -> Debug via settings_reader: False
+2026-09-07 19:42:32.834 | INFO     | amisim.application | 0.00/3.44s | - -> Debug via ini runtime access: False
+2026-09-07 19:42:32.837 | INFO     | amisim.application | 0.00/3.45s | - -> Debug via ini runtime access: False
+2026-09-07 19:42:38.513 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:42:47.637 | INFO     | amisim.application | 9.12/9.12s | - -> This is a test log message.
+2026-09-07 19:42:47.647 | INFO     | amisim.application | 0.01/9.13s | - -> Version: 0.1.0
+2026-09-07 19:42:47.651 | INFO     | amisim.application | 0.00/9.14s | - -> Debug via settings_reader: False
+2026-09-07 19:42:47.653 | INFO     | amisim.application | 0.00/9.14s | - -> Debug via ini runtime access: False
+2026-09-07 19:42:47.655 | INFO     | amisim.application | 0.00/9.14s | - -> Debug via ini runtime access: False
+2026-09-07 19:43:42.451 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:43:45.289 | INFO     | amisim.application | 2.84/2.84s | - -> This is a test log message.
+2026-09-07 19:43:46.003 | INFO     | amisim.application | 0.71/3.55s | - -> Version: 0.1.0
+2026-09-07 19:43:46.747 | INFO     | amisim.application | 0.74/4.30s | - -> Debug via settings_reader: False
+2026-09-07 19:43:47.324 | INFO     | amisim.application | 0.58/4.87s | - -> Debug via ini runtime access: False
+2026-09-07 19:43:47.873 | INFO     | amisim.application | 0.55/5.42s | - -> Debug via ini runtime access: False
+2026-09-07 19:46:42.787 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:46:45.750 | INFO     | amisim.application | 2.96/2.96s | - -> This is a test log message.
+2026-09-07 19:46:45.756 | INFO     | amisim.application | 0.01/2.97s | - -> Version: 0.1.0
+2026-09-07 19:46:45.759 | INFO     | amisim.application | 0.00/2.97s | - -> Debug via settings_reader: False
+2026-09-07 19:46:45.762 | INFO     | amisim.application | 0.00/2.98s | - -> Debug via ini runtime access: False
+2026-09-07 19:46:45.764 | INFO     | amisim.application | 0.00/2.98s | - -> Debug via ini runtime access: False
+2026-09-07 19:47:13.562 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:47:15.522 | INFO     | amisim.application | 1.96/1.96s | - -> This is a test log message.
+2026-09-07 19:47:15.528 | INFO     | amisim.application | 0.01/1.97s | - -> Version: 0.1.0
+2026-09-07 19:47:15.532 | INFO     | amisim.application | 0.00/1.97s | - -> Debug via settings_reader: False
+2026-09-07 19:47:15.535 | INFO     | amisim.application | 0.00/1.97s | - -> Debug via ini runtime access: False
+2026-09-07 19:47:15.538 | INFO     | amisim.application | 0.00/1.98s | - -> Debug via ini runtime access: False
+2026-09-07 19:47:57.103 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:47:59.698 | INFO     | amisim.application | 2.60/2.60s | - -> This is a test log message.
+2026-09-07 19:47:59.704 | INFO     | amisim.application | 0.01/2.60s | - -> Version: 0.1.0
+2026-09-07 19:47:59.708 | INFO     | amisim.application | 0.00/2.60s | - -> Debug via settings_reader: False
+2026-09-07 19:47:59.711 | INFO     | amisim.application | 0.00/2.61s | - -> Debug via ini runtime access: False
+2026-09-07 19:47:59.714 | INFO     | amisim.application | 0.00/2.61s | - -> Debug via ini runtime access: False
+2026-09-07 19:48:21.582 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:48:23.179 | INFO     | amisim.application | 1.60/1.60s | - -> This is a test log message.
+2026-09-07 19:48:23.185 | INFO     | amisim.application | 0.01/1.60s | - -> Version: 0.1.0
+2026-09-07 19:48:23.188 | INFO     | amisim.application | 0.00/1.61s | - -> Debug via settings_reader: False
+2026-09-07 19:48:23.191 | INFO     | amisim.application | 0.00/1.61s | - -> Debug via ini runtime access: False
+2026-09-07 19:48:23.193 | INFO     | amisim.application | 0.00/1.61s | - -> Debug via ini runtime access: False
+2026-09-07 19:49:11.421 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:49:13.423 | INFO     | amisim.application | 2.00/2.00s | - -> This is a test log message.
+2026-09-07 19:49:13.428 | INFO     | amisim.application | 0.01/2.01s | - -> Version: 0.1.0
+2026-09-07 19:49:13.432 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via settings_reader: False
+2026-09-07 19:49:13.434 | INFO     | amisim.application | 0.00/2.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:49:13.436 | INFO     | amisim.application | 0.00/2.02s | - -> Debug via ini runtime access: False
+2026-09-07 19:50:12.273 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:50:14.812 | INFO     | amisim.application | 2.54/2.54s | - -> This is a test log message.
+2026-09-07 19:50:14.818 | INFO     | amisim.application | 0.01/2.55s | - -> Version: 0.1.0
+2026-09-07 19:50:14.822 | INFO     | amisim.application | 0.00/2.55s | - -> Debug via settings_reader: False
+2026-09-07 19:50:14.825 | INFO     | amisim.application | 0.00/2.55s | - -> Debug via ini runtime access: False
+2026-09-07 19:50:14.828 | INFO     | amisim.application | 0.00/2.56s | - -> Debug via ini runtime access: False
+2026-09-07 19:50:17.396 | INFO     | amisim.application | 2.57/5.12s | - -> DataFrame loaded:
+            value         z         n  timestamp  __tmp_0__         o         d
+0        0.061897  0.021666  0.040231        480   0.061897  0.040231  0.040231
+1        0.054808  0.028546  0.026262        480   0.054808  0.026262  0.026262
+2        0.001209  0.000537  0.000672        480   0.001209  0.000672  0.000672
+3        0.002414  0.000797  0.001617        480   0.002414  0.001617  0.001617
+4        0.010068  0.002867  0.007201        480   0.010068  0.007201  0.007201
+...           ...       ...       ...        ...        ...       ...       ...
+1792916  0.136427  0.003704  0.132723        480   0.136427  0.132723  0.132723
+1792917  0.036166  0.004369  0.031797        480   0.036166  0.031797  0.031797
+1792918  0.051450  0.004188  0.047262        480   0.051450  0.047262  0.047262
+1792919  0.009095  0.001160  0.007935        480   0.009095  0.007935  0.007935
+1792920  0.074144  0.009694  0.064450        480   0.074144  0.064450  0.064450
+
+[1792921 rows x 7 columns]
+2026-09-07 19:50:17.407 | INFO     | amisim.application | 0.01/5.13s | - -> DataFrame info:
+None
+2026-09-07 19:51:05.716 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:51:07.847 | INFO     | amisim.application | 2.13/2.13s | - -> This is a test log message.
+2026-09-07 19:51:07.853 | INFO     | amisim.application | 0.01/2.14s | - -> Version: 0.1.0
+2026-09-07 19:51:07.856 | INFO     | amisim.application | 0.00/2.14s | - -> Debug via settings_reader: False
+2026-09-07 19:51:07.858 | INFO     | amisim.application | 0.00/2.14s | - -> Debug via ini runtime access: False
+2026-09-07 19:51:07.861 | INFO     | amisim.application | 0.00/2.14s | - -> Debug via ini runtime access: False
+2026-09-07 19:51:13.858 | INFO     | amisim.application | 6.00/8.14s | - -> DataFrame loaded:
+            value         z         n  timestamp  __tmp_0__         o         d
+0        0.201413  0.201413  0.000000        480   0.201413  0.000000  0.000000
+1        0.235063  0.235063  0.000000        480   0.235063  0.000000  0.000000
+2        0.061634  0.061634  0.000000        480   0.061634  0.000000  0.000000
+3        0.394557  0.394557  0.000000        480   0.394557  0.000000  0.000000
+4        0.255358  0.255358  0.000000        480   0.255358  0.000000  0.000000
+...           ...       ...       ...        ...        ...       ...       ...
+1792916  0.013934  0.002877  0.011057        480   0.013934  0.011057  0.011057
+1792917  0.016246  0.003330  0.012916        480   0.016246  0.012916  0.012916
+1792918  0.024451  0.004261  0.020190        480   0.024451  0.020190  0.020190
+1792919  0.015210  0.003109  0.012101        480   0.015210  0.012101  0.012101
+1792920  0.107483  0.007561  0.099922        480   0.107483  0.099922  0.099922
+
+[1792921 rows x 7 columns]
+2026-09-07 19:51:13.876 | INFO     | amisim.application | 0.02/8.16s | - -> DataFrame info:
+None
+2026-09-07 19:53:29.030 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:53:29.031 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:53:29.032 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:53:29.033 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:53:29.035 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:53:29.036 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:54:43.272 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:54:43.273 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:54:43.274 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:54:43.276 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:54:43.277 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:54:43.279 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:55:52.582 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:55:52.584 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:55:52.585 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:55:52.587 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:55:52.588 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:55:52.590 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:56:25.942 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:56:25.943 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:56:25.945 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:56:25.946 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:56:25.947 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:56:25.948 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:56:26.687 | INFO     | amisim.application | 0.74/0.74s | - -> DataFrame loaded:
+            value         z         n  timestamp  __tmp_0__         o         d      col1
+0        0.006737  0.000253  0.006484        480   0.006737  0.006484  0.006484  0.006737
+1        0.020281  0.000766  0.019515        480   0.020281  0.019515  0.019515  0.020281
+2        0.000541  0.000022  0.000519        480   0.000541  0.000519  0.000519  0.000541
+3        0.017198  0.000378  0.016820        480   0.017198  0.016820  0.016820  0.017198
+4        0.001017  0.000078  0.000939        480   0.001017  0.000939  0.000939  0.001017
+...           ...       ...       ...        ...        ...       ...       ...       ...
+1792916  1.795908  0.056886  1.739022        480   1.795908  1.739022  1.739022  1.795908
+1792917  0.300604  0.011733  0.288871        480   0.300604  0.288871  0.288871  0.300604
+1792918  0.055891  0.000477  0.055414        480   0.055891  0.055414  0.055414  0.055891
+1792919  0.019552  0.001280  0.018272        480   0.019552  0.018272  0.018272  0.019552
+1792920  0.055481  0.003777  0.051704        480   0.055481  0.051704  0.051704  0.055481
+
+[1792921 rows x 8 columns]
+2026-09-07 19:56:26.696 | INFO     | amisim.application | 0.01/0.75s | - -> DataFrame info:
+None
+2026-09-07 19:57:08.160 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:57:08.162 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:57:08.163 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:57:08.164 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:57:08.165 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 19:57:08.166 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:57:08.986 | INFO     | amisim.application | 0.82/0.83s | - -> DataFrame loaded:
+            value         z         n  timestamp  __tmp_0__         o         d      col1
+0        0.088247  0.007367  0.080880        480   0.088247  0.080880  0.080880  0.088247
+1        0.077920  0.002965  0.074955        480   0.077920  0.074955  0.074955  0.077920
+2        0.116823  0.044089  0.072734        480   0.116823  0.072734  0.072734  0.116823
+3        0.241927  0.043696  0.198231        480   0.241927  0.198231  0.198231  0.241927
+4        1.227909  0.029327  1.198582        480   1.227909  1.198582  1.198582  1.227909
+...           ...       ...       ...        ...        ...       ...       ...       ...
+1792916  0.056058  0.001888  0.054170        480   0.056058  0.054170  0.054170  0.056058
+1792917  0.000000  0.000000  0.000000        480   0.000000  0.000000  0.000000  0.000000
+1792918  0.429472  0.429472  0.000000        480   0.429472  0.000000  0.000000  0.429472
+1792919  0.253839  0.253839  0.000000        480   0.253839  0.000000  0.000000  0.253839
+1792920  0.241781  0.241781  0.000000        480   0.241781  0.000000  0.000000  0.241781
+
+[1792921 rows x 8 columns]
+2026-09-07 19:57:08.996 | INFO     | amisim.application | 0.01/0.84s | - -> DataFrame info:
+None
+2026-09-07 19:57:31.261 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:57:31.263 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:57:31.264 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:57:31.265 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:57:31.267 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:57:31.268 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:57:31.969 | INFO     | amisim.application | 0.70/0.71s | - -> DataFrame loaded:
+            value         z         n  timestamp         o         d      col1
+0        0.000000  0.000000  0.000000        480  0.000000  0.000000  0.000000
+1        0.000000  0.000000  0.000000        480  0.000000  0.000000  0.000000
+2        0.000000  0.000000  0.000000        480  0.000000  0.000000  0.000000
+3        0.000000  0.000000  0.000000        480  0.000000  0.000000  0.000000
+4        0.000000  0.000000  0.000000        480  0.000000  0.000000  0.000000
+...           ...       ...       ...        ...       ...       ...       ...
+1792916  0.022693  0.000540  0.022153        480  0.022153  0.022153  0.022693
+1792917  0.081273  0.002494  0.078779        480  0.078779  0.078779  0.081273
+1792918  0.085114  0.004914  0.080200        480  0.080200  0.080200  0.085114
+1792919  0.063709  0.002896  0.060813        480  0.060813  0.060813  0.063709
+1792920  0.055955  0.002114  0.053841        480  0.053841  0.053841  0.055955
+
+[1792921 rows x 7 columns]
+2026-09-07 19:57:31.979 | INFO     | amisim.application | 0.01/0.72s | - -> DataFrame info:
+None
+2026-09-07 19:58:36.550 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:58:36.552 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:58:36.553 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:58:36.554 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:58:36.555 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 19:58:36.556 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:58:37.066 | INFO     | amisim.application | 0.51/0.52s | - -> DataFrame loaded:
+            value         z         n  timestamp         o         d      col1
+0        0.002944  0.000024  0.002920        480  0.002920  0.002920  0.002944
+1        0.026962  0.001530  0.025432        480  0.025432  0.025432  0.026962
+2        0.008450  0.000144  0.008306        480  0.008306  0.008306  0.008450
+3        0.022745  0.001302  0.021443        480  0.021443  0.021443  0.022745
+4        0.000787  0.000028  0.000759        480  0.000759  0.000759  0.000787
+...           ...       ...       ...        ...       ...       ...       ...
+1792916  0.018826  0.001393  0.017433        480  0.017433  0.017433  0.018826
+1792917  0.297383  0.018070  0.279313        480  0.279313  0.279313  0.297383
+1792918  0.004449  0.000123  0.004326        480  0.004326  0.004326  0.004449
+1792919  0.027993  0.001601  0.026392        480  0.026392  0.026392  0.027993
+1792920  0.040630  0.004873  0.035757        480  0.035757  0.035757  0.040630
+
+[1792921 rows x 7 columns]
+2026-09-07 19:58:37.072 | INFO     | amisim.application | 0.01/0.52s | - -> DataFrame info:
+None
+2026-09-07 19:59:13.525 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:59:13.526 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:59:13.527 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:59:13.528 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:59:13.529 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 19:59:13.530 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:59:14.186 | INFO     | amisim.application | 0.66/0.66s | - -> DataFrame loaded:
+            value         z         n  timestamp         o         d      col1
+0        2.911479  0.224278  2.687201      480.0  2.687201  2.687201  2.911479
+1        0.562732  0.031219  0.531513      480.0  0.531513  0.531513  0.562732
+2        0.111009  0.005093  0.105916      480.0  0.105916  0.105916  0.111009
+3        0.337889  0.016124  0.321765      480.0  0.321765  0.321765  0.337889
+4        0.500469  0.017886  0.482583      480.0  0.482583  0.482583  0.500469
+...           ...       ...       ...        ...       ...       ...       ...
+1792916  0.010205  0.005107  0.005098      480.0  0.005098  0.005098  0.010205
+1792917  0.033542  0.016858  0.016684      480.0  0.016684  0.016684  0.033542
+1792918  0.009831  0.004111  0.005720      480.0  0.005720  0.005720  0.009831
+1792919  0.055031  0.024597  0.030434      480.0  0.030434  0.030434  0.055031
+1792920  0.063595  0.010541  0.053054      480.0  0.053054  0.053054  0.063595
+
+[1792921 rows x 7 columns]
+2026-09-07 19:59:14.191 | INFO     | amisim.application | 0.00/0.67s | - -> DataFrame info:
+None
+2026-09-07 19:59:20.101 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:59:20.102 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:59:20.104 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:59:20.105 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:59:20.106 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 19:59:20.107 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:59:24.864 | INFO     | amisim.application | 0.00/0.00s | - -> Settings loaded
+2026-09-07 19:59:24.865 | INFO     | amisim.application | 0.00/0.00s | - -> This is a test log message.
+2026-09-07 19:59:24.866 | INFO     | amisim.application | 0.00/0.00s | - -> Version: 0.1.0
+2026-09-07 19:59:24.867 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via settings_reader: False
+2026-09-07 19:59:24.868 | INFO     | amisim.application | 0.00/0.00s | - -> Debug via ini runtime access: False
+2026-09-07 19:59:24.869 | INFO     | amisim.application | 0.00/0.01s | - -> Debug via ini runtime access: False
+2026-09-07 19:59:25.573 | INFO     | amisim.application | 0.70/0.71s | - -> DataFrame loaded:
+            value         z         n  timestamp         o         d      col1
+0        0.018063  0.003052  0.015011      480.0  0.015011  0.015011  0.018063
+1        0.036230  0.002671  0.033559      480.0  0.033559  0.033559  0.036230
+2        0.053273  0.005372  0.047901      480.0  0.047901  0.047901  0.053273
+3        0.011251  0.000813  0.010438      480.0  0.010438  0.010438  0.011251
+4        0.011199  0.000904  0.010295      480.0  0.010295  0.010295  0.011199
+...           ...       ...       ...        ...       ...       ...       ...
+1792916  0.002898  0.000023  0.002875      480.0  0.002875  0.002875  0.002898
+1792917  0.000000  0.000000  0.000000      480.0  0.000000  0.000000  0.000000
+1792918  0.000241  0.000003  0.000238      480.0  0.000238  0.000238  0.000241
+1792919  0.001414  0.000010  0.001404      480.0  0.001404  0.001404  0.001414
+1792920  0.002104  0.000016  0.002088      480.0  0.002088  0.002088  0.002104
+
+[1792921 rows x 7 columns]
+2026-09-07 19:59:25.579 | INFO     | amisim.application | 0.01/0.72s | - -> DataFrame info:
+None

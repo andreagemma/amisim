@@ -10,6 +10,22 @@ This project depends on third-party software components.
 - Source: https://github.com/andreagemma/configreader#readme
 - Local license file: licenses/third_party/packages/ga-configreader/LICENSE
 
+## ga-dictparser
+
+- Package: ga-dictparser
+- Version: 0.1.0
+- License: MIT
+- Source: https://github.com/andreagemma/dictparser
+- Local license file: licenses/third_party/packages/ga-dictparser/LICENSE
+
+## ga-gataframe
+
+- Package: ga-gataframe
+- Version: 0.1.0
+- License: MIT
+- Source: https://github.com/andreagemma/gataframe
+- Local license file: licenses/third_party/packages/ga-gataframe/LICENSE
+
 ## SQLAlchemy
 
 - Package: SQLAlchemy
