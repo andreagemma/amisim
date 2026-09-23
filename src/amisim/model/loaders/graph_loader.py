@@ -10,6 +10,14 @@ from gataframe import Engine
 
 class GraphLoader:
     def __init__(self, t0: float | int = 0, total_time: float | int = 60, delta_t: float | int = 15):
+        """Implement `__init__`.
+
+        Args:
+            t0: TODO describe t0.
+            total_time: TODO describe total_time.
+            delta_t: TODO describe delta_t.
+
+        """
         self.graph = GraphBase(t0=t0, total_time=total_time, delta_t=delta_t)
         self._nodes: GeoDataFrame | None = None
         self._links: GeoDataFrame | None = None
@@ -18,18 +26,42 @@ class GraphLoader:
 
     @property
     def nodes(self) -> GeoDataFrame | None:
+        """Nodes.
+
+        Returns:
+            TODO describe return value.
+
+        """
         return self._nodes
 
     @property
     def links(self) -> GeoDataFrame | None:
+        """Links.
+
+        Returns:
+            TODO describe return value.
+
+        """
         return self._links
 
     @property
     def turns(self) -> DataFrame | None:
+        """Turns.
+
+        Returns:
+            TODO describe return value.
+
+        """
         return self._turns
 
     @property
     def centroids(self) -> list[int] | None:
+        """Centroids.
+
+        Returns:
+            TODO describe return value.
+
+        """
         return self._centroids
 
     @classmethod
@@ -43,6 +75,21 @@ class GraphLoader:
         total_time: float | int = 60,
         delta_t: float | int = 15,
     ) -> "GraphLoader":
+        """Read.
+
+        Args:
+            engine: TODO describe engine.
+            kw_nodes: TODO describe kw_nodes.
+            kw_links: TODO describe kw_links.
+            kw_turns: TODO describe kw_turns.
+            t0: TODO describe t0.
+            total_time: TODO describe total_time.
+            delta_t: TODO describe delta_t.
+
+        Returns:
+            TODO describe return value.
+
+        """
         this = cls(t0=t0, total_time=total_time, delta_t=delta_t)
         ret = Nodes.read(engine, params=kw_nodes)
         if ret is not None and ret.df is not None:
@@ -151,6 +198,13 @@ class GraphLoader:
         return this
 
     def read_params(self, engine: Engine, params):
+        """Read params.
+
+        Args:
+            engine: TODO describe engine.
+            params: TODO describe params.
+
+        """
         key_order = ["nodes", "links", "turns"]
         for key in key_order:
             if key not in params:

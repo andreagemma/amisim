@@ -7,16 +7,29 @@ from matrix import MatrixODT, Timestamp, LabelsInput
 
 class MatrixLoader:
     def __init__(self):
+        """Implement `__init__`."""
         self._matrices: dict[str, MatrixODT] = {}
         self._matrix_eq: MatrixODT | None = None
         self._modes: ModeType = None
 
     @property
     def matrices(self) -> dict[str, MatrixODT]:
+        """Matrices.
+
+        Returns:
+            TODO describe return value.
+
+        """
         return self._matrices
 
     @property
     def matrix_eq(self) -> MatrixODT | None:
+        """Matrix eq.
+
+        Returns:
+            TODO describe return value.
+
+        """
         return self._matrix_eq
 
     @classmethod
@@ -28,6 +41,19 @@ class MatrixLoader:
         timestamps: list[Timestamp],
         kws_matrices: list[dict[str, InputType]],
     ) -> "MatrixLoader":
+        """Read.
+
+        Args:
+            engine: TODO describe engine.
+            modes: TODO describe modes.
+            centroids: TODO describe centroids.
+            timestamps: TODO describe timestamps.
+            kws_matrices: TODO describe kws_matrices.
+
+        Returns:
+            TODO describe return value.
+
+        """
         loader = cls()
         loader._modes = modes
         for kw_matrix in kws_matrices:
@@ -42,6 +68,8 @@ class MatrixLoader:
         return loader
 
     def _calc_matrix_eq(self, modes: ModeType) -> MatrixODT:
+        # Internal helper: calc matrix eq.
+        """Internal helper: calc matrix eq."""
         ret: MatrixODT | None = None
         if not self._matrices:
             raise ValueError("No matrices loaded.")
@@ -61,6 +89,8 @@ class MatrixLoader:
     def _read(
         self, engine: Engine, kw_matrix: InputType, centroids: LabelsInput, timestamps: list[Timestamp], mode: str = "c"
     ) -> "MatrixLoader":
+        # Internal helper: read.
+        """Internal helper: read."""
         if isinstance(kw_matrix, list):
             ret = MatrixODT(rows=centroids, cols=centroids, timestamps=timestamps, init=0.0)
             for item in kw_matrix:

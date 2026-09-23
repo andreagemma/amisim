@@ -27,10 +27,20 @@ class Turns(BaseModel):
     }
 
     def __init__(self):
+        """Implement `__init__`."""
         super().__init__()
 
     @classmethod
     def parse(cls, source: _ResultType) -> BaseModel:
+        """Parse.
+
+        Args:
+            source: TODO describe source.
+
+        Returns:
+            TODO describe return value.
+
+        """
         ret = cls()
         ret.df = source
         return ret
@@ -38,6 +48,15 @@ class Turns(BaseModel):
     def __iadd__(self, other: BaseModel) -> BaseModel:
         # sostituisce i valori esistenti con quelli di other
         # e aggiunge le nuove righe da other
+        """Implement `__iadd__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         if self.df is None or other.df is None:
             return self
         tmp = self.df.set_index(["from_link", "to_link", "from_node", "via_node", "to_node"])
@@ -49,6 +68,15 @@ class Turns(BaseModel):
 
     def __isub__(self, other: BaseModel) -> BaseModel:
         # rimuove le righe presenti in other dal DataFrame corrente
+        """Implement `__isub__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         if self.df is None or other.df is None:
             return self
         tmp = self.df.set_index(["from_link", "to_link", "from_node", "via_node", "to_node"])
@@ -59,10 +87,28 @@ class Turns(BaseModel):
 
     def __imul__(self, other: BaseModel) -> BaseModel:
         # appende le turns
+        """Implement `__imul__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         if self.df is None or other.df is None:
             return self
         self.df = pd.concat([self.df, other.df]).reset_index(drop=True)
         return self
 
     def __itruediv__(self, other: BaseModel) -> BaseModel:
+        """Implement `__itruediv__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         raise NotImplementedError("The __itruediv__ method must be implemented by the subclass.")

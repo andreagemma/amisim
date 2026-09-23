@@ -14,6 +14,13 @@ class IniBase:
     """Base helper for runtime ConfigReader-backed INI access."""
 
     def __init__(self, settings_reader: ConfigReader, section: str | None = None) -> None:
+        """Implement `__init__`.
+
+        Args:
+            settings_reader: TODO describe settings_reader.
+            section: TODO describe section.
+
+        """
         self._settings_reader = settings_reader
         self._SECTION = section.upper() if section is not None else None
         self._FIELD_DEFAULTS: dict[str, Any] = {}
@@ -23,6 +30,8 @@ class IniBase:
 
     @staticmethod
     def _normalize_type_hint(type_hint: Any) -> Any:
+        # Internal helper: normalize type hint.
+        """Internal helper: normalize type hint."""
         if isinstance(type_hint, str):
             text = type_hint.lower()
             if "bool" in text:
@@ -44,6 +53,8 @@ class IniBase:
         return type_hint
 
     def _initialize_declared_fields(self) -> None:
+        # Internal helper: initialize declared fields.
+        """Internal helper: initialize declared fields."""
         annotations = getattr(self.__class__, "__annotations__", {})
         for name, type_hint in annotations.items():
             if not name.isupper():
@@ -52,14 +63,35 @@ class IniBase:
             self._FIELD_DEFAULTS[name] = getattr(self.__class__, name, None)
 
     def register_dynamic_field(self, name: str, default_value: str) -> None:
+        """Register dynamic field.
+
+        Args:
+            name: TODO describe name.
+            default_value: TODO describe default_value.
+
+        Returns:
+            TODO describe return value.
+
+        """
         field = name.upper()
         self._DYNAMIC_FIELDS[field] = str(default_value)
 
     def has_field(self, name: str) -> bool:
+        """Has field.
+
+        Args:
+            name: TODO describe name.
+
+        Returns:
+            TODO describe return value.
+
+        """
         field = name.upper()
         return field in self._FIELD_DEFAULTS or field in self._DYNAMIC_FIELDS
 
     def _typed_get(self, section: str, name: str, expected_type: Any, default: Any) -> Any:
+        # Internal helper: typed get.
+        """Internal helper: typed get."""
         try:
             if expected_type is bool:
                 return self._settings_reader.getboolean(name, section=section, default=default)
@@ -109,6 +141,15 @@ class IniBase:
         return self._typed_get(target_section, target_name, expected_type, resolved_default)
 
     def __getattribute__(self, name: str) -> Any:
+        """Implement `__getattribute__`.
+
+        Args:
+            name: TODO describe name.
+
+        Returns:
+            TODO describe return value.
+
+        """
         if name.isupper():
             section = object.__getattribute__(self, "_SECTION")
             if section is not None:
@@ -120,12 +161,22 @@ class IniBase:
         return object.__getattribute__(self, name)
 
     def __getattr__(self, name: str) -> Any:
+        """Implement `__getattr__`.
+
+        Args:
+            name: TODO describe name.
+
+        Returns:
+            TODO describe return value.
+
+        """
         if self._SECTION is not None and name.isupper() and self.has_field(name):
             return self.get(name)
         raise AttributeError(f"{self.__class__.__name__} has no attribute {name}")
 
     def _create_dynamic_section(self, section: str) -> IniBase:
         """Create a runtime section subclass for unknown sections."""
+        # Internal helper: create dynamic section.
         section_name = section.upper()
         dynamic_cls = type(section_name, (IniBase,), {"__annotations__": {}, "__module__": __name__})
         _LOG.warning(
@@ -303,6 +354,12 @@ class IniModel(IniBase):
         GRAPH_PENALTY_U: int = 7
 
     def __init__(self, settings_reader: ConfigReader) -> None:
+        """Implement `__init__`.
+
+        Args:
+            settings_reader: TODO describe settings_reader.
+
+        """
         super().__init__(settings_reader=settings_reader, section=None)
         self._SECTIONS: dict[str, IniBase] = {}
         self._initialize_declared_sections()
@@ -310,9 +367,20 @@ class IniModel(IniBase):
 
     @classmethod
     def from_config(cls, settings_reader: ConfigReader) -> IniModel:
+        """From config.
+
+        Args:
+            settings_reader: TODO describe settings_reader.
+
+        Returns:
+            TODO describe return value.
+
+        """
         return cls(settings_reader)
 
     def _initialize_declared_sections(self) -> None:
+        # Internal helper: initialize declared sections.
+        """Internal helper: initialize declared sections."""
         for name, value in self.__class__.__dict__.items():
             if not name.isupper():
                 continue
@@ -323,6 +391,8 @@ class IniModel(IniBase):
             setattr(self, name, section_obj)
 
     def _initialize_dynamic_sections(self) -> None:
+        # Internal helper: initialize dynamic sections.
+        """Internal helper: initialize dynamic sections."""
         for section in self._settings_reader.sections():
             section_up = section.upper()
             if section_up not in self._SECTIONS:

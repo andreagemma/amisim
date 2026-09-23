@@ -25,10 +25,20 @@ class Modes(BaseModel):
     }
 
     def __init__(self):
+        """Implement `__init__`."""
         super().__init__()
 
     @classmethod
     def parse(cls, source: _ResultType) -> BaseModel:
+        """Parse.
+
+        Args:
+            source: TODO describe source.
+
+        Returns:
+            TODO describe return value.
+
+        """
         ret = cls()
         ret.df = source
         return ret
@@ -36,6 +46,15 @@ class Modes(BaseModel):
     def __iadd__(self, other: BaseModel) -> BaseModel:
         # sostituisce i valori esistenti con quelli di other
         # e aggiunge le nuove righe da other
+        """Implement `__iadd__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         if self.df is None or other.df is None:
             return self
         tmp = self.df.set_index(["code"])
@@ -47,6 +66,15 @@ class Modes(BaseModel):
 
     def __isub__(self, other: BaseModel) -> BaseModel:
         # rimuove le righe presenti in other dal DataFrame corrente
+        """Implement `__isub__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         if self.df is None or other.df is None:
             return self
         tmp = self.df.set_index(["code"])
@@ -56,7 +84,25 @@ class Modes(BaseModel):
         return self
 
     def __imul__(self, other: BaseModel) -> BaseModel:
+        """Implement `__imul__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         raise NotImplementedError("The __imul__ method must be implemented by the subclass.")
 
     def __itruediv__(self, other: BaseModel) -> BaseModel:
+        """Implement `__itruediv__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         raise NotImplementedError("The __itruediv__ method must be implemented by the subclass.")

@@ -33,6 +33,15 @@ class _LoguruBridgeHandler(logging.Handler):
     """Forward stdlib logging records to configured loguru sinks."""
 
     def emit(self, record: logging.LogRecord) -> None:
+        """Emit.
+
+        Args:
+            record: TODO describe record.
+
+        Returns:
+            TODO describe return value.
+
+        """
         level: str | int
         try:
             level = logger.level(record.levelname).name
@@ -52,6 +61,13 @@ class AmisimLogger(TicToc):
         section: str = "app",
         execution_id: int | str | None = None,
     ) -> None:
+        """Implement `__init__`.
+
+        Args:
+            section: TODO describe section.
+            execution_id: TODO describe execution_id.
+
+        """
         std_logger = logging.getLogger(f"amisim.{section}")
         super().__init__(logger=std_logger, extra={"execution_id": execution_id if execution_id is not None else "-"})
         # Start timer immediately so elapsed/last_elapsed metrics are meaningful from first log.
@@ -60,6 +76,7 @@ class AmisimLogger(TicToc):
 
 def _record_timing(record: dict[str, Any]) -> None:
     """Attach elapsed and delta times to each log record."""
+    # Internal helper: record timing.
     section = str(record.get("name", "app"))
     execution_id = str(record["extra"].get("execution_id", "-"))
     key = (section, execution_id)
@@ -76,6 +93,7 @@ def _record_timing(record: dict[str, Any]) -> None:
 
 def _normalize_format(raw_format: str | None) -> str:
     """Convert legacy %-style logging format to loguru format string."""
+    # Internal helper: normalize format.
     if not raw_format:
         return _DEFAULT_FORMAT
 
@@ -102,6 +120,7 @@ def _normalize_format(raw_format: str | None) -> str:
 
 def _db_sink(message: Any) -> None:
     """Persist loguru messages in the internal DB log table."""
+    # Internal helper: db sink.
     record = message.record
     log_time = record.get("time")
     created_at: datetime.datetime | None = log_time if isinstance(log_time, datetime.datetime) else None

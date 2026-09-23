@@ -39,6 +39,15 @@ class InputParameters(DictMixin):
 
     @classmethod
     def parse(cls, input_parameters: "InputType") -> "InputParameters" | list["InputParameters"]:
+        """Parse.
+
+        Args:
+            input_parameters: TODO describe input_parameters.
+
+        Returns:
+            TODO describe return value.
+
+        """
         if input_parameters is None:
             raise ValueError("Input parameters cannot be None.")
         elif isinstance(input_parameters, InputParameters):
@@ -62,6 +71,15 @@ class InputParameters(DictMixin):
         raise TypeError(f"Unsupported input parameters type: {type(input_parameters)!r}")
 
     def add_filter(self, filter_condition: list[str] | str) -> None:
+        """Add filter.
+
+        Args:
+            filter_condition: TODO describe filter_condition.
+
+        Returns:
+            TODO describe return value.
+
+        """
         if not hasattr(self, "filter") or self.filter is None:
             self.filter = []
         if isinstance(self.filter, str):
@@ -90,11 +108,14 @@ class BaseModel(ABC):
     _default_required: dict[str, bool] | None = None
 
     def __init__(self):
+        """Implement `__init__`."""
         self._parse_fields_definition()
         self.df: ResultType = None
 
     @classmethod
     def _parse_fields_definition(cls) -> None:
+        # Internal helper: parse fields definition.
+        """Internal helper: parse fields definition."""
         if cls.field_definition is not None:
             cls._default_mapping = cls._default_mapping or {}
             cls._default_dtype = cls._default_dtype or {}
@@ -133,26 +154,82 @@ class BaseModel(ABC):
     @classmethod
     @abstractmethod
     def parse(cls, source: ResultType) -> BaseModel:
+        """Parse.
+
+        Args:
+            source: TODO describe source.
+
+        Returns:
+            TODO describe return value.
+
+        """
         raise NotImplementedError("The parse method must be implemented by the subclass.")
 
     @abstractmethod
     def __iadd__(self, other: BaseModel) -> BaseModel:
+        """Implement `__iadd__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         raise NotImplementedError("The __iadd__ method must be implemented by the subclass.")
 
     @abstractmethod
     def __isub__(self, other: BaseModel) -> BaseModel:
+        """Implement `__isub__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         raise NotImplementedError("The __isub__ method must be implemented by the subclass.")
 
     @abstractmethod
     def __imul__(self, other: BaseModel) -> BaseModel:
+        """Implement `__imul__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         raise NotImplementedError("The __imul__ method must be implemented by the subclass.")
 
     @abstractmethod
     def __itruediv__(self, other: BaseModel) -> BaseModel:
+        """Implement `__itruediv__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         raise NotImplementedError("The __itruediv__ method must be implemented by the subclass.")
 
     @classmethod
     def read(cls, engine: Engine, params: InputType, additional_filters: list[str] | str | None = None) -> BaseModel:
+        """Read.
+
+        Args:
+            engine: TODO describe engine.
+            params: TODO describe params.
+            additional_filters: TODO describe additional_filters.
+
+        Returns:
+            TODO describe return value.
+
+        """
         if params is None:
             raise ValueError("Params cannot be None")
         params = InputParameters.parse(params)
@@ -169,6 +246,8 @@ class BaseModel(ABC):
 
     @classmethod
     def _read_from_params(cls, engine: Engine, params: InputParameters) -> BaseModel:
+        # Internal helper: read from params.
+        """Internal helper: read from params."""
         cls._parse_fields_definition()
         src = params.src
         if src is None:
@@ -259,6 +338,8 @@ class BaseModel(ABC):
 
     @classmethod
     def _read_from_list(cls, engine: Engine, source_list: list[InputParameters], **kwargs) -> BaseModel:
+        # Internal helper: read from list.
+        """Internal helper: read from list."""
         results: list[tuple[BaseModel, str]] = []
         for source in source_list:
             operation: str = "+"
@@ -275,6 +356,8 @@ class BaseModel(ABC):
 
     @classmethod
     def _parse_results(cls, dataframes: list[tuple[BaseModel, str]]) -> "BaseModel":
+        # Internal helper: parse results.
+        """Internal helper: parse results."""
         if not isinstance(dataframes, list):
             return cls.parse(dataframes)
 

@@ -24,16 +24,35 @@ class Matrix(BaseModel):
     }
 
     def __init__(self):
+        """Implement `__init__`."""
         super().__init__()
 
     @classmethod
     def parse(cls, source: _ResultType) -> BaseModel:
+        """Parse.
+
+        Args:
+            source: TODO describe source.
+
+        Returns:
+            TODO describe return value.
+
+        """
         ret = cls()
         ret.df = source
         return ret
 
     def __iadd__(self, other: BaseModel) -> BaseModel:
         # somma i valori di self.df e other.df basandosi sugli indici ["o", "d", "timestamp"]
+        """Implement `__iadd__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         if self.df is None or other.df is None:
             return self
         tmp = self.df.set_index(["o", "d", "timestamp"])
@@ -44,6 +63,15 @@ class Matrix(BaseModel):
 
     def __isub__(self, other: BaseModel) -> BaseModel:
         # sottrae i valori di other.df da self.df basandosi sugli indici ["o", "d", "timestamp"]
+        """Implement `__isub__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         if self.df is None or other.df is None:
             return self
         tmp = self.df.set_index(["o", "d", "timestamp"])
@@ -54,6 +82,15 @@ class Matrix(BaseModel):
 
     def __imul__(self, other: BaseModel) -> BaseModel:
         # moltiplica i valori di self.df per quelli di other.df basandosi sugli indici ["o", "d", "timestamp"]
+        """Implement `__imul__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         if self.df is None or other.df is None:
             return self
         tmp = self.df.set_index(["o", "d", "timestamp"])
@@ -64,6 +101,15 @@ class Matrix(BaseModel):
 
     def __itruediv__(self, other: BaseModel) -> BaseModel:
         # divide i valori di self.df per quelli di other.df basandosi sugli indici ["o", "d", "timestamp"]
+        """Implement `__itruediv__`.
+
+        Args:
+            other: TODO describe other.
+
+        Returns:
+            TODO describe return value.
+
+        """
         if self.df is None or other.df is None:
             return self
         tmp = self.df.set_index(["o", "d", "timestamp"])

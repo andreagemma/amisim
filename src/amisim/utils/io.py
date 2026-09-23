@@ -32,7 +32,29 @@ def read_source(
     suppress_geometry_default_warnings: bool = False,
     suppress_crs_not_specified_warnings: bool = False,
 ) -> DataFrame | GeoDataFrame:
+    """Read source.
 
+    Args:
+        engine: TODO describe engine.
+        source: TODO describe source.
+        format: TODO describe format.
+        mapping: TODO describe mapping.
+        pre_filter: TODO describe pre_filter.
+        filter: TODO describe filter.
+        dtype: TODO describe dtype.
+        geometry_column: TODO describe geometry_column.
+        crs: TODO describe crs.
+        limit: TODO describe limit.
+        pre_limit: TODO describe pre_limit.
+        additional_fields: TODO describe additional_fields.
+        tz: TODO describe tz.
+        suppress_geometry_default_warnings: TODO describe suppress_geometry_default_warnings.
+        suppress_crs_not_specified_warnings: TODO describe suppress_crs_not_specified_warnings.
+
+    Returns:
+        TODO describe return value.
+
+    """
     gf: GataFrame | None = engine.read(
         source=source, format=format, limit=limit, pre_filter=pre_filter, pre_limit=pre_limit
     )

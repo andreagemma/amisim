@@ -3,6 +3,15 @@ import json
 
 
 def parse_set(series: pd.Series) -> pd.Series:
+    """Parse set.
+
+    Args:
+        series: TODO describe series.
+
+    Returns:
+        TODO describe return value.
+
+    """
     if pd.api.types.is_string_dtype(series):
         try:
             return pd.Series(
@@ -15,6 +24,15 @@ def parse_set(series: pd.Series) -> pd.Series:
 
 
 def parse_json(series: pd.Series) -> pd.Series:
+    """Parse json.
+
+    Args:
+        series: TODO describe series.
+
+    Returns:
+        TODO describe return value.
+
+    """
     if pd.api.types.is_string_dtype(series):
         try:
             return pd.Series(

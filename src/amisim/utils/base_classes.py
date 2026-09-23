@@ -9,6 +9,15 @@ TDictMixin = TypeVar("TDictMixin", bound="DictMixin")
 class DictMixin:
     @classmethod
     def from_dict(cls: type[TDictMixin], data: Mapping[str, Any]) -> TDictMixin:
+        """From dict.
+
+        Args:
+            data: TODO describe data.
+
+        Returns:
+            TODO describe return value.
+
+        """
         nomi_campi = {campo.name for campo in fields(cast(Any, cls)) if campo.init}
 
         campi_sconosciuti = set(data) - nomi_campi
@@ -19,8 +28,20 @@ class DictMixin:
         return cls(**dict(data))
 
     def to_dict(self) -> dict[str, Any]:
+        """To dict.
+
+        Returns:
+            TODO describe return value.
+
+        """
         return asdict(cast(Any, self))
 
     def __iter__(self) -> Iterator[tuple[str, Any]]:
         # Permette di scrivere dict(istanza)
+        """Implement `__iter__`.
+
+        Returns:
+            TODO describe return value.
+
+        """
         yield from self.to_dict().items()

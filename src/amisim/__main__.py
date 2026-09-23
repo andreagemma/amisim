@@ -26,6 +26,7 @@ def _build_parser() -> argparse.ArgumentParser:
     Returns:
         Configured parser for run, server, init_db, and clean_db commands.
     """
+    # Internal helper: build parser.
     parser = argparse.ArgumentParser(
         prog="amisim",
         description=(
@@ -131,6 +132,7 @@ def _build_default_run_parser() -> argparse.ArgumentParser:
     Returns:
         Parser accepting run arguments without a subcommand token.
     """
+    # Internal helper: build default run parser.
     parser = argparse.ArgumentParser(prog="amisim")
     _add_run_arguments(parser)
     return parser
@@ -142,6 +144,7 @@ def _add_run_arguments(parser: argparse.ArgumentParser) -> None:
     Args:
         parser: Parser to extend with run options.
     """
+    # Internal helper: add run arguments.
     parser.add_argument("-s", "--settings", default="", help="Path to the base software configuration INI file")
     parser.add_argument("-p", "--params", default="", help="Path to the algorithm execution parameters JSON file")
     parser.add_argument(
@@ -205,6 +208,7 @@ def _resolve_optional_file(raw_value: str, default_filename: str) -> Path | None
     Returns:
         Explicit or discovered path, otherwise None.
     """
+    # Internal helper: resolve optional file.
     value = raw_value.strip()
     if value:
         return Path(value)
@@ -229,6 +233,7 @@ def _parse_env_overrides(values: Iterable[str]) -> dict[str, str]:
     Raises:
         ValueError: If an entry is not in KEY=VALUE format.
     """
+    # Internal helper: parse env overrides.
     overrides: dict[str, str] = {}
     for item in values:
         if "=" not in item:
@@ -251,6 +256,7 @@ def _temporary_env(overrides: dict[str, str]):
     Yields:
         Control with temporary environment overrides applied.
     """
+    # Internal helper: temporary env.
     if not overrides:
         yield
         return
@@ -277,6 +283,7 @@ def _build_sqlalchemy_url(args: argparse.Namespace) -> str:
     Returns:
         SQLAlchemy URL or an empty string when db type is missing.
     """
+    # Internal helper: build sqlalchemy url.
     # Build URL only when enough structured components are provided.
     db_type = args.type.strip()
     if not db_type:
@@ -318,6 +325,7 @@ def _handle_run(args: argparse.Namespace, app: AmisimApplication) -> int:
         ValueError: If environment override syntax is invalid.
         NotImplementedError: If underlying app methods are still stubs.
     """
+    # Internal helper: handle run.
     # Follow requested defaults: settings.ini and parmas.json if present.
     settings_path = _resolve_optional_file(args.settings, "settings.ini")
     params_path = _resolve_optional_file(args.params, "parmas.json")
@@ -340,6 +348,7 @@ def _handle_server(_: argparse.Namespace) -> int:
     Raises:
         NotImplementedError: Always, until server behavior is implemented.
     """
+    # Internal helper: handle server.
     raise NotImplementedError("server command is not implemented yet")
 
 
@@ -359,6 +368,7 @@ def _handle_init_db(args: argparse.Namespace, app: AmisimApplication) -> int:
     Raises:
         NotImplementedError: If underlying app method is still a stub.
     """
+    # Internal helper: handle init db.
     url = args.url.strip() or _build_sqlalchemy_url(args)
     app.init_db(
         url=url or None,
@@ -384,6 +394,7 @@ def _handle_clean_db(args: argparse.Namespace, app: AmisimApplication) -> int:
     Returns:
         Process exit code.
     """
+    # Internal helper: handle clean db.
     raw_settings = args.settings.strip()
     settings_path = _resolve_optional_file(raw_settings, "settings.ini")
     if raw_settings and settings_path is not None and not settings_path.exists():

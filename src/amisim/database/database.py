@@ -21,6 +21,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, scop
 
 def _utcnow() -> datetime.datetime:
     """Return a timezone-aware UTC timestamp."""
+    # Internal helper: utcnow.
     return datetime.datetime.now(datetime.timezone.utc)
 
 
@@ -44,6 +45,17 @@ class Status(dict):
         execution_uuid: str | None = None,
         **kwargs: Any,
     ) -> None:
+        """Implement `__init__`.
+
+        Args:
+            status: TODO describe status.
+            error: TODO describe error.
+            details: TODO describe details.
+            execution_id: TODO describe execution_id.
+            execution_uuid: TODO describe execution_uuid.
+            kwargs: TODO describe kwargs.
+
+        """
         self.status = status
         self.error = error
         self.details = details
@@ -240,6 +252,7 @@ class Execution(Base):
     @staticmethod
     def _set_status(execution_id: int, status: str, result_value: str, raise_exception: bool = True) -> None:
         """Persist execution terminal status and result."""
+        # Internal helper: set status.
         try:
             with _LOCK:
                 with DB.get_engine().begin() as conn:
@@ -299,6 +312,12 @@ class DBHandler(logging.Handler):
     """Standard logging handler that stores logs in DB."""
 
     def __init__(self, engine: Engine) -> None:
+        """Implement `__init__`.
+
+        Args:
+            engine: TODO describe engine.
+
+        """
         super().__init__()
         self.engine = engine
 
@@ -331,11 +350,13 @@ class DB:
     @staticmethod
     def _supports_schema(database_url: str) -> bool:
         """Return whether the configured backend supports named schemas."""
+        # Internal helper: supports schema.
         return not database_url.startswith("sqlite")
 
     @staticmethod
     def _apply_schema(schema: str | None, database_url: str) -> None:
         """Apply target schema to ORM tables when supported by the backend."""
+        # Internal helper: apply schema.
         normalized_schema = (schema or "").strip() or None
         if normalized_schema is not None and not DB._supports_schema(database_url):
             DB.log.warning("Database backend does not support named schemas; ignoring schema=%s", normalized_schema)
@@ -348,6 +369,7 @@ class DB:
     @staticmethod
     def _build_engine(database_url: str) -> Engine:
         """Build SQLAlchemy engine with safe defaults."""
+        # Internal helper: build engine.
         connect_args = {"check_same_thread": False} if database_url.startswith("sqlite") else {}
         engine = create_engine(database_url, echo=False, pool_pre_ping=True, connect_args=connect_args)
 
@@ -355,6 +377,16 @@ class DB:
 
             @event.listens_for(engine, "connect")
             def set_sqlite_pragma(dbapi_connection: Any, _connection_record: Any) -> None:
+                """Set sqlite pragma.
+
+                Args:
+                    dbapi_connection: TODO describe dbapi_connection.
+                    _connection_record: TODO describe _connection_record.
+
+                Returns:
+                    TODO describe return value.
+
+                """
                 cursor = dbapi_connection.cursor()
                 cursor.execute("PRAGMA journal_mode=WAL;")
                 cursor.execute("PRAGMA foreign_keys=ON;")

@@ -5,14 +5,31 @@ from gataframe import Engine
 
 class ModesLoader:
     def __init__(self):
+        """Implement `__init__`."""
         self._modes: ModeType | None = None
 
     @property
     def modes(self) -> ModeType | None:
+        """Modes.
+
+        Returns:
+            TODO describe return value.
+
+        """
         return self._modes
 
     @classmethod
     def read(cls, engine: Engine, kw_modes: InputType) -> "ModesLoader":
+        """Read.
+
+        Args:
+            engine: TODO describe engine.
+            kw_modes: TODO describe kw_modes.
+
+        Returns:
+            TODO describe return value.
+
+        """
         this = cls()
         ret = Modes.read(engine, params=kw_modes)
         if ret is not None and ret.df is not None:

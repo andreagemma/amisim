@@ -49,6 +49,7 @@ class AmisimApplication:
 
         Defaults to a local SQLite file when no explicit URL/type is provided.
         """
+        # Internal helper: build database url.
         if url and url.strip():
             return url.strip()
 
