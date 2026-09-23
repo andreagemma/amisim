@@ -1,0 +1,114 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "build"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "amisim"
+dynamic = ["version"]
+description = "Mesoscopic Traffic Assignment and Simulation Model"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [ 
+	{ name = "Andrea Gemma", email = "andrea.gemma@uniroma3.it" } 
+]
+keywords = ["Mesoscopic", "Traffic", "Assignment", "Simulation"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Database :: Front-Ends",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed"
+]
+dependencies = [
+  "ga-configreader",
+  "ga-dictparser>=0.1.0",
+  "ga-gataframe>=0.1.0",
+  "ga-tictoc>=0.2.0",
+  "SQLAlchemy>=2.0.52",
+  "loguru>=0.7.3"
+]
+
+[project.scripts]
+amisim = "amisim.__main__:main"
+
+[project.optional-dependencies]
+test = [
+  "pytest>=8.0",
+  "pytest-cov>=5.0"
+]
+dev = [
+  "build>=1.2",
+  "joblib>=1.4",
+  "mypy>=1.10",
+  "pytest>=8.0",
+  "pytest-cov>=5.0",
+  "ruff>=0.5",
+  "twine>=5.1"
+]
+parallel = [
+  "joblib>=1.4"
+]
+
+[project.urls]
+Documentation = "https://github.com/andreagemma/amisim#readme"
+Issues = "https://github.com/andreagemma/amisim/issues"
+Source = "https://github.com/andreagemma/amisim"
+
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+amisim = ["py.typed"]
+
+[tool.setuptools.dynamic]
+version = {attr = "amisim._version.__version__"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+
+[tool.coverage.run]
+branch = true
+source = ["amisim"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+exclude = [
+  ".venv",
+  "build",
+  "dist",
+  "src/amisim.egg-info",
+  "venv",
+  "wheel-smoke-test"
+]
+
+[tool.ruff.lint]
+select = ["E9", "F63", "F7", "F82"]
+
+[tool.mypy]
+python_version = "3.10"
+files = ["src/amisim"]
+warn_unused_configs = true
+check_untyped_defs = true
+follow_imports = "skip"
+no_site_packages = true
+ignore_missing_imports = true
+disable_error_code = ["import-untyped"]
+
+[[tool.mypy.overrides]]
+module = [
+]
+ignore_errors = true
