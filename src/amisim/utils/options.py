@@ -13,9 +13,14 @@ def nested_dict_from_key_value_list(
     Example key format:
         "a:b:c" -> {"a": {"b": {"c": value}}}
 
-    :param pairs: Mapping or iterable of key/value tuples.
-    :return: Nested dictionary representation.
-    :raises ValueError: If a key has empty path segments.
+    Args:
+        pairs: Mapping or iterable of key/value tuples.
+
+    Returns:
+        Nested dictionary representation.
+
+    Raises:
+        ValueError: If a key has empty path segments.
     """
     items = pairs.items() if isinstance(pairs, Mapping) else pairs
     result: dict[str, object] = {}
@@ -45,9 +50,14 @@ def nested_dict_from_key_value_list(
 def parse_section_option_overrides(values: Iterable[str]) -> dict[str, dict[str, str]]:
     """Parse CLI options in SECTION:NAME=VALUE format.
 
-    :param values: Raw option tokens from CLI.
-    :return: Nested section->name->value dictionary.
-    :raises ValueError: If token format is invalid.
+    Args:
+        values: Raw option tokens from CLI.
+
+    Returns:
+        Nested section->name->value dictionary.
+
+    Raises:
+        ValueError: If token format is invalid.
     """
     flat: dict[str, str] = {}
     for item in values:

@@ -20,7 +20,7 @@ class Matrix(BaseModel):
         "o": {"mapping": "o", "dtype": "Int64", "required": True},
         "d": {"mapping": "d", "dtype": "Int64", "required": True},
         "timestamp": {"mapping": "timestamp", "dtype": "Float32", "required": True},
-        "value": {"mapping": "value", "dtype": "Float32", "required": True}
+        "value": {"mapping": "value", "dtype": "Float32", "required": True},
     }
 
     def __init__(self):

@@ -33,8 +33,16 @@ class GraphLoader:
         return self._centroids
 
     @classmethod
-    def read(cls, engine: Engine, kw_nodes: InputType, kw_links: InputType, kw_turns: InputType,
-             t0: float | int = 0, total_time: float | int = 60, delta_t: float | int = 15) -> "GraphLoader":
+    def read(
+        cls,
+        engine: Engine,
+        kw_nodes: InputType,
+        kw_links: InputType,
+        kw_turns: InputType,
+        t0: float | int = 0,
+        total_time: float | int = 60,
+        delta_t: float | int = 15,
+    ) -> "GraphLoader":
         this = cls(t0=t0, total_time=total_time, delta_t=delta_t)
         ret = Nodes.read(engine, params=kw_nodes)
         if ret is not None and ret.df is not None:
@@ -43,7 +51,7 @@ class GraphLoader:
             this._nodes = ret.df
         else:
             raise ValueError("Failed to read nodes")
-        
+
         ret = Links.read(engine, params=kw_links)
         if ret is not None and ret.df is not None:
             if not isinstance(ret.df, GeoDataFrame):

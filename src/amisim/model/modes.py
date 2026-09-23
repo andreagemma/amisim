@@ -16,6 +16,7 @@ _ResultType: TypeAlias = DataFrame | GeoDataFrame | None
 
 ModeType: TypeAlias = dict[str, dict[str, Any]] | None
 
+
 class Modes(BaseModel):
     field_definition: dict[str, Any] | None = {
         "code": {"mapping": "code", "dtype": "str", "required": True},

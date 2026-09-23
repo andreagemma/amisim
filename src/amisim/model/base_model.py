@@ -38,7 +38,7 @@ class InputParameters(DictMixin):
     operation: str | None = None
 
     @classmethod
-    def parse(cls, input_parameters: "InputType" ) -> "InputParameters" | list["InputParameters"]:
+    def parse(cls, input_parameters: "InputType") -> "InputParameters" | list["InputParameters"]:
         if input_parameters is None:
             raise ValueError("Input parameters cannot be None.")
         elif isinstance(input_parameters, InputParameters):
@@ -49,7 +49,7 @@ class InputParameters(DictMixin):
             return cls(src=input_parameters)
         elif isinstance(input_parameters, list):
             parsed_parameters: list[InputParameters] = []
-            if len(input_parameters)>0 and isinstance(input_parameters[0], dict) and not "src" in input_parameters[0]:
+            if len(input_parameters) > 0 and isinstance(input_parameters[0], dict) and not "src" in input_parameters[0]:
                 df = DataFrame(input_parameters)
                 return cls(src=df)
             for param in input_parameters:
@@ -61,7 +61,7 @@ class InputParameters(DictMixin):
             return parsed_parameters
         raise TypeError(f"Unsupported input parameters type: {type(input_parameters)!r}")
 
-    def add_filter(self, filter_condition: list[str] |  str) -> None:
+    def add_filter(self, filter_condition: list[str] | str) -> None:
         if not hasattr(self, "filter") or self.filter is None:
             self.filter = []
         if isinstance(self.filter, str):
@@ -70,9 +70,11 @@ class InputParameters(DictMixin):
             self.filter.extend(filter_condition)
         else:
             self.filter.append(filter_condition)
-            
 
-InputType: TypeAlias = InputParameters | SourceType | list[InputParameters | SourceType] | list[InputParameters] | list[SourceType]
+
+InputType: TypeAlias = (
+    InputParameters | SourceType | list[InputParameters | SourceType] | list[InputParameters] | list[SourceType]
+)
 
 
 class BaseModel(ABC):
@@ -147,7 +149,7 @@ class BaseModel(ABC):
 
     @abstractmethod
     def __itruediv__(self, other: BaseModel) -> BaseModel:
-        raise NotImplementedError("The __itruediv__ method must be implemented by the subclass.")        
+        raise NotImplementedError("The __itruediv__ method must be implemented by the subclass.")
 
     @classmethod
     def read(cls, engine: Engine, params: InputType, additional_filters: list[str] | str | None = None) -> BaseModel:
@@ -155,7 +157,7 @@ class BaseModel(ABC):
             raise ValueError("Params cannot be None")
         params = InputParameters.parse(params)
         if additional_filters is not None:
-            if isinstance(params,list):
+            if isinstance(params, list):
                 for p in params:
                     p.add_filter(additional_filters)
             else:

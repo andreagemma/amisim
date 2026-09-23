@@ -454,14 +454,19 @@ class DB:
     ) -> dict[str, int]:
         """Delete records from internal tables according to cleanup criteria.
 
-        :param what: Cleanup target: all, logs, tokens, executions.
-        :param cutoff: Optional cutoff instant used for time-based pruning.
-        :param include_pending_executions: If True, also remove pending executions.
-        :param include_active_tokens: If True, also remove tokens that are not expired.
-        :param checkpoint_truncate: If True, run SQLite ``wal_checkpoint(TRUNCATE)``.
-        :param vacuum: If True, run SQLite ``VACUUM``.
-        :return: Deleted rows count per target table.
-        :raises ValueError: If ``what`` has an unsupported value.
+        Args:
+            what: Cleanup target: all, logs, tokens, executions.
+            cutoff: Optional cutoff instant used for time-based pruning.
+            include_pending_executions: If True, also remove pending executions.
+            include_active_tokens: If True, also remove tokens that are not expired.
+            checkpoint_truncate: If True, run SQLite ``wal_checkpoint(TRUNCATE)``.
+            vacuum: If True, run SQLite ``VACUUM``.
+
+        Returns:
+            Deleted rows count per target table.
+
+        Raises:
+            ValueError: If ``what`` has an unsupported value.
         """
         normalized_what = what.strip().lower()
         targets_map = {

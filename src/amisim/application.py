@@ -98,16 +98,19 @@ class AmisimApplication:
     ) -> None:
         """Create and initialize the internal AMISim database.
 
-        :param url: SQLAlchemy connection URL, if already available.
-        :param schema: Optional schema name for table creation, when supported.
-        :param host: Database host.
-        :param port: Database port.
-        :param user: Database user.
-        :param password: Database password.
-        :param name: Internal database name.
-        :param db_type: Database type, e.g. postgresql/mysql/sqlite.
-        :param driver: Optional SQLAlchemy driver suffix.
-        :raises ValueError: If the provided options cannot build a valid DB URL.
+        Args:
+            url: SQLAlchemy connection URL, if already available.
+            schema: Optional schema name for table creation, when supported.
+            host: Database host.
+            port: Database port.
+            user: Database user.
+            password: Database password.
+            name: Internal database name.
+            db_type: Database type, for example postgresql/mysql/sqlite.
+            driver: Optional SQLAlchemy driver suffix.
+
+        Raises:
+            ValueError: If the provided options cannot build a valid DB URL.
         """
         database_url = self._build_database_url(
             url=url,
@@ -130,8 +133,10 @@ class AmisimApplication:
     ) -> None:
         """Load base software configuration.
 
-        :param settings_path: Path to an INI file with base software configuration.
-        :param overrides: Optional section/key overrides from runtime options.
+        Args:
+            settings_path: Path to an INI file with base software configuration.
+            overrides: Optional section/key overrides from runtime options.
+
         If ``settings_path`` is ``None``, default typed settings are created.
         """
         if isinstance(settings_path, str):
@@ -183,8 +188,11 @@ class AmisimApplication:
     def load_params(self, params_path: Path | None = None) -> None:
         """Load algorithm execution parameters.
 
-        :param params_path: Path to a JSON file with algorithm execution parameters.
-        :raises NotImplementedError: Always, until business logic is provided.
+        Args:
+            params_path: Path to a JSON file with algorithm execution parameters.
+
+        Raises:
+            NotImplementedError: Always, until business logic is provided.
         """
         raise NotImplementedError("load_params is not implemented yet")
 
@@ -200,16 +208,21 @@ class AmisimApplication:
     ) -> dict[str, int]:
         """Clean internal database records using target and retention filters.
 
-        :param time: Optional retention selector; accepts tmpreaper-like strings,
-            ``datetime.timedelta``, ``datetime.datetime``, or ``None``.
-        :param what: Cleanup target: ``all``, ``logs``, ``tokens``, ``executions``.
-        :param include_pending_executions: Include pending executions in deletion.
-        :param include_active_tokens: Include non-expired tokens in deletion.
-        :param checkpoint_truncate: Run SQLite WAL checkpoint truncate after cleanup.
-        :param vacuum: Run SQLite VACUUM after cleanup.
-        :return: Deleted rows count for logs, tokens and executions.
-        :raises ValueError: If ``time`` string cannot be parsed.
-        :raises TypeError: If ``time`` has an unsupported type.
+        Args:
+            time: Optional retention selector; accepts tmpreaper-like strings,
+                ``datetime.timedelta``, ``datetime.datetime``, or ``None``.
+            what: Cleanup target: ``all``, ``logs``, ``tokens``, ``executions``.
+            include_pending_executions: Include pending executions in deletion.
+            include_active_tokens: Include non-expired tokens in deletion.
+            checkpoint_truncate: Run SQLite WAL checkpoint truncate after cleanup.
+            vacuum: Run SQLite VACUUM after cleanup.
+
+        Returns:
+            Deleted rows count for logs, tokens and executions.
+
+        Raises:
+            ValueError: If ``time`` string cannot be parsed.
+            TypeError: If ``time`` has an unsupported type.
         """
         cutoff: datetime.datetime | None = None
         if isinstance(time, str):
@@ -251,6 +264,7 @@ class AmisimApplication:
     def run(self) -> None:
         """Run the simulation workflow.
 
-        :raises NotImplementedError: Always, until business logic is provided.
+        Raises:
+            NotImplementedError: Always, until business logic is provided.
         """
         raise NotImplementedError("run is not implemented yet")

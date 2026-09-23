@@ -23,9 +23,14 @@ def parse_age_to_timedelta(value: str) -> datetime.timedelta:
     and weeks (w). Multiple chunks can be concatenated, for example
     ``"1d12h"`` or ``"2w3d4h"``.
 
-    :param value: Duration expression, e.g. ``"2d"``.
-    :return: Parsed duration as ``datetime.timedelta``.
-    :raises ValueError: If format is invalid or empty.
+    Args:
+        value: Duration expression, e.g. ``"2d"``.
+
+    Returns:
+        Parsed duration as ``datetime.timedelta``.
+
+    Raises:
+        ValueError: If format is invalid or empty.
     """
     compact = "".join(value.split()).lower()
     if not compact:
