@@ -4,14 +4,16 @@ from __future__ import annotations
 
 import datetime
 import logging
+import sys
 import threading
 import time
-import sys
 from typing import Any
 
+import loguru
 from loguru import logger
 from tictoc import TicToc
 
+from ._version import __app_name__
 from .database import DB
 
 _CONFIGURED = False
@@ -36,10 +38,7 @@ class _LoguruBridgeHandler(logging.Handler):
         """Emit.
 
         Args:
-            record: TODO describe record.
-
-        Returns:
-            TODO describe return value.
+            record: Standard library record to forward to loguru.
 
         """
         level: str | int
@@ -48,11 +47,11 @@ class _LoguruBridgeHandler(logging.Handler):
         except Exception:
             level = record.levelno
 
-        log = _LOGGER.bind(execution_id=getattr(record, "execution_id", "-"))
+        log = _LOGGER.bind(execution_id=getattr(record, "execution_id", ""))
         log.patch(lambda rec: rec.update(name=record.name)).log(level, record.getMessage())
 
 
-class AmisimLogger(TicToc):
+class AppLogger(TicToc):
     """Application logger that extends TicToc timing/logging features."""
 
     def __init__(
@@ -61,24 +60,45 @@ class AmisimLogger(TicToc):
         section: str = "app",
         execution_id: int | str | None = None,
     ) -> None:
-        """Implement `__init__`.
+        """Create the logger for a section and start its timer.
 
         Args:
-            section: TODO describe section.
-            execution_id: TODO describe execution_id.
+            section: Name of the logging section.
+            execution_id: Identifier bound to every emitted record.
 
         """
-        std_logger = logging.getLogger(f"amisim.{section}")
-        super().__init__(logger=std_logger, extra={"execution_id": execution_id if execution_id is not None else "-"})
+        self._name = f"{section}"
+        self._extra = {"execution_id": execution_id if execution_id is not None else ""}
+        std_logger = logging.getLogger(self._name)
+        super().__init__(logger=std_logger, extra=self._extra)
         # Start timer immediately so elapsed/last_elapsed metrics are meaningful from first log.
         self.tic(reset_origin=True)
 
+    def getChild(self, suffix: str) -> AppLogger:
+        """Return a child logger for `suffix` keeping the execution id.
 
-def _record_timing(record: dict[str, Any]) -> None:
+        Args:
+            suffix: Name appended to the current section.
+
+        Returns:
+            The child application logger.
+        """
+        if suffix.startswith("."):
+            suffix = suffix[1:]
+        if suffix == "":
+            return self
+
+        return AppLogger(
+            section=f"{self._name}.{suffix}",
+            execution_id=self._extra.get("execution_id", "") if self._extra is not None else "",
+        )
+
+
+def _record_timing(record: Any) -> None:
     """Attach elapsed and delta times to each log record."""
     # Internal helper: record timing.
     section = str(record.get("name", "app"))
-    execution_id = str(record["extra"].get("execution_id", "-"))
+    execution_id = str(record["extra"].get("execution_id", ""))
     key = (section, execution_id)
     now = time.perf_counter()
 
@@ -144,24 +164,25 @@ def configure_logging(
     log_on_console: bool = True,
     log_on_db: bool = True,
     log_on_file: bool = False,
-    log_name: str = "amisim",
+    log_name: str = __app_name__,
     log_dir: str = "log",
     force: bool = False,
-) -> None:
+) -> loguru.Logger:
     """Configure process-level loguru sinks once.
 
     One sink prints to stderr and one sink persists logs to the internal DB.
     """
     global _CONFIGURED
+    global _LOGGER
     if _CONFIGURED and not force:
-        return
+        return _LOGGER
 
     logger.remove()
     with _TIMING_LOCK:
         _TIMINGS.clear()
 
     normalized_format = _normalize_format(log_format)
-    global _LOGGER
+
     _LOGGER = logger.patch(_record_timing)
 
     if log_on_console:
@@ -194,57 +215,57 @@ def configure_logging(
         _LOGGER.add(_db_sink, level=level, enqueue=False, catch=True)
 
     # Route stdlib logging (used by TicToc) through loguru sinks.
-    root_logger = logging.getLogger("amisim")
+    root_logger = logging.getLogger(log_name)
     root_logger.handlers = [h for h in root_logger.handlers if not isinstance(h, _LoguruBridgeHandler)]
     root_logger.addHandler(_LoguruBridgeHandler())
     root_logger.setLevel(getattr(logging, level.upper(), logging.INFO))
     root_logger.propagate = False
 
     _CONFIGURED = True
+    return _LOGGER
 
 
-def configure_logging_from_settings(settings: Any) -> None:
+def configure_logging_from_settings(settings: Any) -> loguru.Logger:
     """Configure logger according to LOGGING section read by ConfigReader."""
     log_use = settings.getboolean("LOG_USE", section="LOGGING", default=True)
     if not log_use:
-        configure_logging(log_on_console=False, log_on_db=False, log_on_file=False, force=True)
-        return
+        return configure_logging(log_on_console=False, log_on_db=False, log_on_file=False, force=True)
 
-    configure_logging(
+    return configure_logging(
         level=settings.get("LOG_LEVEL", section="LOGGING", default="INFO") or "INFO",
         log_format=settings.get("LOG_FORMAT", section="LOGGING", default=_DEFAULT_FORMAT),
         log_on_console=settings.getboolean("LOG_ON_CONSOLE", section="LOGGING", default=True) is True,
         log_on_db=settings.getboolean("LOG_ON_DATABASE", section="LOGGING", default=True) is True,
         log_on_file=settings.getboolean("LOG_ON_FILE", section="LOGGING", default=False) is True,
-        log_name=settings.get("LOG_NAME", section="LOGGING", default="amisim") or "amisim",
         log_dir=settings.get("LOG_DIR", section="LOGGING", default="log") or "log",
         force=True,
     )
 
 
-def configure_logging_from_typed_settings(settings: Any) -> None:
+def configure_logging_from_typed_settings(settings: Any) -> loguru.Logger:
     """Configure logger from typed ``LoggingSettings`` values."""
     if not bool(getattr(settings, "LOG_USE", True)):
-        configure_logging(log_on_console=False, log_on_db=False, log_on_file=False, force=True)
-        return
+        return configure_logging(log_on_console=False, log_on_db=False, log_on_file=False, force=True)
 
-    configure_logging(
+    return configure_logging(
         level=str(getattr(settings, "LOG_LEVEL", "INFO") or "INFO"),
         log_format=str(getattr(settings, "LOG_FORMAT", _DEFAULT_FORMAT) or _DEFAULT_FORMAT),
         log_on_console=bool(getattr(settings, "LOG_ON_CONSOLE", True)),
         log_on_db=bool(getattr(settings, "LOG_ON_DATABASE", True)),
         log_on_file=bool(getattr(settings, "LOG_ON_FILE", False)),
-        log_name=str(getattr(settings, "LOG_NAME", "amisim") or "amisim"),
         log_dir=str(getattr(settings, "LOG_DIR", "log") or "log"),
         force=True,
     )
 
 
-def get_logger(section: str | None = None, execution_id: int | str | None = None) -> AmisimLogger:
+def get_logger(section: str | None = None, execution_id: int | str | None = None) -> AppLogger:
     """Return a TicToc-based application logger.
 
     The logger routes through loguru sinks and includes execution context.
     """
     if not _CONFIGURED:
         configure_logging()
-    return AmisimLogger(section=section or "app", execution_id=execution_id)
+    return AppLogger(section=section or "app", execution_id=execution_id)
+
+
+__all__ = ["AppLogger", "get_logger", "configure_logging"]

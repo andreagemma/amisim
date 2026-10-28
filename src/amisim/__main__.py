@@ -8,14 +8,14 @@ import sys
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterable
+
 from configreader import ConfigReader, ConfigSource
 
+from .amisim_app import AmisimApp
 from .app_logger import configure_logging, get_logger
-from .application import AmisimApplication
+from .config.ini_model import IniModel
 from .database import DB
-from .ini_model import IniModel
 from .utils import parse_section_option_overrides
-
 
 _EXPLICIT_COMMANDS = {"run", "server", "init_db", "clean_db"}
 
@@ -156,6 +156,12 @@ def _add_run_arguments(parser: argparse.ArgumentParser) -> None:
         action="append",
         default=[],
         help="Settings override in SECTION:NAME=VALUE format",
+    )
+    parser.add_argument(
+        "-o",
+        "--operation",
+        default="",
+        help="Operation to perform (e.g., shortest_path)",
     )
 
 
@@ -308,7 +314,7 @@ def _build_sqlalchemy_url(args: argparse.Namespace) -> str:
     return f"{dialect}://{auth}{host}{port}/{db_name}"
 
 
-def _handle_run(args: argparse.Namespace, app: AmisimApplication) -> int:
+def _handle_run(args: argparse.Namespace, app: AmisimApp) -> int:
     """Execute run-mode orchestration.
 
     ``settings`` contains base software configuration values, while ``params``
@@ -331,13 +337,13 @@ def _handle_run(args: argparse.Namespace, app: AmisimApplication) -> int:
     params_path = _resolve_optional_file(args.params, "parmas.json")
     env_overrides = _parse_env_overrides(args.env)
     settings_overrides = parse_section_option_overrides(args.option)
-
+    operation = args.operation.strip()
     with _temporary_env(env_overrides):
         if settings_path is not None:
             app.load_settings(settings_path, overrides=settings_overrides)
         if params_path is not None:
             app.load_params(params_path)
-        app.run()
+        app.run(operation)
 
     return 0
 
@@ -352,7 +358,7 @@ def _handle_server(_: argparse.Namespace) -> int:
     raise NotImplementedError("server command is not implemented yet")
 
 
-def _handle_init_db(args: argparse.Namespace, app: AmisimApplication) -> int:
+def _handle_init_db(args: argparse.Namespace, app: AmisimApp) -> int:
     """Execute init_db-mode orchestration.
 
     This command is intended to create and initialize the internal AMISim
@@ -384,7 +390,7 @@ def _handle_init_db(args: argparse.Namespace, app: AmisimApplication) -> int:
     return 0
 
 
-def _handle_clean_db(args: argparse.Namespace, app: AmisimApplication) -> int:
+def _handle_clean_db(args: argparse.Namespace, app: AmisimApp) -> int:
     """Execute clean_db-mode orchestration.
 
     Args:
@@ -429,7 +435,7 @@ def _handle_clean_db(args: argparse.Namespace, app: AmisimApplication) -> int:
     return 0
 
 
-def main(argv: list[str] | None = None, app: AmisimApplication | None = None) -> int:
+def main(argv: list[str] | None = None, app: AmisimApp | None = None) -> int:
     """Run the CLI entrypoint.
 
     Args:
@@ -443,7 +449,7 @@ def main(argv: list[str] | None = None, app: AmisimApplication | None = None) ->
     log = get_logger()
 
     args = parse_cli_args(argv)
-    application = app if app is not None else AmisimApplication()
+    application = app if app is not None else AmisimApp()
 
     try:
         # Dispatch by subcommand while keeping library methods injectable for tests.

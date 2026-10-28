@@ -2,6 +2,10 @@ package	version	license_file	source_url
 ga-configreader	0.1.3	licenses/third_party/packages/ga-configreader/LICENSE	https://github.com/andreagemma/configreader#readme
 ga-dictparser	0.1.0	licenses/third_party/packages/ga-dictparser/LICENSE	https://github.com/andreagemma/dictparser
 ga-gataframe	0.1.0	licenses/third_party/packages/ga-gataframe/LICENSE	https://github.com/andreagemma/gataframe
+ga-parallel	0.1.1	licenses/third_party/packages/ga-parallel/LICENSE	https://github.com/andreagemma/parallel
+ga-graph	0.1.0	licenses/third_party/packages/ga-graph/LICENSE	https://github.com/andreagemma/graph
+ga-matrix	0.1.0	licenses/third_party/packages/ga-matrix/LICENSE	https://github.com/andreagemma/matrix
+ga-serializer	0.1.0	licenses/third_party/packages/ga-serializer/LICENSE	https://github.com/andreagemma/serializer
 SQLAlchemy	2.0.52	licenses/third_party/packages/sqlalchemy/LICENSE	https://github.com/sqlalchemy/sqlalchemy/
 loguru	0.7.3	licenses/third_party/packages/loguru/LICENSE	https://github.com/Delgan/loguru
 ga-tictoc	0.2.0	licenses/third_party/packages/ga-tictoc/LICENSE	https://github.com/andreagemma/tictoc

@@ -1,5 +1,13 @@
 ## Unreleased
 
+- Bumped package/build version to `0.1.3`.
+- Refined `amisim.__init__` public exports by replacing wildcard imports with explicit symbols and an explicit `__all__`.
+- Added direct runtime dependencies on `ga-graph`, `ga-matrix`, and `ga-serializer` to match imported modules.
+- Added a `parallel` flag to `ShortestPath` that distributes the per-origin tasks on the application `parallel` runtime, and optimized `get_tasks` task generation.
+- Documented the `amisim.model` and `amisim.algorithms` packages in `README.md` and `docs/library.md`.
+- Completed the missing or placeholder docstrings across the package (model, loaders, algorithms, simulators, INI sections, utils and database helpers).
+- Initialize the `parallel` runtime from the `[PARALLEL]` settings and recreate it when settings are reloaded.
+- Add `ga-parallel` as a runtime dependency and include its MIT license notice.
 - Added a structured CLI entrypoint with `run`, `server`, and `init_db` commands.
 - Added `run` defaults for `settings.ini` and `parmas.json` auto-discovery in current working directory when explicit paths are omitted.
 - Added support for repeatable `-e/--env KEY=VALUE` runtime environment overrides in `run` mode.

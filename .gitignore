@@ -11,6 +11,8 @@ __pycache__/
 .coverage.*
 coverage.xml
 .ignore
+.pytest_tmp/
+amisim.db*
 
 # Build artifacts
 build/

@@ -26,7 +26,7 @@ def nested_dict_from_key_value_list(
     result: dict[str, object] = {}
 
     for key, value in items:
-        parts = [part.strip() for part in key.split(":")]
+        parts = [part.strip() for part in key.split(":")]  # type: ignore
         if not all(parts):
             raise ValueError(f"Invalid key path {key!r}: empty path segment")
 

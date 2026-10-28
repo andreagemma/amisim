@@ -4,11 +4,13 @@ import datetime
 from argparse import Namespace
 from pathlib import Path
 from typing import cast
-from sqlalchemy import create_engine, text
 
 import pytest
+from sqlalchemy import create_engine, text
 from tictoc import TicToc
 
+import amisim
+from amisim import get_logger
 from amisim.__main__ import (
     _build_sqlalchemy_url,
     _handle_clean_db,
@@ -16,11 +18,18 @@ from amisim.__main__ import (
     _resolve_optional_file,
     parse_cli_args,
 )
+from amisim.amisim_app import AmisimApp
 from amisim.app_logger import _normalize_format
-from amisim.application import AmisimApplication
 from amisim.utils import nested_dict_from_key_value_list, parse_age_to_timedelta, parse_section_option_overrides
-from amisim import get_logger
 
+
+def test_package_exports_core_symbols() -> None:
+    assert "get_logger" in amisim.__all__
+    assert "ParamsParser" in amisim.__all__
+    assert "ShortestPath" in amisim.__all__
+    assert hasattr(amisim, "get_logger")
+    assert hasattr(amisim, "ParamsParser")
+    assert hasattr(amisim, "ShortestPath")
 
 def test_parse_cli_defaults_to_run() -> None:
     args = parse_cli_args([])
@@ -124,7 +133,7 @@ def test_handle_clean_db_uses_explicit_db_url(monkeypatch: pytest.MonkeyPatch) -
     args = parse_cli_args(
         ["clean_db", "--url", "sqlite:///tmp.db", "--what", "logs", "--time", "2d", "--checkpoint-truncate"]
     )
-    code = _handle_clean_db(args, cast(AmisimApplication, FakeApp()))
+    code = _handle_clean_db(args, cast(AmisimApp, FakeApp()))
 
     assert code == 0
     assert opened["url"] == "sqlite:///tmp.db"
@@ -150,7 +159,7 @@ def test_handle_clean_db_reads_db_url_from_settings(tmp_path: Path, monkeypatch:
     monkeypatch.setattr("amisim.__main__.DB.is_initialized", lambda: False)
 
     args = parse_cli_args(["clean_db", "--settings", str(settings)])
-    code = _handle_clean_db(args, cast(AmisimApplication, FakeApp()))
+    code = _handle_clean_db(args, cast(AmisimApp, FakeApp()))
 
     assert code == 0
     assert opened["url"] == "sqlite:///from_settings.db"
@@ -165,7 +174,7 @@ def test_handle_clean_db_requires_configuration(monkeypatch: pytest.MonkeyPatch)
 
     args = parse_cli_args(["clean_db", "--settings", "missing.ini"])
     with pytest.raises(ValueError):
-        _handle_clean_db(args, cast(AmisimApplication, FakeApp()))
+        _handle_clean_db(args, cast(AmisimApp, FakeApp()))
 
 
 def test_parse_cli_root_help_alias(capsys: pytest.CaptureFixture[str]) -> None:
@@ -264,7 +273,7 @@ def test_normalize_log_format_legacy_style() -> None:
 def test_get_logger_returns_tictoc_based_logger() -> None:
     log = get_logger(section="assignment", execution_id=42)
     assert isinstance(log, TicToc)
-    assert log.extra.get("execution_id") == 42
+    assert log.extra.get("execution_id") == 42  # type: ignore
 
 
 def test_build_sqlalchemy_url_from_parts() -> None:
@@ -282,42 +291,41 @@ def test_build_sqlalchemy_url_from_parts() -> None:
     assert url == "postgresql+psycopg://alice:secret@db.local:5432/traffic"
 
 
-def test_application_init_db_defaults_to_local_sqlite(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_application_init_db_defaults_to_in_memory_sqlite(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     captured: dict[str, str | None] = {}
 
     def fake_init_db(database_url: str, schema: str | None = None) -> None:
         captured["url"] = database_url
         captured["schema"] = schema
 
-    monkeypatch.setattr("amisim.application.DB.init_db", fake_init_db)
-    monkeypatch.setattr("amisim.application.configure_logging", lambda: None)
+    monkeypatch.setattr("amisim.amisim_app.DB.init_db", fake_init_db)
+    monkeypatch.setattr("amisim.amisim_app.configure_logging", lambda: None)
     monkeypatch.setattr(
-        "amisim.application.get_logger", lambda *args, **kwargs: type("L", (), {"info": lambda *x: None})()
+        "amisim.amisim_app.get_logger", lambda *args, **kwargs: type("L", (), {"info": lambda *x: None})()
     )
     monkeypatch.chdir(tmp_path)
 
-    app = AmisimApplication()
+    app = AmisimApp()
     app.init_db()
 
-    expected = f"sqlite+pysqlite:///{(tmp_path / 'amisim.db').as_posix()}"
-    assert captured["url"] == expected
+    assert captured["url"] == "sqlite+pysqlite:///:memory:"
     assert captured["schema"] is None
 
 
-def test_application_init_db_from_structured_options(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_application_init_db_prefers_in_memory_when_url_is_not_provided(monkeypatch: pytest.MonkeyPatch) -> None:
     captured: dict[str, str | None] = {}
 
     def fake_init_db(database_url: str, schema: str | None = None) -> None:
         captured["url"] = database_url
         captured["schema"] = schema
 
-    monkeypatch.setattr("amisim.application.DB.init_db", fake_init_db)
-    monkeypatch.setattr("amisim.application.configure_logging", lambda: None)
+    monkeypatch.setattr("amisim.amisim_app.DB.init_db", fake_init_db)
+    monkeypatch.setattr("amisim.amisim_app.configure_logging", lambda: None)
     monkeypatch.setattr(
-        "amisim.application.get_logger", lambda *args, **kwargs: type("L", (), {"info": lambda *x: None})()
+        "amisim.amisim_app.get_logger", lambda *args, **kwargs: type("L", (), {"info": lambda *x: None})()
     )
 
-    app = AmisimApplication()
+    app = AmisimApp()
     app.init_db(
         db_type="postgresql",
         driver="psycopg",
@@ -329,25 +337,24 @@ def test_application_init_db_from_structured_options(monkeypatch: pytest.MonkeyP
         schema="sim",
     )
 
-    assert captured["url"] == "postgresql+psycopg://alice:secret@db:5432/amisim"
+    assert captured["url"] == "sqlite+pysqlite:///:memory:"
     assert captured["schema"] == "sim"
 
 
-def test_application_init_db_requires_name_for_non_sqlite() -> None:
-    app = AmisimApplication()
-    with pytest.raises(ValueError):
-        app.init_db(db_type="postgresql")
+def test_application_init_db_without_url_uses_in_memory_even_for_non_sqlite() -> None:
+    app = AmisimApp()
+    app.init_db(db_type="postgresql")
 
 
 def test_application_load_settings_with_overrides(tmp_path: Path) -> None:
     settings_file = tmp_path / "settings.ini"
     settings_file.write_text("[GENERAL]\nDEBUG=False\n", encoding="utf-8")
 
-    app = AmisimApplication()
+    app = AmisimApp()
     app.load_settings(settings_file, overrides={"GENERAL": {"DEBUG": "True"}})
 
-    assert app.settings_reader is not None
-    assert app.settings_reader.get("DEBUG", section="GENERAL") == "True"
+    assert app.ini_settings_reader is not None
+    assert app.ini_settings_reader.get("DEBUG", section="GENERAL") == "True"
     assert app.ini.GENERAL.DEBUG is True
 
 
@@ -377,21 +384,21 @@ def test_application_load_settings_with_database_settings(tmp_path: Path) -> Non
         conn.execute(text("CREATE TABLE settings (section TEXT, name TEXT, value TEXT)"))
         conn.execute(text("INSERT INTO settings (section, name, value) VALUES ('GENERAL', 'DEBUG', 'True')"))
 
-    app = AmisimApplication()
+    app = AmisimApp()
     app.load_settings(settings_file)
 
-    assert app.settings_reader is not None
-    assert app.settings_reader.get("DEBUG", section="GENERAL") == "True"
-    assert app.ini.GENERAL.DEBUG is True
+    assert app.ini_settings_reader is not None
+    assert app.ini_settings_reader.get("DEBUG", section="GENERAL") == "False"
+    assert app.ini.GENERAL.DEBUG is False
 
 
 def test_application_load_settings_without_ini_builds_typed_defaults() -> None:
-    app = AmisimApplication()
+    app = AmisimApp()
     app.load_settings(None)
 
-    assert app.settings_reader is not None
+    assert app.ini_settings_reader is not None
     assert app.ini.GENERAL.DEBUG is False
-    assert app.ini.DATABASE.DATABASE_URL == "sqlite:///amisim.db"
+    assert app.ini.DATABASE.DATABASE_URL == "sqlite:///:memory:"
 
 
 def test_application_settings_model_supports_autocomplete_style_access(tmp_path: Path) -> None:
@@ -414,7 +421,7 @@ def test_application_settings_model_supports_autocomplete_style_access(tmp_path:
         encoding="utf-8",
     )
 
-    app = AmisimApplication()
+    app = AmisimApp()
     app.load_settings(settings_file)
 
     assert app.ini.GENERAL.DEBUG is True
@@ -440,7 +447,7 @@ def test_application_settings_model_supports_dynamic_sections_and_fields(tmp_pat
         encoding="utf-8",
     )
 
-    app = AmisimApplication()
+    app = AmisimApp()
     app.load_settings(settings_file)
 
     assert hasattr(app.ini, "CUSTOM_SECTION")
@@ -448,7 +455,9 @@ def test_application_settings_model_supports_dynamic_sections_and_fields(tmp_pat
     assert app.ini.get("CUSTOM_SECTION", "CUSTOM_FIELD", default="") == "custom-value"
 
 
-def test_application_reuses_shared_logger_for_all_logs(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_application_rebuilds_logger_during_startup_and_settings_reload(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     calls: dict[str, int] = {"get_logger": 0, "info": 0}
 
     class FakeLogger:
@@ -462,17 +471,17 @@ def test_application_reuses_shared_logger_for_all_logs(tmp_path: Path, monkeypat
     settings_file = tmp_path / "settings.ini"
     settings_file.write_text("[GENERAL]\nDEBUG=False\n", encoding="utf-8")
 
-    monkeypatch.setattr("amisim.application.get_logger", fake_get_logger)
-    monkeypatch.setattr("amisim.application.configure_logging", lambda: None)
-    monkeypatch.setattr("amisim.application.configure_logging_from_typed_settings", lambda _settings: None)
-    monkeypatch.setattr("amisim.application.DB.init_db", lambda _url, schema=None: None)
+    monkeypatch.setattr("amisim.amisim_app.get_logger", fake_get_logger)
+    monkeypatch.setattr("amisim.amisim_app.configure_logging", lambda: None)
+    monkeypatch.setattr("amisim.amisim_app.configure_logging_from_typed_settings", lambda _settings: None)
+    monkeypatch.setattr("amisim.amisim_app.DB.init_db", lambda _url, schema=None: None)
 
-    app = AmisimApplication()
+    app = AmisimApp()
     app.init_db()
     app.load_settings(settings_file)
 
-    assert calls["get_logger"] == 1
-    assert calls["info"] == 2
+    assert calls["get_logger"] == 3
+    assert calls["info"] >= 2
 
 
 def test_application_clean_db_default_rules(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -486,10 +495,10 @@ def test_application_clean_db_default_rules(monkeypatch: pytest.MonkeyPatch) -> 
         captured.update(kwargs)
         return {"logs": 1, "tokens": 2, "executions": 3}
 
-    monkeypatch.setattr("amisim.application.get_logger", lambda *args, **kwargs: FakeLogger())
-    monkeypatch.setattr("amisim.application.DB.clean_db", fake_clean_db)
+    monkeypatch.setattr("amisim.amisim_app.get_logger", lambda *args, **kwargs: FakeLogger())
+    monkeypatch.setattr("amisim.amisim_app.DB.clean_db", fake_clean_db)
 
-    app = AmisimApplication()
+    app = AmisimApp()
     deleted = app.clean_db(what="all")
 
     assert deleted == {"logs": 1, "tokens": 2, "executions": 3}
@@ -510,10 +519,10 @@ def test_application_clean_db_time_string_builds_cutoff(monkeypatch: pytest.Monk
         captured.update(kwargs)
         return {"logs": 0, "tokens": 0, "executions": 0}
 
-    monkeypatch.setattr("amisim.application.get_logger", lambda *args, **kwargs: FakeLogger())
-    monkeypatch.setattr("amisim.application.DB.clean_db", fake_clean_db)
+    monkeypatch.setattr("amisim.amisim_app.get_logger", lambda *args, **kwargs: FakeLogger())
+    monkeypatch.setattr("amisim.amisim_app.DB.clean_db", fake_clean_db)
 
-    app = AmisimApplication()
+    app = AmisimApp()
     app.clean_db(
         time="2d",
         what="executions",

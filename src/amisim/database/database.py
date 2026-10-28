@@ -13,8 +13,23 @@ import threading
 import uuid
 from typing import Any
 
-from sqlalchemy import BigInteger, DateTime, Engine, Float, Index, Integer, String, create_engine, event
-from sqlalchemy import and_, delete, insert, or_, select, update
+from sqlalchemy import (
+    BigInteger,
+    DateTime,
+    Engine,
+    Float,
+    Index,
+    Integer,
+    String,
+    and_,
+    create_engine,
+    delete,
+    event,
+    insert,
+    or_,
+    select,
+    update,
+)
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, scoped_session, sessionmaker
 
@@ -45,15 +60,15 @@ class Status(dict):
         execution_uuid: str | None = None,
         **kwargs: Any,
     ) -> None:
-        """Implement `__init__`.
+        """Build the response payload.
 
         Args:
-            status: TODO describe status.
-            error: TODO describe error.
-            details: TODO describe details.
-            execution_id: TODO describe execution_id.
-            execution_uuid: TODO describe execution_uuid.
-            kwargs: TODO describe kwargs.
+            status: Status code of the response.
+            error: Error message, when the request failed.
+            details: Additional details about the outcome.
+            execution_id: Identifier of the related execution.
+            execution_uuid: UUID of the related execution.
+            **kwargs: Extra fields added to the payload.
 
         """
         self.status = status
@@ -121,14 +136,14 @@ class Token(Base):
 
                 new_token = Token(token=str(uuid.uuid4()), user=user, expires_at=expires_at)
                 result = conn.execute(
-                    insert(Token.__table__).values(
+                    insert(Token.__table__).values(  # pyright: ignore[reportArgumentType]
                         token=new_token.token,
                         user=new_token.user,
                         created_at=new_token.created_at,
                         expires_at=new_token.expires_at,
                     )
                 )
-                token_id = result.inserted_primary_key[0]
+                token_id = result.inserted_primary_key[0]  # pyright: ignore[reportOptionalSubscript]
                 if token_id is not None:
                     new_token.id = int(token_id)
                 return new_token
@@ -167,7 +182,7 @@ class Token(Base):
         self.expires_at = _utcnow() + datetime.timedelta(days=1)
         try:
             with DB.get_engine().begin() as conn:
-                conn.execute(update(Token.__table__).where(Token.id == self.id).values(expires_at=self.expires_at))
+                conn.execute(update(Token.__table__).where(Token.id == self.id).values(expires_at=self.expires_at))  # pyright: ignore[reportArgumentType]
         except SQLAlchemyError as exc:
             DB.log.error("Error refreshing token: %s", exc)
             raise
@@ -213,7 +228,7 @@ class Execution(Base):
                 uid = str(uuid.uuid4())
                 params_json = json.dumps(params or {})
                 result = conn.execute(
-                    insert(Execution.__table__).values(
+                    insert(Execution.__table__).values(  # pyright: ignore[reportArgumentType]
                         uuid=uid,
                         status=Status.SIM_PENDING,
                         start_time=now,
@@ -221,7 +236,7 @@ class Execution(Base):
                         progress=0.0,
                     )
                 )
-                execution_id = result.inserted_primary_key[0]
+                execution_id = result.inserted_primary_key[0]  # pyright: ignore[reportOptionalSubscript]
                 if execution_id is None:
                     raise RuntimeError("Failed to create execution: missing primary key")
 
@@ -257,7 +272,7 @@ class Execution(Base):
             with _LOCK:
                 with DB.get_engine().begin() as conn:
                     conn.execute(
-                        update(Execution.__table__)
+                        update(Execution.__table__)  # pyright: ignore[reportArgumentType]
                         .where(Execution.id == execution_id)
                         .values(end_time=_utcnow(), status=status, result=result_value)
                     )
@@ -278,7 +293,7 @@ class Execution(Base):
             with _LOCK:
                 with DB.get_engine().begin() as conn:
                     conn.execute(
-                        update(Execution.__table__)
+                        update(Execution.__table__)  # pyright: ignore[reportArgumentType]
                         .where(Execution.id == execution_id)
                         .values(progress=progress, last_message=message, last_message_time=_utcnow())
                     )
@@ -312,10 +327,10 @@ class DBHandler(logging.Handler):
     """Standard logging handler that stores logs in DB."""
 
     def __init__(self, engine: Engine) -> None:
-        """Implement `__init__`.
+        """Bind the handler to the engine used to persist the records.
 
         Args:
-            engine: TODO describe engine.
+            engine: SQLAlchemy engine writing to the `logs` table.
 
         """
         super().__init__()
@@ -326,7 +341,7 @@ class DBHandler(logging.Handler):
         try:
             with self.engine.begin() as conn:
                 conn.execute(
-                    insert(Log.__table__).values(
+                    insert(Log.__table__).values(  # pyright: ignore[reportArgumentType]
                         execution_id=getattr(record, "execution_id", None),
                         created_at=datetime.datetime.fromtimestamp(record.created, tz=datetime.timezone.utc),
                         log_level=record.levelno,
@@ -380,11 +395,8 @@ class DB:
                 """Set sqlite pragma.
 
                 Args:
-                    dbapi_connection: TODO describe dbapi_connection.
-                    _connection_record: TODO describe _connection_record.
-
-                Returns:
-                    TODO describe return value.
+                    dbapi_connection: Newly opened DBAPI connection.
+                    _connection_record: Pool record, unused.
 
                 """
                 cursor = dbapi_connection.cursor()
@@ -462,7 +474,7 @@ class DB:
         try:
             with DB._engine.begin() as conn:
                 conn.execute(
-                    insert(Log.__table__).values(
+                    insert(Log.__table__).values(  # type: ignore
                         execution_id=execution_id,
                         created_at=created_at or _utcnow(),
                         log_level=level_no,
@@ -517,7 +529,7 @@ class DB:
 
         with engine.begin() as conn:
             if "logs" in targets:
-                logs_stmt = delete(Log.__table__)
+                logs_stmt = delete(Log.__table__)  # pyright: ignore[reportArgumentType]
                 if cutoff is not None:
                     logs_stmt = logs_stmt.where(Log.created_at <= cutoff)
                 result = conn.execute(logs_stmt)
@@ -525,9 +537,9 @@ class DB:
 
             if "tokens" in targets:
                 if include_active_tokens:
-                    tokens_stmt = delete(Token.__table__)
+                    tokens_stmt = delete(Token.__table__)  # pyright: ignore[reportArgumentType]
                 else:
-                    tokens_stmt = delete(Token.__table__).where(
+                    tokens_stmt = delete(Token.__table__).where(  # pyright: ignore[reportArgumentType]
                         and_(Token.expires_at.is_not(None), Token.expires_at <= now)
                     )
                 result = conn.execute(tokens_stmt)
@@ -537,7 +549,7 @@ class DB:
                 non_pending = Execution.status != Status.SIM_PENDING
                 pending = Execution.status == Status.SIM_PENDING
 
-                execution_stmt = delete(Execution.__table__)
+                execution_stmt = delete(Execution.__table__)  # pyright: ignore[reportArgumentType]
                 if cutoff is None:
                     if not include_pending_executions:
                         execution_stmt = execution_stmt.where(non_pending)
@@ -572,3 +584,6 @@ class DB:
                     conn.exec_driver_sql("VACUUM")
 
         return deleted
+
+
+__all__ = ["DB", "Log", "Token", "Execution", "Status"]

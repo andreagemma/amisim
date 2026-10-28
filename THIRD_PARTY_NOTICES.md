@@ -26,6 +26,38 @@ This project depends on third-party software components.
 - Source: https://github.com/andreagemma/gataframe
 - Local license file: licenses/third_party/packages/ga-gataframe/LICENSE
 
+## ga-parallel
+
+- Package: ga-parallel
+- Version: 0.1.1
+- License: MIT
+- Source: https://github.com/andreagemma/parallel
+- Local license file: licenses/third_party/packages/ga-parallel/LICENSE
+
+## ga-graph
+
+- Package: ga-graph
+- Version: 0.1.0
+- License: MIT
+- Source: https://github.com/andreagemma/graph
+- Local license file: licenses/third_party/packages/ga-graph/LICENSE
+
+## ga-matrix
+
+- Package: ga-matrix
+- Version: 0.1.0
+- License: MIT
+- Source: https://github.com/andreagemma/matrix
+- Local license file: licenses/third_party/packages/ga-matrix/LICENSE
+
+## ga-serializer
+
+- Package: ga-serializer
+- Version: 0.1.0
+- License: MIT
+- Source: https://github.com/andreagemma/serializer
+- Local license file: licenses/third_party/packages/ga-serializer/LICENSE
+
 ## SQLAlchemy
 
 - Package: SQLAlchemy

@@ -1,14 +1,14 @@
 # amisim Library API
 
-AMISim can be used as a Python library through the AmisimApplication class.
+AMISim can be used as a Python library through the `AmisimApp` class.
 
 ## Public Entry Point
 
 ```python
-from amisim import AmisimApplication
+from amisim import AmisimApp
 ```
 
-## Class: AmisimApplication
+## Class: AmisimApp
 
 This class is prepared for integration and keeps method signatures stable while internal behavior is being developed.
 
@@ -20,16 +20,24 @@ Available methods:
 - run
 
 `init_db` is implemented and creates the internal AMISim database schema.
-`load_settings` and `clean_db` are implemented.
-`load_params` and `run` currently raise NotImplementedError by design.
+`load_settings`, `clean_db`, and `load_params` are implemented.
+`run` currently raises NotImplementedError by design.
 
 Typed settings model:
-- `AmisimApplication.settings_reader` is the active `ConfigReader` instance.
-- `AmisimApplication.ini` provides typed access to configuration sections through `IniBase`/`IniModel`.
-- The model is defined in `src/amisim/ini_model.py` with uppercase section and field names.
+- `AmisimApp.settings_reader` is the active `ConfigReader` instance.
+- `AmisimApp.ini` provides typed access to configuration sections through `IniBase`/`IniModel`.
+- The model is defined in `src/amisim/config/ini_model.py` with uppercase section and field names.
 - Values are read on-demand at runtime from `settings_reader` (for example `ini.GENERAL.DEBUG` or `ini.get("GENERAL", "DEBUG", default=False)`).
 - Unknown sections and fields discovered from active providers are created dynamically at runtime and are exposed as string fields.
 - If `load_settings(None)` is called, a default `ConfigReader` is created and the typed default structure remains available.
+
+The application initializes its `parallel` runtime from the `PARALLEL` settings section:
+- `PARALLEL_USE` enables or disables parallel execution.
+- `PARALLEL_NUMCPUS` sets the requested CPU count.
+- `PARALLEL_ENGINE` selects the execution engine.
+- `PARALLEL_CLUSTER_ADDRESS` is passed to the Ray engine.
+
+Calling `load_settings` again closes and recreates the runtime using the updated settings.
 
 ## Method Reference
 
@@ -88,7 +96,7 @@ Signature:
 load_params(params_path: Path | None = None) -> None
 ```
 
-Use this method to load runtime parameters from a JSON file.
+Use this method to load runtime parameters from a JSON or YAML file. The resulting `ParamsParser` is available as `app.parser`.
 
 ### clean_db
 
@@ -130,7 +138,38 @@ Use this method to execute the simulation workflow.
 
 ## Integration Note
 
-Current CLI support is designed around this class so custom applications can inject their own AmisimApplication implementation during testing or embedding.
+Current CLI support is designed around this class so custom applications can inject their own `AmisimApp` implementation during testing or embedding.
+
+## Model
+
+The `amisim.model` package holds the domain objects shared by the algorithms.
+
+- `Workspace`: loads and keeps `graph`, `modes`, `matrices` and `links_sets`, with `load_graph`, `load_modes`, `load_matrices` and `load_links_sets` (each supports `force=True` to reload).
+- `Graph`: time dependent network built from the nodes, links and turns sources through `Graph.read` or `read_params`; exposes `nodes`, `links`, `turns`, `centroids`, `get_timestamps`, `reset_flows` and `reset_costs`.
+- `Modes`: transport modes indexed by code; `parse` resolves `"all"`, `"none"`, a single code or a set of codes.
+- `Matrices`: demand matrices per mode plus the equivalent matrix obtained weighting each mode by its `eq_factor`.
+- `LinksSet`: named sets of links used to group results.
+- `Paths`: multimodal paths keyed by mode, built with `from_dict`/`from_pandas` and persisted with `write`.
+
+Sources are described by `InputParameters` (or plain dictionaries/paths) and destinations by `OutputParameters`; the loaders in `amisim.model.loaders` normalize the fields declared in their `field_definition`.
+
+## Algorithms
+
+The `amisim.algorithms` package exposes the computations available on a workspace.
+
+- `Dispatcher(app).dispatch("shortest_path")` runs an algorithm by operation name.
+- `ShortestPath(app, parallel=False).run(...)` computes the time dependent shortest paths for every mode and timestamp and returns a `Paths` instance. Missing arguments default to the workspace content: `graph`, `nodes` (graph centroids), `modes` and `timestamps`.
+- `StaticAON(app, workspace).run(tstart, tend)` performs a static all-or-nothing assignment through `StaticSimulator`, loading the path flows on the links and updating the link costs with a BPR function.
+
+### Parallel shortest paths
+
+```python
+from amisim.algorithms import ShortestPath
+
+paths = ShortestPath(app=app, parallel=True).run()
+```
+
+With `parallel=True` the algorithm builds one task per mode, timestamp and origin node through `get_tasks`, and distributes the chunks on `app.parallel` (configured from the `[PARALLEL]` settings). Each worker builds its own router per mode, so results are merged by mode and are equivalent to the sequential execution.
 
 ## Logging
 
