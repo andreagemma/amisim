@@ -31,6 +31,7 @@ def test_package_exports_core_symbols() -> None:
     assert hasattr(amisim, "ParamsParser")
     assert hasattr(amisim, "ShortestPath")
 
+
 def test_parse_cli_defaults_to_run() -> None:
     args = parse_cli_args([])
     assert args.command == "run"
