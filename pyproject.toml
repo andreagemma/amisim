@@ -87,6 +87,8 @@ version = {attr = "amisim._version.__version__"}
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra --strict-markers"
+#log_cli = true
+#log_cli_level = "DEBUG"
 
 [tool.coverage.run]
 branch = true

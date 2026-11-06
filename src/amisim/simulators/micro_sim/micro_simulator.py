@@ -998,7 +998,7 @@ class MicroSimulator(BaseSimulator):
         df_aggregated = pd.DataFrame(data=self.ass_results, columns=col).rename(
             columns={n: k for n, k in _n.items() if n in col}
         )
-        df_aggregated = df_aggregated.query(f"time >= {time_start} and time <= {time_end}")
+        df_aggregated = df_aggregated.query(f"time >= {time_start} and time <= {time_end}").copy()
         df_aggregated[[_n["cum_mov_vehs"], _n["cum_que_vehs"], _n["cum_speed"], _n["cum_density"], _n["cum_tt"]]] = (
             df_aggregated[
                 [_n["cum_mov_vehs"], _n["cum_que_vehs"], _n["cum_speed"], _n["cum_density"], _n["cum_tt"]]
