@@ -5,7 +5,7 @@ from typing import Any
 
 from ..base.base_loader import InputType
 from ..base.base_model import BaseModel
-from .counts_model import CountsModel, CountsType
+from .counts_model import CountsModel
 from .detectors_model import DetectorsModel
 from .events_model import EventsModel
 from .graph_model import GraphBase, GraphModel

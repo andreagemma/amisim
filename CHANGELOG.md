@@ -43,7 +43,7 @@
 - Added typed runtime settings model in `src/amisim/ini_model.py` and exposed it as `AmisimApplication.ini` with source reader `AmisimApplication.settings_reader`; section/field names are uppercase and values are resolved on-demand at runtime.
 - Refactored runtime settings architecture to `IniBase` + nested `IniModel` section classes, with dynamic runtime section/field discovery from merged provider metadata (`ConfigReader.sections()` and `ConfigReader.variables()`).
 
-Model4Italy Proprietary Software License
+AMISim Proprietary Software License
 
 Copyright (c) 2026 Andrea Gemma. All rights reserved.
 

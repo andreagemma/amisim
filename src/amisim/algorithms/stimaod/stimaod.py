@@ -5,10 +5,7 @@ Created on Fri Jun 11 16:16:31 2021
 @author: andge
 """
 
-import numpy as np
-import pandas as pd
 from .ini import ini
-import pdb
 
 
 class StimaOD:
