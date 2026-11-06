@@ -15,6 +15,7 @@ from serializer import Serializer
 
 from ._version import __app_name__
 from .app_logger import configure_logging, configure_logging_from_typed_settings, get_logger
+from .base.base_loader import OutputType
 from .config.ini_model import IniModel
 from .config.params_parser import ParamsParser
 from .database import DB, Execution
@@ -88,31 +89,39 @@ class AmisimApp:
         self.log.extra["execution_id"] = e.id
         return e
 
-    def save_settings(self) -> None:
+    def save_settings(self, params: OutputType | dict[str, Any] | None = None) -> None:
         """Save the current settings to the designated output location."""
-        if params := self.parser.get(self.ini.PARAMS.SETTINGS_RESULTS):
+        if params is None:
+            params = self.parser.get(self.ini.PARAMS.SETTINGS_RESULTS)
+        if params:
             self.log.debug("Saving settings...")
             try:
-                path = Path(params)
+                path = Path(str(params))
                 path.parent.mkdir(parents=True, exist_ok=True)
                 self.log.debug("Write: %s" % path)
                 self.ini.save(path)
                 self.log.info("Settings saved in %.2f seconds" % self.log.toc()).toc()
             except Exception as e:
                 self.log.error("Failed to save settings:", exc_info=e, stack_info=True)
+        else:
+            self.log.warning("No settings path specified to save settings.")
 
-    def save_params(self) -> None:
+    def save_params(self, params: OutputType | dict[str, Any] | None = None) -> None:
+        if params is None:
+            params = self.parser.get(self.ini.PARAMS.PARAMS_RESULTS)
         """Save the current parameters to the designated output location."""
-        if params := self.parser.get(self.ini.PARAMS.PARAMS_RESULTS):
+        if params:
             self.log.debug("Saving parameters...").tic()
             try:
-                path = Path(params)
+                path = Path(str(params))
                 path.parent.mkdir(parents=True, exist_ok=True)
                 self.log.debug("Write: %s" % path)
                 self.parser.save(path)
                 self.log.info("Parameters saved in %.2f seconds" % self.log.toc()).toc()
             except Exception as e:
                 self.log.error("Failed to save parameters:", exc_info=e, stack_info=True)
+        else:
+            self.log.warning("No parameters path specified to save parameters.")
 
     @property
     def workspace(self) -> Workspace:

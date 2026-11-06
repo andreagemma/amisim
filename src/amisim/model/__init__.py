@@ -17,10 +17,12 @@ from ..base.base_loader import (
     TZType,
     read_source,
 )
+from ..loaders.counts_loader import CountsLoader
 from ..loaders.links_loader import LinksLoader
 from ..loaders.modes_loader import ModesLoader
 from ..loaders.nodes_loader import NodesLoader
 from ..loaders.turns_loader import TurnsLoader
+from .counts_model import CountsModel, CountsType
 from .detectors_model import DetectorsModel, DetectorsType
 from .events_model import EventsModel, EventsType
 from .graph_model import ActionPolicy, GraphBase, GraphModel, Link, Node, TimeDependentLinkBasedShortestPath, Turn
@@ -55,6 +57,7 @@ __all__ = [
     "LinksSetsType",
     "MonitoredLinksSetsModel",
     "MonitoredLinksSetsType",
+    "CountsLoader",
     "ModesLoader",
     "LinksLoader",
     "NodesLoader",
@@ -96,6 +99,8 @@ __all__ = [
     "TrafficLightsType",
     "MatrixAss",
     "MatrixODT",
+    "CountsModel",
+    "CountsType",
     "DetectorsModel",
     "DetectorsType",
     "EventsModel",

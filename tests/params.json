@@ -1,0 +1,10 @@
+{
+    "simulation_id": 1,
+    "interval": "",
+    "simulation_date": "2014-01-01",
+    "scenario": "test",
+    "start": "07:00",
+    "end": "08:00",  
+    "op": "assignment",
+    "include": ["params_data_{scenario}.json"]
+}

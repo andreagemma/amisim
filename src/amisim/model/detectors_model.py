@@ -61,7 +61,7 @@ class DetectorsModel(BaseModel):
             if ret.df.empty:
                 detectors = {}
             else:
-                detectors = ret.df.set_index("id_set")["id_link"].to_dict()
+                detectors = ret.df.set_index("id")["id_link"].to_dict()
             this._detectors = detectors  # type: ignore
         else:
             raise ValueError("Failed to read detectors")

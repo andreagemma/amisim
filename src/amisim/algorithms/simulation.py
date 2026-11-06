@@ -60,6 +60,7 @@ class Simulation(AssignmentAON):
         update_last_costs: bool | None = True,
         max_iterations: int | None = None,
         max_relative_gap: float | None = None,
+        *args,
         **kwargs: Any,
     ) -> Simulation:
         super().init(
@@ -87,6 +88,7 @@ class Simulation(AssignmentAON):
         update_last_costs: bool | None = True,
         max_iterations: int | None = None,
         max_relative_gap: float | None = None,
+        *args,
         **kwargs: Any,
     ) -> Simulation:
         super().update(

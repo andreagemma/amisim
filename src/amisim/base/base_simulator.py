@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from abc import ABC
 from typing import Any
 
 from ..model.graph_model import GraphBase
@@ -8,7 +9,7 @@ from ..model.paths_model import MultimodalPathsType
 from .base_algorithm import BaseAlgorithm
 
 
-class BaseSimulator(BaseAlgorithm):
+class BaseSimulator(ABC, BaseAlgorithm):
     def __init__(self, use_parallel: bool | None = None, n_workers: float | None = None, **kwargs) -> None:
         """Build the simulator and resolve the parallel runtime to use.
 

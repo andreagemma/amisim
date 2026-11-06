@@ -22,4 +22,5 @@ __all__ = [
     "PathsLoader",
     "TrafficLightsLoader",
     "TurnsLoader",
+    "CountsLoader",
 ]

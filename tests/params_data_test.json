@@ -1,0 +1,94 @@
+{
+    "params": {
+        "input": {
+            "location": "./data/{scenario}"
+        },
+        "output": {
+            "location": "./data/output/{scenario}/{simulation_id}"
+        },
+        "modes": "{params.input.location}/modes.csv",
+        "demand": [
+            {
+                "mode": "c",
+                "matrices": [
+                    {
+                        "src": "{params.input.location}/mat.csv"
+                    }
+                ]
+            }
+        ],
+        "zones": "{params.input.location}/zones.shp",
+        "supply": [
+            {
+                "links": {
+                    "src": "{params.input.location}/links.shp"                    
+                },
+                "nodes": {
+                    "src": "{params.input.location}/nodes.shp"
+                },
+                "turns": {
+                    "src": "{params.input.location}/turns.csv"
+                }
+            }            
+        ],
+        "links_sets": ["{params.input.location}/links_sets.csv"],
+        "monitored_links_sets": ["{params.input.location}/monitored_links_sets.csv"],
+        "events_no": [
+            {
+                "src": "{params.input.location}/events.csv",
+                "mapping": {
+                    "id_link_set": "id_link_set",
+                    "type": "type",
+                    "start": "start",
+                    "end": "end",
+                    "params": "params"
+                }
+            }
+        ],
+        "detectors": [
+            {
+                "src": "{params.input.location}/detectors.csv",
+                "mapping": {
+                    "id": "id",
+                    "id_link": "id_link"
+                }
+            }
+        ],
+        "counts": [
+            {
+                "src": "{params.input.location}/counts.csv",
+                "mapping": {
+                    "id": "id",
+                    "timestamp": "timestamp",
+                    "mode": "mode",
+                    "counts": "counts"
+                }
+            }
+        ],
+        "traffic_lights_": [
+            {
+                "src": "{params.input.location}/traffic_lights.gpkg",
+                "layer": "traffic_lights",
+                "mapping": {
+                    "id": "id",
+                    "cycle": "cycle",
+                    "offset": "offset",
+                    "phases": "phases",
+                    "geometry": "geometry"
+                }
+            }
+        ],
+        "params_results": "{params.output.location}/params{interval}.yaml",
+        "settings_results": "{params.output.location}/settings{interval}.ini",
+        "algorithm_log": {"src": "{params.output.location}/iterations{interval}.csv", "format": "csv"},
+
+        "paths": {"src": "{params.output.location}/paths{interval}.parquet", "format": "geoparquet"},
+        
+        "aggregated_results": {"src": "{params.output.location}/aggregated_results{interval}.parquet", "format": "geoparquet"},            
+        "trace_results": {"src": "{params.output.location}/trace_results{interval}.parquet", "format": "geoparquet"},
+        "aggregated_results_stats": {"src": "{params.output.location}/aggregated_results_stats{interval}.csv", "format": "csv"},
+        "signalized_results": {"src": "{params.output.location}/signalized_results{interval}.parquet", "format": "geoparquet"},
+        "assignment_matrix": {"src": "{params.output.location}/assignment_matrix{interval}.db", "format": "db"},
+        "state": "{params.input.location}/state"
+    }
+}

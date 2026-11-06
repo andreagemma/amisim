@@ -427,12 +427,14 @@ class IniModel(IniBase):
         EVENTS: str = "params.events"
         LINKS_SETS: str = "params.links_sets"
         MONITORED_LINKS_SETS: str = "params.monitored_links_sets"
+        COUNTS: str = "params.counts"
 
         PATHS_OUTPUT: str = "params.paths"
         FLOWS_OUTPUT: str = "params.aggregated_results"
         STATS_OUTPUT: str = "params.aggregated_results_stats"
         TRACE_OUTPUT: str = "params.trace_results"
         SIGNALIZED_OUTPUT: str = "params.signalized_results"
+        ASSMATRIX_OUTPUT: str = "params.assignment_matrix"
 
         STATE: str = "params.state"
         STATE_GRAPH: str = "graph"

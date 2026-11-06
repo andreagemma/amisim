@@ -5,6 +5,7 @@ from typing import Any
 
 from ..base.base_loader import InputType
 from ..base.base_model import BaseModel
+from .counts_model import CountsModel, CountsType
 from .detectors_model import DetectorsModel
 from .events_model import EventsModel
 from .graph_model import GraphBase, GraphModel
@@ -39,6 +40,50 @@ class Workspace(BaseModel):
         self._events_model: EventsModel | None = None
         self._monitored_links_sets_model: MonitoredLinksSetsModel | None = None
         self._preloaded_paths_model: PathsModel | None = None
+        self._counts_model: CountsModel | None = None
+
+    @property
+    def counts_model(self) -> CountsModel:
+        if self._counts_model is None:
+            self.load_counts()
+        if self._counts_model is None:
+            raise RuntimeError("Failed to load counts.")
+        return self._counts_model
+
+    def load_counts(
+        self,
+        kw_counts: InputType | None = None,
+        force: bool = False,
+    ) -> CountsModel:
+        """Load counts.
+
+        Args:
+            kw_counts: Parameters describing the counts source.
+            force: If `True`, reload the counts even if already loaded.
+
+        Raises:
+            ValueError: If the counts cannot be read.
+
+        """
+        self.log.debug("Starting to load counts...").tic()
+        if self._events_model is None or force:
+            kw_counts = kw_counts or self.parser.get(self.ini.PARAMS.COUNTS)
+            if not bool(kw_counts) and not self.parser.has_key(self.ini.PARAMS.COUNTS):
+                self._counts_model = CountsModel()
+                self.log.warning("Counts not found, initializing empty model.")
+            else:
+                self._counts_model = CountsModel.read(kw_counts=kw_counts)
+                if self._counts_model is None:
+                    raise RuntimeError("Failed to read counts.")
+                self.log.debug("Counts loaded successfully")
+            self.log.info("Counts loaded in %.2f seconds" % self.log.toc()).tic()
+            self.log.info(f"{self._counts_model}").tic()
+        else:
+            self.log.debug("Counts already loaded.")
+        assert self._counts_model is not None, "Counts model not loaded."
+        assert self._counts_model.counts is not None, "Counts not loaded."
+        self.graph_model.graph["counts"] = self._counts_model.counts if self._counts_model is not None else {}
+        return self._counts_model
 
     @property
     def monitored_links_sets_model(self) -> MonitoredLinksSetsModel:
@@ -355,14 +400,10 @@ class Workspace(BaseModel):
                 self.log.info(f"{self._detectors_model}").tic()
         else:
             self.log.debug("Detectors already loaded, skipping.")
-        assert self._graph_model is not None, "Graph must be loaded before accessing detectors."
-        assert self._graph_model.graph is not None, (
-            "Graph must have a valid graph structure before accessing detectors."
-        )
-        self.graph_model.graph["detectors"] = (
-            self._detectors_model.detectors if self._detectors_model is not None else {}
-        )
         return self._detectors_model
+
+    def has_detectors(self) -> bool:
+        return self._detectors_model is not None and self._detectors_model.detectors is not None
 
     @property
     def matrices_model(self) -> MatricesModel:

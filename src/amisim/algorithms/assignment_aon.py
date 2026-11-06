@@ -2,15 +2,17 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict
 from datetime import datetime
+from math import floor
 from pathlib import Path
-from typing import Any, Generator, Literal
+from typing import Any, Generator, Hashable, Literal, cast
 
 import geopandas as gpd
 import numpy as np
 import pandas as pd
 
+from ..base.assignment_iteration import AssignmentIteration
 from ..base.base_algorithm import BaseAlgorithm
 from ..base.base_loader import BaseLoader, OutputType
 from ..base.base_simulator import BaseSimulator
@@ -19,34 +21,12 @@ from ..model.graph_model import GraphBase, GraphModel
 from ..model.matrices_model import MultiModalDynamicMatrix
 from ..model.matrix_ass import MatrixAss
 from ..model.modes_model import ModesType
-from ..model.paths_model import MultimodalPathsType, PathsModel
+from ..model.paths_model import MultimodalPathsType, PathsModel, PathType
 from ..model.slice import Slice
 from ..simulators.static_simulator import StaticSimulator
 from .shortest_path import ShortestPath
 
-__all__ = ["AssignmentAON", "Iteration"]
-
-
-@dataclass
-class Iteration:
-    id: int | None = None
-    dt_start: datetime = field(default_factory=datetime.now)
-    dt_end: datetime | None = None
-    rgap: float | None = None
-    current_travel_time: float = 0.0
-    total_travel_time: float = 0.0
-    total_demand: float = 0.0
-    total_vehicles: int | None = None
-    n_paths: int = 0
-    n_unique_paths: int = 0
-    k_paths: int = 0
-    total_cpu_time: float = 0.0
-    name: str | None = None
-
-    def duration(self) -> float | None:
-        if self.dt_end is not None:
-            return (self.dt_end - self.dt_start).total_seconds()
-        return None
+__all__ = ["AssignmentAON", "AssignmentIteration"]
 
 
 class AssignmentAON(BaseAlgorithm):
@@ -84,11 +64,11 @@ class AssignmentAON(BaseAlgorithm):
         )
         self.slice: Slice
         self.matrix: MultiModalDynamicMatrix
-        self.matrix_assignment: MatrixAss | None = None
+        self.assignment_matrix: MatrixAss | None = None
         self.centroids: list
-        self.iteration: Iteration = Iteration(id=-1)
+        self.iteration: AssignmentIteration = AssignmentIteration(id=-1)
         self.iteration.name = ""
-        self.iterations: list[Iteration] = []
+        self.iterations: list[AssignmentIteration] = []
         self.total_travel_time: float = 0.0
         self.preloaded_paths: MultimodalPathsType | None = None
         self.max_iterations: int
@@ -100,6 +80,9 @@ class AssignmentAON(BaseAlgorithm):
         self._trace_results: gpd.GeoDataFrame | None = None
         self._signalized_results: gpd.DataFrame | None = None
         self._stats_results: pd.DataFrame | None = None
+        self.calculate_assignment_matrix: bool = False
+        self.detectors: dict[Hashable, Hashable] | None = None
+        self.id_link_detectors: list[Hashable] = []
 
     def init(
         self,
@@ -112,6 +95,8 @@ class AssignmentAON(BaseAlgorithm):
         update_last_costs: bool | None = True,
         max_iterations: int | None = None,
         max_relative_gap: float | None = None,
+        calculate_assignment_matrix: bool | None = None,
+        detectors: dict[Hashable, Hashable] | None = None,
         **kwargs: Any,
     ) -> AssignmentAON:
         if graph is not None:
@@ -128,9 +113,18 @@ class AssignmentAON(BaseAlgorithm):
             self.preloaded_paths = preloaded_paths
         if self.preloaded_paths is None and self.app.workspace.has_preloaded_paths:
             self.preloaded_paths = self.app.workspace.preloaded_paths_model.paths
+        if detectors is not None:
+            self.detectors = detectors
+        if self.detectors is None and self.app.workspace.has_detectors():
+            self.detectors = self.app.workspace.detectors_model.detectors
+        if self.detectors is not None:
+            self.id_link_detectors = cast(list[Hashable], sorted(self.detectors.values()))
+
         self.update_last_costs: bool = False if update_last_costs is None else update_last_costs
         self.max_iterations = max_iterations if max_iterations is not None else self.ini.ASSIGNMENT.MSA_MAX_ITE
         self.max_relative_gap = max_relative_gap if max_relative_gap is not None else self.ini.ASSIGNMENT.MSA_RGAP
+        if calculate_assignment_matrix is not None:
+            self.calculate_assignment_matrix = calculate_assignment_matrix
 
         if not hasattr(self, "graph"):
             assert self.app.workspace.graph_model is not None, "Workspace not found in app"
@@ -190,6 +184,8 @@ class AssignmentAON(BaseAlgorithm):
         update_last_costs: bool | None = None,
         max_iterations: int | None = None,
         max_relative_gap: float | None = None,
+        calculate_assignment_matrix: bool | None = None,
+        detectors: dict[Hashable, Hashable] | None = None,
         **kwargs: Any,
     ) -> AssignmentAON:
         if graph is not None:
@@ -210,6 +206,11 @@ class AssignmentAON(BaseAlgorithm):
             self.max_iterations = max_iterations
         if max_relative_gap is not None:
             self.max_relative_gap = max_relative_gap
+        if calculate_assignment_matrix is not None:
+            self.calculate_assignment_matrix = calculate_assignment_matrix
+        if detectors is not None:
+            self.detectors = detectors
+            self.id_link_detectors = cast(list[Hashable], sorted(self.detectors.values()))
 
         if not hasattr(self, "graph"):
             assert self.app.workspace.graph_model is not None, "Workspace not found in app"
@@ -269,13 +270,13 @@ class AssignmentAON(BaseAlgorithm):
         self.log.info("Paths updated in %.2f seconds" % tic.toc()).tic()
         self.log.info(f"Total paths calculated: {paths.n_paths()} - unique: {paths.n_unique_paths()}")
 
-    def get_new_iteration(self) -> Iteration:
-        self.iteration = Iteration(id=len(self.iterations))
+    def get_new_iteration(self) -> AssignmentIteration:
+        self.iteration = AssignmentIteration(id=len(self.iterations))
         self.iteration.name = f"Ite: {self.iteration.id}"
         self.iterations.append(self.iteration)
         return self.iteration
 
-    def get_iterations(self) -> Generator[Iteration, None, None]:
+    def get_iterations(self) -> Generator[AssignmentIteration, None, None]:
         self.iterations.clear()
         for i in range(0, self.max_iterations):
             self.get_new_iteration()
@@ -349,6 +350,7 @@ class AssignmentAON(BaseAlgorithm):
         self.simulator.init(time_start=self.slice.time_start, time_end=self.slice.time_end)
         self.simulator.update(paths=self.paths)
         self.simulator.run(time_start=self.slice.time_start, time_end=self.slice.time_end)
+        self.calculate_ass_matrix()
         self.update_infos()
         self.log.info(f"{self.name} run completed in %.2f seconds" % tic.toc())
 
@@ -492,6 +494,85 @@ class AssignmentAON(BaseAlgorithm):
             path["costs"] = tuple(costs)
             path["tot_cost"] = cost
         self.log.info("Costs updated in %.2f seconds" % tic.toc())
+
+    def calculate_ass_matrix(self):
+        if not self.calculate_assignment_matrix:
+            self.assignment_matrix = None
+            return
+
+        self.assignment_matrix = MatrixAss(
+            origins=self.centroids or [],
+            destinations=self.centroids or [],
+            detectors=self.id_link_detectors or [],
+            n_intervals=self.graph.num_intervals,
+            pre_intervals=0,
+        )
+
+        tic = self.log.info("Calculating assignment matrix...").tic()
+
+        def fn_calc_mat_ass(
+            tasks,
+            eq_factors,
+            current_time_start,
+            ODs,
+            detectors,
+        ):
+            ret = []
+            path: PathType
+            for (source, target, t_start, mode), paths in tasks:
+                for path in paths:
+                    f = ODs.get_od(mode=mode, o=source, d=target, t=current_time_start + t_start) * eq_factors.get(
+                        mode, {}
+                    ).get("eq_factor", 1)
+                    if f <= 0:
+                        continue
+                    costs = path.costs
+                    links = path.links
+                    for t, l_idx in filter(lambda x: x[1] in detectors, zip(costs, links)):
+                        ret.append(
+                            (
+                                source,
+                                target,
+                                l_idx,
+                                t_start,
+                                t_start + t,
+                                path["path_flow"] / f,
+                            )
+                        )
+            return ret
+
+        tasks = self.paths.all_kpaths()
+        delta_t = self.graph.delta_t
+        for params in self.parallel.map(
+            fn_calc_mat_ass,
+            tasks,
+            eq_factors=self.modes,
+            current_time_start=self.slice.time_start,
+            ODs=self.matrix,
+            detectors=self.id_link_detectors if self.detectors is not None else set(),
+            n_workers=self.n_workers if self.use_parallel else 1,
+        ):
+            for source, target, l, t_start, t, flow in params:
+                t_start = int(floor(t_start) // delta_t)  # inizio
+                t_enter = int(floor(t) // delta_t)
+                self.assignment_matrix.add(o=source, d=target, l=l, t_start=t_start, t_enter=t_enter, flow=flow)
+        self.log.info("Assignment matrix calculated in %.2f seconds" % tic.toc())
+
+    def write_assignment_matrix(self):
+        try:
+            if params := self.parser.get(self.ini.PARAMS.ASSMATRIX_OUTPUT):
+                self.log.info("Saving assignment matrix...")
+                if self.assignment_matrix is None:
+                    self.log.warning("No assignment matrix to save")
+                    return
+                df = self.assignment_matrix.to_pandas()
+                if df is None or df.empty:
+                    self.log.warning("No assignment matrix to save")
+                    return
+                mode = None if len(df) == 1 else "append"
+                BaseLoader.write(engine=self.engine, df=df, params=params, mode=mode)
+        except Exception as e:
+            self.log.error("Failed to save assignment matrix:", exc_info=e, stack_info=True)
 
     def write_running_stats(self):
         try:

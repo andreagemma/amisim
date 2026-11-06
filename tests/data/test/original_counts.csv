@@ -1,0 +1,3 @@
+id,id_detector,mode,day_type,timestamp,counts
+0,1,c,weekday,0,1800
+1,2,c,weekday,0,200

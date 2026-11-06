@@ -1,0 +1,11 @@
+o,d,value,timestamp,day_type,mode
+"1","2","1000","0",workday,c
+"1","2","1000","15",workday,c
+"1","2","1000","30",workday,c
+"1","2","1000","45",workday,c
+"1","3","1000","0",workday,c
+"1","3","1000","15",workday,c
+"1","3","1000","30",workday,c
+"1","3","1000","45",workday,c
+"3","2","1000","0",workday,c
+

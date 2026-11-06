@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Hashable
 
 from ..base.base_simulator import BaseSimulator
 from ..model.graph_model import GraphBase
@@ -53,6 +53,8 @@ class AssignmentMSA(AssignmentAON):
         update_last_costs: bool | None = None,
         max_iterations: int | None = None,
         max_relative_gap: float | None = None,
+        calculate_assignment_matrix: bool | None = None,
+        detectors: dict[Hashable, Hashable] | None = None,
         max_k: int | None = None,
         **kwargs: Any,
     ) -> AssignmentMSA:
@@ -66,6 +68,8 @@ class AssignmentMSA(AssignmentAON):
             update_last_costs=update_last_costs,
             max_iterations=max_iterations,
             max_relative_gap=max_relative_gap,
+            calculate_assignment_matrix=calculate_assignment_matrix,
+            detectors=detectors,
             **kwargs,
         )
         self.max_k = max_k if max_k is not None else self.ini.ASSIGNMENT.MSA_K
@@ -82,6 +86,8 @@ class AssignmentMSA(AssignmentAON):
         update_last_costs: bool | None = None,
         max_iterations: int | None = None,
         max_relative_gap: float | None = None,
+        calculate_assignment_matrix: bool | None = None,
+        detectors: dict[Hashable, Hashable] | None = None,
         max_k: int | None = None,
         **kwargs: Any,
     ) -> AssignmentMSA:
@@ -95,6 +101,8 @@ class AssignmentMSA(AssignmentAON):
             update_last_costs=update_last_costs,
             max_iterations=max_iterations,
             max_relative_gap=max_relative_gap,
+            calculate_assignment_matrix=calculate_assignment_matrix,
+            detectors=detectors,
             **kwargs,
         )
         if max_k is not None:
@@ -142,6 +150,7 @@ class AssignmentMSA(AssignmentAON):
                         for path in k_paths:
                             path["path_flow"] = demand / n_paths
                 self.update_performance()
+                self.calculate_ass_matrix()
                 self.calc_rgap()
                 self.update_infos()
                 self.log.info(f"{self.iteration.name}Iteration completed in {tic_iteration.toc()} seconds")
@@ -181,6 +190,7 @@ class AssignmentMSA(AssignmentAON):
                     )
                     best["path_flow"] += demand / k
             self.update_performance()
+            self.calculate_ass_matrix()
             self.calc_rgap()
             self.update_infos()
 

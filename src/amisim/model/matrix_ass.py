@@ -46,6 +46,15 @@ class MatrixAss(BaseModel):
             j = idx % self.nd
             return self.origins[i], self.destinations[j]
 
+        def sum(self) -> float:
+            return float(self.mat.sum())
+
+        def __iter__(self):
+            for l in range(self.nl):
+                for i in range(self.no):
+                    for j in range(self.nd):
+                        yield i, j, l, self.mat[l, i * self.nd + j]
+
     def __init__(
         self,
         origins: list,
@@ -122,7 +131,27 @@ class MatrixAss(BaseModel):
             io = self.o2i[o]
             id = self.d2i[d]
             il = self.l2i[l]
-            mat.mat[io, id, il] += flow
+            mat[io, id, il] += flow
+
+    def sum(self) -> float:
+        total = 0.0
+        for tenter_dict in self.mats.values():
+            for od in tenter_dict.values():
+                total += od.sum()
+        return total
+
+    def show(self, show_all=False):
+        for tenter, tenter_dict in self.mats.items():
+            for tstart, od in tenter_dict.items():
+                print(f"tenter: {tenter}, tstart: {tstart}")
+                print("link\torigin\t\tdest\tvalue")
+                for i, j, l, value in od:
+                    if value == 0 and not show_all:
+                        continue
+                    o = self.origins[i]
+                    d = self.destinations[j]
+                    l = self.detectors[l]
+                    print(f"{l},\t{o},\t{d},\t{value}")
 
     def __getitem__(self, key: tuple[int, int] | int) -> MatrixAss.OD:
         """
