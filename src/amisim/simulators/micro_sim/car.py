@@ -32,13 +32,13 @@ class Car:
     def __init__(self, id_n: int, t: float, path: PathType, G: GraphBase, deltat: float, mode: ModeCode):
         self.deltat = deltat
         self.ID = id_n  # vehicle ID
-        self.path_links: list[Hashable] = path["links"]  # path of vehicle
+        self.path_links: list[Hashable] = list(path.links)  # path of vehicle
         self.ent_time: float = t  # [m] entrance on the network
         self.status: str = "sleeping"  # status of vehicle
         self.G: GraphBase = G  # graph
         self.signalized_links: list = G["signalized_links"]
-        self.o: Hashable = path["source"]
-        self.d: Hashable = path["target"]
+        self.o: Hashable = path.source
+        self.d: Hashable = path.target
 
         self.signalized_turns: dict = G["signalized_turns"]
 

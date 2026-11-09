@@ -5,10 +5,9 @@ from __future__ import annotations
 import time
 from typing import Any, Generator
 
-from graph import KPathList
-
 from ..base.base_algorithm import BaseAlgorithm
 from ..database import Execution
+from ..model.graph import KPathList
 from ..model.graph_model import GraphBase, TimeDependentLinkBasedShortestPath
 from ..model.modes_model import ModesType
 from ..model.paths_model import MultimodalPathsType, PathsModel

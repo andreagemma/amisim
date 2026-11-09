@@ -91,8 +91,11 @@ The project declares these primary runtime dependencies:
 - `ga-gataframe`
 - `ga-tictoc`
 - `ga-parallel`
-- `ga-graph`
-- `ga-matrix`
 - `ga-serializer`
 - `SQLAlchemy`
 - `loguru`
+- `dill`
+- `geopandas`
+- `shapely`
+
+The former `ga-graph` and `ga-matrix` packages are now embedded in the source tree as the `amisim.model.graph` and `amisim.model.matrix` subpackages, so they are no longer external dependencies.

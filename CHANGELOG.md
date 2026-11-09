@@ -1,5 +1,16 @@
 ## Unreleased
 
+- Bumped package/build version to `0.1.5`.
+- Reimplemented the vendored `Path` class as a numba `jitclass` with `int64`/`float64` typed attributes; the `links` and `costs` sequences are now numba typed lists instead of plain tuples, and `k`/`path_flow` are first-class typed fields.
+- Added `Path` helpers in `amisim.model.graph.paths.path`: the `make_path` factory (converts plain sequences into typed lists), `make_int_list`/`make_float_list`, `path_to_dict`, and `save_path`/`load_path`; pickle/deepcopy of paths is supported through a lazily registered `copyreg` reducer, keeping container `dill`/serializer state files working.
+- Adapted the path containers (`KPathList`, `KPathContainer`, `MultimodalPaths`, `PathContainer`) and the algorithms/simulators to attribute-based path access (dict-style subscripting of `Path` is no longer supported); link-sequence interning in `KPathList.add_path` is now keyed by tuple while sharing the typed list storage.
+- Added tests for the numba `Path` in `tests/test_numba_path.py`.
+- Embedded the `ga-graph` and `ga-matrix` source code as the `amisim.model.graph` and `amisim.model.matrix` subpackages; all internal imports now use the vendored modules.
+- Removed the external runtime dependencies on `ga-graph` and `ga-matrix` and added their direct dependencies `dill`, `geopandas`, and `shapely`.
+- Updated third-party licensing records: removed `ga-graph`/`ga-matrix` and added `dill`, `geopandas`, and `shapely` in `licenses/third_party/summary.tsv`, package license archives, and `THIRD_PARTY_NOTICES.md`.
+- Extended the `mypy` analysis to the vendored subpackages and fixed the latent typing issues surfaced by the real `graph`/`matrix` types (previously `Any`): integer coercion of graph time attributes in `GraphModel`, `BaseSimulator`, and `MicroSimulator`; typed load casts in `GraphModel.read_state`/`PathsModel.read_state`; corrected `PathsModel.all_kpaths` return annotation.
+- Fixed latent runtime bugs surfaced by the typed vendored modules: `Dispatcher.shortest_path` now unwraps `GraphModel` before calling `ShortestPath.run`; `SplitAssignmentModel` now calls `BaseSimulator.init` with keyword time arguments, iterates k-path lists correctly in `calc_rgap`, and uses the correct `crs_link` argument of `PathContainer.to_pandas`.
+- Added smoke tests for the vendored subpackages in `tests/test_vendored_subpackages.py`.
 - Bumped package/build version to `0.1.3`.
 - Refined `amisim.__init__` public exports by replacing wildcard imports with explicit symbols and an explicit `__all__`.
 - Added direct runtime dependencies on `ga-graph`, `ga-matrix`, and `ga-serializer` to match imported modules.

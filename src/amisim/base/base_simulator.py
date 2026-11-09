@@ -37,8 +37,8 @@ class BaseSimulator(ABC, BaseAlgorithm):
         **kwargs: Any,
     ) -> BaseSimulator:
         self.graph = graph if graph is not None else self.app.workspace.graph_model.graph
-        self.time_start = time_start if time_start is not None else self.graph.tstart
-        self.time_end = time_end if time_end is not None else self.graph.tend
+        self.time_start = time_start if time_start is not None else int(self.graph.tstart)
+        self.time_end = time_end if time_end is not None else int(self.graph.tend)
         if modes is not None:
             self.modes = modes
         if not hasattr(self, "modes") or (self.modes is None and "modes" in self.graph):

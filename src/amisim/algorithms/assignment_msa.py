@@ -141,14 +141,12 @@ class AssignmentMSA(AssignmentAON):
                             continue
                         if (n_paths := len(k_paths)) == 0:
                             continue
-                        if (t := k_paths[0].get("t")) is None:
-                            continue
-                        t = int(t) % 1440
+                        t = int(k_paths[0].t) % 1440
                         demand = mat.get_od(timestamp=t, origin=source, destination=target) * self.modes.get(
                             mode, {}
                         ).get("eq_factor", 1)
                         for path in k_paths:
-                            path["path_flow"] = demand / n_paths
+                            path.path_flow = demand / n_paths
                 self.update_performance()
                 self.calculate_ass_matrix()
                 self.calc_rgap()
@@ -178,17 +176,15 @@ class AssignmentMSA(AssignmentAON):
                         k = self.iteration.id + 1
                     best = None
                     for path in k_paths:
-                        path["path_flow"] *= 1 - 1 / k
-                        if best is None or path["tot_cost"] < best["tot_cost"]:
+                        path.path_flow *= 1 - 1 / k
+                        if best is None or path.tot_cost < best.tot_cost:
                             best = path
                     assert best is not None, "No best path found"
-                    if (t := best.get("t")) is None:
-                        continue
-                    t = int(t) % 1440
+                    t = int(best.t) % 1440
                     demand = mat.get_od(timestamp=t, origin=source, destination=target) * self.modes.get(mode, {}).get(
                         "eq_factor", 1
                     )
-                    best["path_flow"] += demand / k
+                    best.path_flow += demand / k
             self.update_performance()
             self.calculate_ass_matrix()
             self.calc_rgap()

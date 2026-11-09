@@ -215,7 +215,7 @@ class MicroSimulator(BaseSimulator):
         assert self.workspace.modes_model is not None, "The modes model must be available"
         assert self.workspace.matrices_model is not None, "The matrices model must be available"
 
-        self.t_slice = self.graph.delta_t  # [min] duration of a simulation slice
+        self.t_slice = int(self.graph.delta_t)  # [min] duration of a simulation slice
         if matrix is not None:
             self.ODs = matrix
 
@@ -277,7 +277,7 @@ class MicroSimulator(BaseSimulator):
             **kwargs,
         )
         if graph is not None:  # updateting if change graph
-            self.t_slice = self.graph.delta_t  # [min] duration of a simulation slice
+            self.t_slice = int(self.graph.delta_t)  # [min] duration of a simulation slice
             self.graph["q_trace"] = []
             self.graph["signalized_turns"] = {}
             self.graph["signalized_links"] = set()
@@ -581,7 +581,7 @@ class MicroSimulator(BaseSimulator):
     def initialize_graph(self):
         "Initialize graph for the simulation"
         self.inx_update = 0
-        self.t_slice = self.graph.delta_t
+        self.t_slice = int(self.graph.delta_t)
         self.update_time_index()
 
         self.results: list[list] = []
@@ -714,8 +714,8 @@ class MicroSimulator(BaseSimulator):
                             if fod > 0.5:  # at least one vehicle is created
                                 fod_out = int(round(fod))
                                 p = [
-                                    path["path_flow"] / fod
-                                    for path in self.paths.paths(
+                                    path.path_flow / fod
+                                    for path in self.paths.filter(
                                         source=o,
                                         target=d,
                                         t_start=n * self.t_slice,
@@ -743,7 +743,7 @@ class MicroSimulator(BaseSimulator):
                                 self.res_flow[o, d] = fod - fod_out
 
                                 for veh in range(len(f)):
-                                    path = self.paths.path(
+                                    path = self.paths.get_path(
                                         source=o,
                                         target=d,
                                         t_start=n * self.t_slice,
@@ -751,7 +751,7 @@ class MicroSimulator(BaseSimulator):
                                         k=f[veh],
                                     )
 
-                                    if (not path) or len(path["links"]) == 0:
+                                    if path is None or len(path.links) == 0:
                                         self.log.warning(
                                             "No path available for origin %d and destination %d at time %s",
                                             o,
@@ -762,7 +762,7 @@ class MicroSimulator(BaseSimulator):
 
                                     self.num += 1
 
-                                    if len(path["links"]) > 1:
+                                    if len(path.links) > 1:
                                         veh1 = Car(
                                             self.num,
                                             tstart + n * self.t_slice + delta_emi * veh,

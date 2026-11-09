@@ -34,21 +34,29 @@ This project depends on third-party software components.
 - Source: https://github.com/andreagemma/parallel
 - Local license file: licenses/third_party/packages/ga-parallel/LICENSE
 
-## ga-graph
+## dill
 
-- Package: ga-graph
-- Version: 0.1.0
-- License: MIT
-- Source: https://github.com/andreagemma/graph
-- Local license file: licenses/third_party/packages/ga-graph/LICENSE
+- Package: dill
+- Version: 0.4.1
+- License: BSD-3-Clause
+- Source: https://pypi.org/project/dill/
+- Local license file: licenses/third_party/packages/dill/LICENSE
 
-## ga-matrix
+## geopandas
 
-- Package: ga-matrix
-- Version: 0.1.0
-- License: MIT
-- Source: https://github.com/andreagemma/matrix
-- Local license file: licenses/third_party/packages/ga-matrix/LICENSE
+- Package: geopandas
+- Version: 1.2.0
+- License: BSD-3-Clause
+- Source: https://github.com/geopandas/geopandas
+- Local license file: licenses/third_party/packages/geopandas/LICENSE
+
+## shapely
+
+- Package: shapely
+- Version: 2.2.0
+- License: BSD-3-Clause
+- Source: https://github.com/shapely/shapely
+- Local license file: licenses/third_party/packages/shapely/LICENSE
 
 ## ga-serializer
 

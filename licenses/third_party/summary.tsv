@@ -3,8 +3,9 @@ ga-configreader	0.1.3	licenses/third_party/packages/ga-configreader/LICENSE	http
 ga-dictparser	0.1.0	licenses/third_party/packages/ga-dictparser/LICENSE	https://github.com/andreagemma/dictparser
 ga-gataframe	0.1.0	licenses/third_party/packages/ga-gataframe/LICENSE	https://github.com/andreagemma/gataframe
 ga-parallel	0.1.1	licenses/third_party/packages/ga-parallel/LICENSE	https://github.com/andreagemma/parallel
-ga-graph	0.1.0	licenses/third_party/packages/ga-graph/LICENSE	https://github.com/andreagemma/graph
-ga-matrix	0.1.0	licenses/third_party/packages/ga-matrix/LICENSE	https://github.com/andreagemma/matrix
+dill	0.4.1	licenses/third_party/packages/dill/LICENSE	https://pypi.org/project/dill/
+geopandas	1.2.0	licenses/third_party/packages/geopandas/LICENSE	https://github.com/geopandas/geopandas
+shapely	2.2.0	licenses/third_party/packages/shapely/LICENSE	https://github.com/shapely/shapely
 ga-serializer	0.1.0	licenses/third_party/packages/ga-serializer/LICENSE	https://github.com/andreagemma/serializer
 SQLAlchemy	2.0.52	licenses/third_party/packages/sqlalchemy/LICENSE	https://github.com/sqlalchemy/sqlalchemy/
 loguru	0.7.3	licenses/third_party/packages/loguru/LICENSE	https://github.com/Delgan/loguru

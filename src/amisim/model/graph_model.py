@@ -3,12 +3,11 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import cast
 
 import geopandas as gpd
 import pandas as pd
 from geopandas import GeoDataFrame
-from graph import ActionPolicy, Link, Node, TimeDependentLinkBasedShortestPath, Turn
-from graph import Graph as GraphBase
 from pandas import DataFrame
 
 from ..base.base_loader import InputType
@@ -17,6 +16,8 @@ from ..loaders.links_loader import LinksLoader
 from ..loaders.nodes_loader import NodesLoader
 from ..loaders.turns_loader import TurnsLoader
 from ..utils.time import get_intersecting_intervals
+from .graph import ActionPolicy, Link, Node, TimeDependentLinkBasedShortestPath, Turn
+from .graph import Graph as GraphBase
 from .modes_model import ModesModel
 from .slice import Slice
 
@@ -70,9 +71,9 @@ class GraphModel(BaseModel):
 
         """
         instance = cls(
-            t0=graph.t0,
-            total_time=graph.total_time,
-            delta_t=graph.delta_t,
+            t0=int(graph.t0),
+            total_time=int(graph.total_time),
+            delta_t=int(graph.delta_t),
             default_v=default_v,
         )
         instance.graph = graph
@@ -83,7 +84,7 @@ class GraphModel(BaseModel):
     @property
     def t0(self) -> int:
         """Start time of the first interval."""
-        return self.graph.get("t0") if self.graph is not None else 0
+        return int(self.graph.t0) if self.graph is not None else 0
 
     @t0.setter
     def t0(self, value: int):
@@ -92,12 +93,12 @@ class GraphModel(BaseModel):
     @property
     def total_time(self) -> int:
         """Total duration covered by the time intervals."""
-        return self.graph.get("total_time") if self.graph is not None else 0
+        return int(self.graph.total_time) if self.graph is not None else 0
 
     @property
     def delta_t(self) -> int:
         """Length of each time interval."""
-        return self.graph.get("delta_t") if self.graph is not None else 0
+        return int(self.graph.delta_t) if self.graph is not None else 0
 
     def resize_attributes(self, new_t0: int, new_total_time: int, new_delta_t: int):
         self.graph["t0"] = new_t0
@@ -372,7 +373,7 @@ class GraphModel(BaseModel):
                 src = day_type_folder / f"t={t}"
                 for file in src.glob(f"*{cls.static_app.ini.OUTPUT.STATE_EXT}"):
                     cls.static_log.debug(f"Loading graph from file: {file.relative_to(folder)}")
-                    new_graph: GraphBase = cls.load(file)
+                    new_graph = cast("GraphBase | None", cls.load(file))
                     if new_graph is None:
                         continue
 

@@ -4,18 +4,18 @@ from __future__ import annotations
 
 import copy
 from pathlib import Path
-from typing import Any, Generator
+from typing import Any, Generator, Hashable, cast
 
 import pandas as pd
-from graph import KPathList as PathsType
-from graph import MultimodalPaths as MultimodalPathsType
-from graph import Path as PathType
-from graph import PathContainer
 
 from ..base.base_loader import InputParameters, InputType, OutputParameters, OutputType
 from ..base.base_model import BaseModel
 from ..loaders.paths_loader import PathsLoader
 from ..utils.time import get_intersecting_intervals
+from .graph import KPathList as PathsType
+from .graph import MultimodalPaths as MultimodalPathsType
+from .graph import Path as PathType
+from .graph import PathContainer
 from .graph_model import GraphBase, GraphModel
 from .modes_model import ModeCode
 from .slice import Slice
@@ -77,7 +77,7 @@ class PathsModel(BaseModel):
 
     def k_paths(self) -> int:
         """Return the total number of k-paths across all modes."""
-        return self._paths.k_paths()
+        return self._paths.max_k()
 
     __len__ = n_paths
 
@@ -86,7 +86,10 @@ class PathsModel(BaseModel):
             for path in self._paths[mode].all_paths():
                 yield path
 
-    def all_kpaths(self, modes: list[str] | None = None) -> Generator[PathType, None, None]:
+    def all_kpaths(
+        self, modes: list[str] | None = None
+    ) -> Generator[tuple[tuple[Hashable, Hashable, float | int, str | None], list[PathType]], None, None]:
+        """Yield each canonical key with its path list, optionally filtered by mode."""
         for mode in modes or self._paths.modes:
             paths = self._paths.get(mode)
             if paths:
@@ -183,7 +186,7 @@ class PathsModel(BaseModel):
                 src = day_type_folder / f"t={t}"
                 for file in src.glob(f"*{cls.static_app.ini.OUTPUT.STATE_EXT}"):
                     cls.static_log.debug(f"Loading paths from file: {file.relative_to(folder)}")
-                    new_paths: MultimodalPathsType = cls.load(file)
+                    new_paths = cast("MultimodalPathsType | None", cls.load(file))
                     if new_paths is None:
                         continue
                     if this is None:
@@ -227,8 +230,8 @@ class PathsModel(BaseModel):
         destination = Path(destination) / cls.static_app.ini.PARAMS.STATE_PATHS / f"day_type={day_type}" / f"t={t}"
         destination.mkdir(parents=True, exist_ok=True)
         for path in paths.all_paths():
-            path["t_base"] %= 1440
-            path["t"] = path["t_base"] + path["t_start"]
+            path.t_base %= 1440
+            path.t = path.t_base + path.t_start
         cls.dump(paths, destination / f"paths{cls.static_app.ini.OUTPUT.STATE_EXT}")
 
     def merge(self, other: PathsModel | MultimodalPathsType) -> PathsModel:

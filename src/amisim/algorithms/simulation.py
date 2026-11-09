@@ -148,19 +148,17 @@ class Simulation(AssignmentAON):
                         continue
                     if (n_paths := len(k_paths)) == 0:
                         continue
-                    if (t := k_paths[0].get("t")) is None:
-                        continue
-                    t = int(t) % 1440
+                    t = int(k_paths[0].t) % 1440
                     demand = mat.get_od(timestamp=t, origin=source, destination=target) * self.modes.get(mode, {}).get(
                         "eq_factor", 1
                     )
-                    tot_flow = sum(path.get("path_flow", 0) for path in k_paths)
+                    tot_flow = sum(path.path_flow for path in k_paths)
                     if tot_flow > 0:
                         for path in k_paths:
-                            path["path_flow"] = path["path_flow"] / tot_flow * demand
+                            path.path_flow = path.path_flow / tot_flow * demand
                     else:
                         for path in k_paths:
-                            path["path_flow"] = demand / n_paths
+                            path.path_flow = demand / n_paths
             self.set_execution_progress(50, "Analyzed all paths")
             self.update_performance()
             self.set_execution_progress(100, "Updated performance")

@@ -17,7 +17,7 @@ from ..base.base_algorithm import BaseAlgorithm
 from ..base.base_loader import BaseLoader, OutputType
 from ..base.base_simulator import BaseSimulator
 from ..database import Execution
-from ..model.graph_model import GraphBase, GraphModel
+from ..model.graph_model import GraphBase, GraphModel, Link
 from ..model.matrices_model import MultiModalDynamicMatrix
 from ..model.matrix_ass import MatrixAss
 from ..model.modes_model import ModesType
@@ -312,7 +312,7 @@ class AssignmentAON(BaseAlgorithm):
         if self.preloaded_paths is not None:
             self.paths.clear(new_paths=self.preloaded_paths)
             self.calc_paths = False
-            self.k_calculated = self.paths.k_paths()
+            self.k_calculated = self.paths.max_k()
         else:
             self.paths.clear()
             self.calc_paths = True
@@ -336,16 +336,13 @@ class AssignmentAON(BaseAlgorithm):
                 n_paths = len(k_paths)
                 if n_paths == 0:
                     continue
-                t = k_paths[0].get("t")
-                if t is None:
-                    continue
-                t = int(t) % 1440
+                t = int(k_paths[0].t) % 1440
                 demand = mat.get_od(timestamp=t % 1440, origin=source, destination=target) * self.modes.get(
                     mode, {}
                 ).get("eq_factor", 1)
                 for path in k_paths:
-                    assert t == int(path.get("t", 0.0))
-                    path["path_flow"] = demand / n_paths
+                    assert t == int(path.t)
+                    path.path_flow = demand / n_paths
 
         self.simulator.init(time_start=self.slice.time_start, time_end=self.slice.time_end)
         self.simulator.update(paths=self.paths)
@@ -358,10 +355,10 @@ class AssignmentAON(BaseAlgorithm):
         self.iteration.n_paths = self.paths.n_paths()
         self.iteration.n_unique_paths = self.paths.n_unique_paths()
         self.iteration.dt_end = datetime.now()
-        self.iteration.total_demand = sum([path["path_flow"] for path in self.paths.all_paths()])
-        self.total_travel_time = sum([path["tot_cost"] * path["path_flow"] for path in self.paths.all_paths()])
+        self.iteration.total_demand = sum([path.path_flow for path in self.paths.all_paths()])
+        self.total_travel_time = sum([path.tot_cost * path.path_flow for path in self.paths.all_paths()])
         self.iteration.total_travel_time = self.total_travel_time
-        self.iteration.k_paths = self.paths.k_paths()
+        self.iteration.k_paths = self.paths.max_k()
         if not self.iteration.current_travel_time:
             self.iteration.current_travel_time = self.total_travel_time
         if self.simulator and hasattr(self.simulator, "vehs"):
@@ -399,15 +396,13 @@ class AssignmentAON(BaseAlgorithm):
                 for (source, target, t_start, _), k_paths in mode_paths.all_kpaths():
                     if source == target:
                         continue
-                    if (t := k_paths[0].get("t")) is None:
-                        continue
-                    t = int(t) % 1440
+                    t = int(k_paths[0].t) % 1440
                     demand = mat.get_od(timestamp=t, origin=source, destination=target) * self.modes.get(mode, {}).get(
                         "eq_factor", 1
                     )
                     if demand > 0:
-                        best = min(k_paths, key=lambda path: path["tot_cost"])
-                        self.iteration.current_travel_time += demand * best["tot_cost"]
+                        best = min(k_paths, key=lambda path: path.tot_cost)
+                        self.iteration.current_travel_time += demand * best.tot_cost
 
             if self.iteration.current_travel_time == 0:
                 rgap = 0.0
@@ -438,7 +433,12 @@ class AssignmentAON(BaseAlgorithm):
         self.graph.reset_links("flow", 0)
         for mode in self.modes:
             self.graph.reset_links(name=f"flow_{mode}", value=0)
-        self.graph.reset_links("time", lambda link, i=None: link["t0"])
+
+        def _link_t0(link: Link, i: int | None = None) -> Any:
+            """Return the free-flow time of the link."""
+            return link["t0"]
+
+        self.graph.reset_links("time", _link_t0)
 
         self.log.debug("Graph resetted in %.2f seconds" % self.log.toc()).tic()
 
@@ -467,32 +467,32 @@ class AssignmentAON(BaseAlgorithm):
             link[link_cost] = other_graph.get_link_or_error(idx)[link_cost]
 
         for path in self.paths.all_paths():
-            if len(path["links"]) == 0:
+            if len(path.links) == 0:
                 continue
             cost = 0.0
             prev_link = None
             costs = list(path.costs)
-            for i, l_idx in enumerate(path.get_links()):
+            for i, l_idx in enumerate(path.links):
                 # costs[i] = cost
-                t = path["t"] + cost
-                link = graph.get_link(l_idx)
-                assert link is not None, f"Link with index {l_idx} not found in the graph."
+                t = path.t + cost
+                cur_link = graph.get_link(l_idx)
+                assert cur_link is not None, f"Link with index {l_idx} not found in the graph."
                 t_idx = graph.time_index(t)
                 new_cost = 0.0
                 if update_turns and i > 0 and prev_link is not None:
-                    turn = graph.get_turn_by_links(prev_link["idx"], link["idx"])
+                    turn = graph.get_turn_by_links(prev_link["idx"], cur_link["idx"])
                     if turn:
                         new_cost += turn[turn_cost][t_idx]
                 if update_nodes:
-                    if node_i := graph.get_node(link.get("i", None)):
+                    if node_i := graph.get_node(cur_link.get("i", None)):
                         new_cost += node_i[node_cost][t_idx]
                 if update_links:
-                    new_cost += link[link_cost][t_idx]
-                prev_link = link
+                    new_cost += cur_link[link_cost][t_idx]
+                prev_link = cur_link
                 cost += new_cost
                 costs[i] = cost
-            path["costs"] = tuple(costs)
-            path["tot_cost"] = cost
+            path.costs = tuple(costs)
+            path.tot_cost = cost
         self.log.info("Costs updated in %.2f seconds" % tic.toc())
 
     def calculate_ass_matrix(self):
@@ -536,7 +536,7 @@ class AssignmentAON(BaseAlgorithm):
                                 l_idx,
                                 t_start,
                                 t_start + t,
-                                path["path_flow"] / f,
+                                path.path_flow / f,
                             )
                         )
             return ret

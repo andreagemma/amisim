@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-from matrix import LabelsInput, Timestamp
-
 from ..base.base_loader import InputParameters, InputType
 from ..base.base_model import BaseModel
 from ..loaders.matrix_loader import MatrixLoader
+from .matrix import LabelsInput, Timestamp
 from .modes_model import ModesModel
 from .multi_modal_dynamic_matrix import MatricesType, MatrixODT, MultiModalDynamicMatrix, TimestampsType
 from .slice import Slice

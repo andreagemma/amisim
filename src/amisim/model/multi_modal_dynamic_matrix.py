@@ -4,9 +4,8 @@ from __future__ import annotations
 
 from typing import Generator, Hashable, TypeAlias
 
-from matrix import LabelsInput, Timestamp
-from matrix import MatrixODTSparse as MatrixODT
-
+from .matrix import LabelsInput, Timestamp
+from .matrix import MatrixODTSparse as MatrixODT
 from .modes_model import ModesModel
 
 TimestampsType: TypeAlias = list[Timestamp]

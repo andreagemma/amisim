@@ -105,7 +105,7 @@ class Dispatcher:
         assert modes is not None, "Modes must be provided"
 
         return ShortestPath(app=self.app).run(
-            graph=graph,
+            graph=graph.graph if graph is not None else None,
             nodes=nodes,
             modes=modes.modes,
             timestamps=timestamps,

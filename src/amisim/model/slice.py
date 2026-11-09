@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from datetime import timedelta
 
-from graph import time_index
-
+from .graph import time_index
 from .simulation_interval import SimulationDatetime, SimulationDatetimeType, SimulationInterval
 
 

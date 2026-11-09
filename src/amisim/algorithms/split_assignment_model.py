@@ -196,7 +196,7 @@ class SplitAssignmentModel(BaseAlgorithm):
 
             self.log.info(f"{self.interval_name}Initializing simulation")
             if self.simulator:
-                self.simulator.init(self.assignment_slice.start, self.assignment_slice.end)
+                self.simulator.init(time_start=self.assignment_slice.start, time_end=self.assignment_slice.end)
 
             self.log.info(f"{self.interval_name}Running simulation")
             self.run_internal_step()
@@ -241,9 +241,9 @@ class SplitAssignmentModel(BaseAlgorithm):
                     )
                 ):
                     for path in kpaths:
-                        path["t_base"] = self.graph.t0
-                        path["t_start"] = t
-                        path["t"] = self.graph.t0 + t
+                        path.t_base = self.graph.t0
+                        path.t_start = t
+                        path.t = self.graph.t0 + t
                         m_paths.add_path(path)
 
         if self.simulator:
@@ -293,13 +293,15 @@ class SplitAssignmentModel(BaseAlgorithm):
         if self.iteration.id > 1 and self.m_paths:
             self.iteration.current_travel_time = 0
             for _, k_paths in self.m_paths.all_kpaths():
-                for path in k_paths.all_kpaths():
+                for path in k_paths:
                     if path.source == path.target:
                         continue
-                    f = mat.get_od(path.mode, path.source, path.target, path.t) * self.eq_factors.get(path.mode, 1)
+                    mode = path.mode
+                    assert mode is not None, "Path mode must be set to compute the relative gap."
+                    f = mat.get_od(mode, path.source, path.target, int(path.t)) * self.eq_factors.get(mode, 1)
                     if f > 0:
-                        best = min(k_paths, key=lambda path: path["tot_cost"])
-                        self.iteration.current_travel_time += f * best["tot_cost"]
+                        best = min(k_paths, key=lambda path: path.tot_cost)
+                        self.iteration.current_travel_time += f * best.tot_cost
 
             if self.iteration.current_travel_time == 0:
                 rgap = 0.0
@@ -332,10 +334,8 @@ class SplitAssignmentModel(BaseAlgorithm):
         }
         info["rgap_time"] = self.iteration.rgap
 
-        self.iteration.total_demand = sum([path["path_flow"] for path in self.m_paths.all_paths()])
-        self.iteration.total_travel_time = sum(
-            [path["tot_cost"] * path["path_flow"] for path in self.m_paths.all_paths()]
-        )
+        self.iteration.total_demand = sum([path.path_flow for path in self.m_paths.all_paths()])
+        self.iteration.total_travel_time = sum([path.tot_cost * path.path_flow for path in self.m_paths.all_paths()])
         if self.iteration.current_travel_time:
             self.iteration.current_travel_time = self.iteration.total_travel_time
         info["current_tt"] = self.iteration.total_travel_time
@@ -388,7 +388,7 @@ class SplitAssignmentModel(BaseAlgorithm):
                                 l_idx,
                                 t_start,
                                 t,
-                                path["path_flow"] / f,
+                                path.path_flow / f,
                             )
                         )
             return ret
@@ -453,7 +453,7 @@ class SplitAssignmentModel(BaseAlgorithm):
     def get_paths_results(self, t=None) -> gpd.GeoDataFrame | None:
         results = self.m_paths.paths.to_pandas(
             G=self.graph.graph,
-            crs=self.graph.links.crs if self.graph.links is not None else None,
+            crs_link=self.graph.links.crs if self.graph.links is not None else "EPSG:4326",
         )
         return results
 

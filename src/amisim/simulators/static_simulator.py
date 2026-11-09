@@ -251,14 +251,14 @@ def load_path_flow(
     flows: dict[tuple[Hashable, int, int], int] = defaultdict(int)
     mode_flows: dict[tuple[str, Hashable, int, int], int] = defaultdict(int)
     for path in tasks:
-        t = path["t"]
+        t = path.t
         if not (tstart <= t < tend):
             continue
         cost = path.tot_cost + t
-        mode = str(path["mode"])
-        for link_idx in path.get_links():
-            flows[(link_idx, int(t), int(cost))] += path["path_flow"]
-            mode_flows[(mode, link_idx, int(t), int(cost))] += path["path_flow"]
+        mode = str(path.mode)
+        for link_idx in path.links:
+            flows[(link_idx, int(t), int(cost))] += path.path_flow
+            mode_flows[(mode, link_idx, int(t), int(cost))] += path.path_flow
     return flows, mode_flows
 
 
